@@ -32,6 +32,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.RioConstants;
@@ -98,6 +99,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
         initSnapController();
         createSwerveModules(fl, fr, bl, br);
+        SmartDashboard.putData(zeroSwerveCommand());
     }
 
     //swerve
@@ -129,6 +131,16 @@ public class DrivetrainSubsystem extends SubsystemBase {
                 new SwerveModulePosition(m_backRightModule.getPosition(),
                         new Rotation2d(m_backRightModule.getSteerAngle()))
         };
+    }
+
+    //zero swerve command
+    public Command zeroSwerveCommand(){
+        return run(() -> {
+            RioConstants.writeSwerveZeros(m_frontLeftModule.getSteerAngle(),
+            m_frontRightModule.getSteerAngle(),
+            m_backLeftModule.getSteerAngle(),
+            m_backRightModule.getSteerAngle());
+        });
     }
 
     //heading snap controller
@@ -194,7 +206,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     public void setPose(Pose2d pose, Rotation2d rotation) {
         mPoseEstimator.resetPosition(rotation, getSwerveModulePositions(), pose);
     }
-    public double getSpeed() {
+    public double getTranslationalSpeed() {
         return Math.sqrt(Math.pow(m_chassisSpeeds.vxMetersPerSecond, 2) + Math.pow(m_chassisSpeeds.vyMetersPerSecond, 2));
     }
     public ChassisSpeeds getChassisSpeeds(){

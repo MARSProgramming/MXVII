@@ -4,16 +4,11 @@
 
 package frc.robot;
 
-import java.lang.constant.DynamicCallSiteDesc;
-
-import com.fasterxml.jackson.databind.ser.std.StdKeySerializers.Dynamic;
-
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.constants.DynamicConstants;
 import frc.robot.constants.RioConstants;
-import frc.robot.constants.StaticConstants;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
