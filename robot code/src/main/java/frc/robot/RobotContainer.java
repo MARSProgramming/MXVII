@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -25,6 +26,8 @@ public class RobotContainer {
     // Replace with CommandPS4Controller or CommandJoystick if needed
     private final CommandXboxController mPilot =
         new CommandXboxController(0);
+
+    private final ShooterSubsystem mShooterSubsystem = new ShooterSubsystem();
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
@@ -52,6 +55,7 @@ public class RobotContainer {
         mPilot.y().whileTrue(mDrivetrainSubsystem.zeroGyroscope(0));
         mPilot.rightBumper().whileTrue(mIntakeSubsystem.intake());
         mPilot.leftBumper().whileTrue(mIntakeSubsystem.outtake());
+        mPilot.povUp().whileTrue(mShooterSubsystem.run());
     
     }
 
