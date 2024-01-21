@@ -99,7 +99,12 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
         initSnapController();
         createSwerveModules(fl, fr, bl, br);
-        SmartDashboard.putData(zeroSwerveCommand());
+        SmartDashboard.putData("Zero Swerves", zeroSwerveCommand().ignoringDisable(true));
+
+        mPoseEstimator = new SwerveDrivePoseEstimator(m_kinematics, new Rotation2d(getPigeonAngle()),
+                getSwerveModulePositions(), new Pose2d(),
+                VecBuilder.fill(0.05, 0.05, Units.degreesToRadians(5)),
+                VecBuilder.fill(0.1, 0.1, Units.degreesToRadians(15)));
     }
 
     //swerve
@@ -118,6 +123,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
         mPoseEstimator.updateWithTime(Timer.getFPGATimestamp(), new Rotation2d(getPigeonAngle()),
                 getSwerveModulePositions());
+        
+        SmartDashboard.putNumber("Pigeon Angle", getPigeonAngle() * 180.0/Math.PI);
+        SmartDashboard.putNumber("Angular Velocity", m_chassisSpeeds.omegaRadiansPerSecond);
     }
 
     public SwerveModulePosition[] getSwerveModulePositions() {
@@ -136,6 +144,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     //zero swerve command
     public Command zeroSwerveCommand(){
         return run(() -> {
+            System.out.println("zeroing");
             RioConstants.writeSwerveZeros(m_frontLeftModule.getSteerAngle(),
             m_frontRightModule.getSteerAngle(),
             m_backLeftModule.getSteerAngle(),
@@ -189,10 +198,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     }
 
     //PoseEstimator
-    private final SwerveDrivePoseEstimator mPoseEstimator = new SwerveDrivePoseEstimator(m_kinematics, new Rotation2d(getPigeonAngle()),
-                getSwerveModulePositions(), new Pose2d(),
-                VecBuilder.fill(0.05, 0.05, Units.degreesToRadians(5)),
-                VecBuilder.fill(0.1, 0.1, Units.degreesToRadians(15)));
+    private final SwerveDrivePoseEstimator mPoseEstimator;
 
     public void addVisionMeasurement(Pose2d pose, double latencySeconds) {
         mPoseEstimator.addVisionMeasurement(pose, Timer.getFPGATimestamp() - latencySeconds);
@@ -212,6 +218,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
     public ChassisSpeeds getChassisSpeeds(){
         return m_chassisSpeeds;
     }
+    public void drive(ChassisSpeeds chassisSpeeds) {
+        m_chassisSpeeds = chassisSpeeds;
+    }
+    
 
     public void createSwerveModules(double fl, double fr, double bl, double br) {
         ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");

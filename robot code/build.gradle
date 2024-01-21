@@ -106,5 +106,5 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.MARSProgramming:swerve-lib:2024-Update'
+    implementation 'com.github.MARSProgramming:swerve-lib:2024-phoenix6'
 }

@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.subsystems.DrivetrainSubsystem;
 
 /**
@@ -17,14 +18,21 @@ import frc.robot.subsystems.DrivetrainSubsystem;
  */
 public class RobotContainer {
     // The robot's subsystems and commands are defined here...
-    private final DrivetrainSubsystem m_exampleSubsystem = new DrivetrainSubsystem();
+    private final DrivetrainSubsystem mDrivetrainSubsystem = new DrivetrainSubsystem();
 
     // Replace with CommandPS4Controller or CommandJoystick if needed
-    private final CommandXboxController m_driverController =
+    private final CommandXboxController mPilot =
         new CommandXboxController(0);
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
+        mDrivetrainSubsystem.setDefaultCommand(new DefaultDriveCommand(
+            mDrivetrainSubsystem,
+            () -> -modifyAxis(mPilot.getLeftY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+            () -> -modifyAxis(mPilot.getLeftX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+            () -> -modifyAxis(mPilot.getRightX()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
+        ));
+
         // Configure the trigger bindings
         configureBindings();
     }
@@ -39,7 +47,7 @@ public class RobotContainer {
      * joysticks}.
      */
     private void configureBindings() {
-        
+        mPilot.y().whileTrue(mDrivetrainSubsystem.zeroGyroscope(0));
     }
 
     /**
@@ -50,4 +58,30 @@ public class RobotContainer {
     public Command getAutonomousCommand() {
         return null;
     }
+
+    private static double deadband(double value, double deadband) {
+        if (Math.abs(value) > deadband) {
+          if (value > 0.0) {
+            return (value - deadband) / (1.0 - deadband);
+          } else {
+            return (value + deadband) / (1.0 - deadband);
+    
+          }
+        } else {
+          return 0.0;
+        }
+      }
+    
+      private static double modifyAxis(double value) {
+        // Deadband
+        value = deadband(value, 0.05);
+    
+        // Square the axis
+        value = Math.copySign(value * value, value);
+    
+        //"Stage" mode
+        //value = Math.round(value * 5.0)/5.0;
+    
+        return value;
+      }
 }

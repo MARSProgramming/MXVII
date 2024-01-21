@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
 public final class DynamicConstants {
     private static HashMap<Field, SimpleWidget> entries;
     public static class Example{
-        private int exampleConstant = 0;
+        public static double exampleConstant = 0;
     }
 
     public static void init(){
