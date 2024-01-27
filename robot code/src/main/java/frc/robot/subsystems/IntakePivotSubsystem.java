@@ -38,9 +38,9 @@ public class IntakePivotSubsystem extends SubsystemBase {
         });
     }
 
-    public Command outtake() {
+    public Command reversePivot() {
         return runEnd(() -> {
-            pivotMotor.set(-0.25);
+            pivotMotor.set(-max);
         },() -> {
             pivotMotor.set(0);
         });
