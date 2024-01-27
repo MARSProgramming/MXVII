@@ -101,10 +101,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
         createSwerveModules(fl, fr, bl, br);
         SmartDashboard.putData("Zero Swerves", zeroSwerveCommand().ignoringDisable(true));
 
-        mPoseEstimator = new SwerveDrivePoseEstimator(m_kinematics, new Rotation2d(getPigeonAngle()),
+        /*mPoseEstimator = new SwerveDrivePoseEstimator(m_kinematics, new Rotation2d(getPigeonAngle()),
                 getSwerveModulePositions(), new Pose2d(),
                 VecBuilder.fill(0.05, 0.05, Units.degreesToRadians(5)),
-                VecBuilder.fill(0.1, 0.1, Units.degreesToRadians(15)));
+                VecBuilder.fill(0.1, 0.1, Units.degreesToRadians(15)));*/
     }
 
     //swerve
@@ -121,8 +121,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
         m_backRightModule.set(states[3].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE,
                 states[3].angle.getRadians());
 
-        mPoseEstimator.updateWithTime(Timer.getFPGATimestamp(), new Rotation2d(getPigeonAngle()),
-                getSwerveModulePositions());
+        //mPoseEstimator.updateWithTime(Timer.getFPGATimestamp(), new Rotation2d(getPigeonAngle()),
+          //      getSwerveModulePositions());
         
         SmartDashboard.putNumber("Pigeon Angle", getPigeonAngle() * 180.0/Math.PI);
         SmartDashboard.putNumber("Angular Velocity", m_chassisSpeeds.omegaRadiansPerSecond);
@@ -198,19 +198,20 @@ public class DrivetrainSubsystem extends SubsystemBase {
     }
 
     //PoseEstimator
-    private final SwerveDrivePoseEstimator mPoseEstimator;
+    //private final SwerveDrivePoseEstimator mPoseEstimator;
 
     public void addVisionMeasurement(Pose2d pose, double latencySeconds) {
-        mPoseEstimator.addVisionMeasurement(pose, Timer.getFPGATimestamp() - latencySeconds);
+        //mPoseEstimator.addVisionMeasurement(pose, Timer.getFPGATimestamp() - latencySeconds);
     }
     public void setVisionMeasurementStdDevs(Matrix<N3, N1> mat) {
-        mPoseEstimator.setVisionMeasurementStdDevs(mat);
+        //mPoseEstimator.setVisionMeasurementStdDevs(mat);
     }
     public Pose2d getPose() {
-        return mPoseEstimator.getEstimatedPosition();
+        return null;
+        //return mPoseEstimator.getEstimatedPosition();
     }
     public void setPose(Pose2d pose, Rotation2d rotation) {
-        mPoseEstimator.resetPosition(rotation, getSwerveModulePositions(), pose);
+        //mPoseEstimator.resetPosition(rotation, getSwerveModulePositions(), pose);
     }
     public double getTranslationalSpeed() {
         return Math.sqrt(Math.pow(m_chassisSpeeds.vxMetersPerSecond, 2) + Math.pow(m_chassisSpeeds.vyMetersPerSecond, 2));
@@ -235,7 +236,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
                         .withPosition(0, 0),
                 config,
                 Mk4iSwerveModuleHelper.GearRatio.L3,
-                15,
+                StaticConstants.Drive.FRONT_LEFT_MODULE_DRIVE_MOTOR,
                 StaticConstants.Drive.FRONT_LEFT_MODULE_STEER_MOTOR,
                 StaticConstants.Drive.FRONT_LEFT_MODULE_STEER_ENCODER,
                 fl);
@@ -246,7 +247,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
                         .withPosition(2, 0),
                 config,
                 Mk4iSwerveModuleHelper.GearRatio.L3,
-                14,
+                StaticConstants.Drive.FRONT_RIGHT_MODULE_DRIVE_MOTOR,
                 StaticConstants.Drive.FRONT_RIGHT_MODULE_STEER_MOTOR,
                 StaticConstants.Drive.FRONT_RIGHT_MODULE_STEER_ENCODER,
                 fr);
@@ -256,7 +257,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
                         .withPosition(4, 0),
                 config,
                 Mk4iSwerveModuleHelper.GearRatio.L3,
-                16,
+                StaticConstants.Drive.BACK_LEFT_MODULE_DRIVE_MOTOR,
                 StaticConstants.Drive.BACK_LEFT_MODULE_STEER_MOTOR,
                 StaticConstants.Drive.BACK_LEFT_MODULE_STEER_ENCODER,
                 bl);
@@ -266,7 +267,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
                         .withPosition(6, 0),
                 config,
                 Mk4iSwerveModuleHelper.GearRatio.L3,
-                17,
+                StaticConstants.Drive.BACK_RIGHT_MODULE_DRIVE_MOTOR,
                 StaticConstants.Drive.BACK_RIGHT_MODULE_STEER_MOTOR,
                 StaticConstants.Drive.BACK_RIGHT_MODULE_STEER_ENCODER,
                 br);

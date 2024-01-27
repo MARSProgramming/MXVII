@@ -32,10 +32,6 @@ public class AutoChooser {
         return autoChooser.getSelected();
     }
 
-    public PathPlannerTrajectory openTrajectoryFile(String name){
-        PathPlannerTrajectory t = PathPlannerPath.fromPathFile(name).getTrajectory(drivetrainSubsystem.getChassisSpeeds(), new Rotation2d(drivetrainSubsystem.getPigeonAngle()));
-        return t;
-    }
     public PathPlannerTrajectory openTrajectoryFileForAlliance(String name, DriverStation.Alliance alliance){
         //TODO: add thing to flip the path
         PathPlannerTrajectory t = PathPlannerPath.fromPathFile(name).getTrajectory(drivetrainSubsystem.getChassisSpeeds(), new Rotation2d(drivetrainSubsystem.getPigeonAngle()));
