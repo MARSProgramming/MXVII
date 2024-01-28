@@ -1,4 +1,10 @@
 {
+  "NTProvider": {
+    "types": {
+      "/FMSInfo": "FMSInfo",
+      "/SmartDashboard/Zero Swerves": "Command"
+    }
+  },
   "NetworkTables Info": {
     "visible": true
   }

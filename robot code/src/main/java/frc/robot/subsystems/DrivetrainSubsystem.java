@@ -144,7 +144,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
     //zero swerve command
     public Command zeroSwerveCommand(){
         return run(() -> {
-            System.out.println("zeroing");
             RioConstants.writeSwerveZeros(m_frontLeftModule.getSteerAngle(),
             m_frontRightModule.getSteerAngle(),
             m_backLeftModule.getSteerAngle(),
