@@ -181,7 +181,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     }
 
     //Pigeon
-    private final Pigeon2 m_pigeon = new Pigeon2(StaticConstants.Drive.DRIVETRAIN_PIGEON_ID);
+    private final Pigeon2 m_pigeon = new Pigeon2(StaticConstants.Drive.DRIVETRAIN_PIGEON_ID, StaticConstants.Drive.kDriveCANivore);
 
     public double getPigeonAngle() {
         return Math.toRadians(m_pigeon.getYaw().getValueAsDouble());

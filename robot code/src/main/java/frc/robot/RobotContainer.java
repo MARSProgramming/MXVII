@@ -20,7 +20,7 @@ import frc.robot.subsystems.SubsystemIO;
 public class RobotContainer {
     // The robot's subsystems and commands are defined here...
     private final DrivetrainSubsystem mDrivetrainSubsystem = new DrivetrainSubsystem();
-    private final SubsystemIO subsystemIO = new SubsystemIO();
+    private final SubsystemIO subsystemIO = SubsystemIO.getInstance();
 
     // Replace with CommandPS4Controller or CommandJoystick if needed
     private final CommandXboxController mPilot =

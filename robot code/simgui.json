@@ -2,6 +2,7 @@
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
+      "/SmartDashboard/Talon FX (v6) [0]": "Motor Controller",
       "/SmartDashboard/Zero Swerves": "Command"
     }
   },

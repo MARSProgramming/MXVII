@@ -9,9 +9,14 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.util.BasicDash;
 
 public class SubsystemIO extends SubsystemBase{
+    private static SubsystemIO mInstance;
+    public static SubsystemIO getInstance(){
+        if(mInstance == null) mInstance = new SubsystemIO();
+        return mInstance;
+    }
+
     private BasicDash dashboard;
-    private static Timer t = new Timer();
-    public SubsystemIO(){
+    private SubsystemIO(){
         Map<String, String> pilotControls = new HashMap<>();
         pilotControls.put("Right Trigger", "Shoot");
         pilotControls.put("X", "Amp");
