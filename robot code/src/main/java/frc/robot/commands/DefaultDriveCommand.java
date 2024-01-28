@@ -14,6 +14,15 @@ public class DefaultDriveCommand extends Command {
     private final DoubleSupplier m_translationYSupplier;
     private final DoubleSupplier m_rotationSupplier;
 
+    /*
+     * Creates a default command to drive a swerve drive subsystem with supplied 
+     * DrivetrainSubsystem and DoubleSuppliers as dynamic inputs.
+     * 
+     * @param  drivetrainSubsystem   the DrivetrainSubsystem to drive
+     * @param  translationXSupplier  the supplied X axis translational input
+     * @param  translationYSupplier  the supplied Y axis translational input
+     * @param  rotationSupplier      the supplied rotational input
+     */
     public DefaultDriveCommand(DrivetrainSubsystem drivetrainSubsystem,
                                DoubleSupplier translationXSupplier,
                                DoubleSupplier translationYSupplier,

@@ -9,7 +9,7 @@ import frc.robot.util.BasicDash;
 
 public class SubsystemIO extends SubsystemBase{
     /*
-     * Singleton Static structure
+     * Singleton structure
      * (see https://www.tutorialspoint.com/design_pattern/singleton_pattern.htm)
      */
     private static SubsystemIO mInstance;
@@ -19,6 +19,9 @@ public class SubsystemIO extends SubsystemBase{
     }
 
     private BasicDash dashboard;
+    /*
+     * Creates a dashboard displaying the pilot/copilot controls and subsystem information
+     */
     private SubsystemIO(){
         Map<String, String> pilotControls = new HashMap<>();
         pilotControls.put("Right Trigger", "Shoot");
