@@ -1,48 +1,36 @@
 package frc.robot.subsystems;
-import java.util.Map;
-
+import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.configs.VoltageConfigs;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 
-import edu.wpi.first.networktables.GenericEntry;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.constants.StaticConstants;
 
 public class IntakePivotSubsystem extends SubsystemBase {
     private TalonFX pivotMotor;
-    private ShuffleboardTab tab; 
-    private double max;
-    private GenericEntry speed; 
-    private boolean stop;
     public IntakePivotSubsystem() {
-        pivotMotor = new TalonFX(22);
-        tab = Shuffleboard.getTab("Pivot");
-        speed = tab.add("Max Speed", 0.5).withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", 0, "max", 1)).getEntry();
-        max = speed.getDouble(0.5);
-        stop = false;
+        pivotMotor = new TalonFX(StaticConstants.IntakePivot.ID);
+        pivotMotor.getConfigurator().apply(new TalonFXConfiguration());
+        pivotMotor.getConfigurator().apply(new SoftwareLimitSwitchConfigs()
+        .withForwardSoftLimitEnable(true)
+        .withForwardSoftLimitThreshold(StaticConstants.IntakePivot.forwardLimit)
+        .withReverseSoftLimitEnable(true)
+        .withReverseSoftLimitThreshold(StaticConstants.IntakePivot.reverseLimit));
+        pivotMotor.getConfigurator().apply(new VoltageConfigs()
+        .withPeakForwardVoltage(2)
+        .withPeakReverseVoltage(2));
+        pivotMotor.setNeutralMode(NeutralModeValue.Brake);
+        pivotMotor.setInverted(false);
     }
-    public void periodic() {
-         max = speed.getDouble(0.5);
-    }
-    public Command pivot() {
+    public Command runVoltage(double voltage) {
         return runEnd(() -> {
-            if (!stop) {
-              pivotMotor.set(max);
-            } else {
-                pivotMotor.set(0);
-            }
-        }, () -> {
-            pivotMotor.set(0);
+            pivotMotor.setVoltage(voltage);
+        },
+        () -> {
+            pivotMotor.setVoltage(0);
         });
     }
-
-    public Command reversePivot() {
-        return runEnd(() -> {
-            pivotMotor.set(-max);
-        },() -> {
-            pivotMotor.set(0);
-        });
-    } 
 }

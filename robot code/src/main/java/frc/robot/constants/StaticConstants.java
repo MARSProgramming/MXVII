@@ -44,4 +44,10 @@ public final class StaticConstants {
         public static final double holonomicOMaxVelocity = 2;
         public static final double holonomicOMaxAcceleration = 5;
     }
+
+    public static class IntakePivot{
+        public static int ID = 22;
+        public static double forwardLimit = 5;
+        public static double reverseLimit = 0;
+    }
 }
