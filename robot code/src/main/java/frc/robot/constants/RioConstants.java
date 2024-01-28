@@ -9,8 +9,11 @@ import java.util.Scanner;
 import frc.robot.util.MoreMath;
 
 public final class RioConstants {
+
+    /*
+     * Reads all constants from the RIO
+     */
     public static void readConstants(){
-        //read swerve zeros from file
         File swerveZeros = new File("/home/lvuser/constants/SwerveZeros.txt");
         if (swerveZeros.exists()) {
             try {
@@ -25,6 +28,15 @@ public final class RioConstants {
             }
         }
     }
+
+    /*
+     * Writes swerve zeros to RIO file
+     * 
+     * @param  fl  Front Left offset
+     * @param  fr  Front Right offset
+     * @param  bl  Back Left offset
+     * @param  br  Back Right offset
+     */
     public static void writeSwerveZeros(double fl, double fr, double bl, double br){
         File swerveZeros = new File("/home/lvuser/constants/SwerveZeros.txt");
         swerveZeros.setExecutable(true);

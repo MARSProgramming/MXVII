@@ -4,11 +4,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.util.BasicDash;
 
 public class SubsystemIO extends SubsystemBase{
+    /*
+     * Singleton Static structure
+     * (see https://www.tutorialspoint.com/design_pattern/singleton_pattern.htm)
+     */
     private static SubsystemIO mInstance;
     public static SubsystemIO getInstance(){
         if(mInstance == null) mInstance = new SubsystemIO();
