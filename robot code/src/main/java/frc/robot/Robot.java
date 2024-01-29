@@ -34,6 +34,7 @@ public class Robot extends TimedRobot {
         // autonomous chooser on the dashboard.
         RioConstants.readConstants();
         DynamicConstants.init();
+        DynamicConstants.periodic();
         m_robotContainer = new RobotContainer();
     }
 

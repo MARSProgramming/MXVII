@@ -20,6 +20,13 @@ public final class DynamicConstants {
     public static class Example{
         public static double exampleConstant = 0;
     }
+    public static class Intake{
+        public static double irSensorThreshold = 0.5;
+
+        public static double pivotIntakePosition = 0.5;
+        public static double pivotUprightPosition = 0.16;
+        public static double pivotStowPosition = 0.03;
+    }
 
 
     private static HashMap<Field, SimpleWidget> entries;
@@ -32,7 +39,7 @@ public final class DynamicConstants {
         entries = new HashMap<>();
 
         //add all .class values of the static classes above
-        Class<?>[] subsystems = {Example.class};
+        Class<?>[] subsystems = {Intake.class};
         
         for(Class<?> subsystem : subsystems){
             Field[] fields = subsystem.getDeclaredFields();

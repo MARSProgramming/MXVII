@@ -50,4 +50,14 @@ public final class StaticConstants {
         public static double forwardLimit = 5;
         public static double reverseLimit = 0;
     }
+    public static class IntakeWheels{
+        public static int ID = 12;
+    }
+    public static class ShooterFlywheel{
+        public static int masterID = 13;
+        public static int followID = 23;
+    }
+    public static class ThePivot{
+        public static int ID = 33;
+    }
 }

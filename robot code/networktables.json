@@ -6,5 +6,30 @@
     "properties": {
       "persistent": true
     }
+  },
+  {
+    "name": "/Shuffleboard/Intake/Intake: irSensorThreshold",
+    "type": "double",
+    "value": 0.5,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Shuffleboard/Intake/Intake: pivotIntakePosition",
+    "type": "double",
+    "value": 0.9,
+    "properties": {
+      "persistent": true,
+      "retained": true
+    }
+  },
+  {
+    "name": "/Shuffleboard/Intake/Intake: pivotStowPosition",
+    "type": "double",
+    "value": 0.03,
+    "properties": {
+      "persistent": true
+    }
   }
 ]

@@ -8,10 +8,13 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.DefaultDriveCommand;
+import frc.robot.commands.Intake;
 import frc.robot.subsystems.DrivetrainSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.IntakePivot;
+import frc.robot.subsystems.IntakeWheels;
+import frc.robot.subsystems.ShooterFlywheel;
 import frc.robot.subsystems.SubsystemIO;
+import frc.robot.subsystems.ThePivot;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -22,14 +25,16 @@ import frc.robot.subsystems.SubsystemIO;
 public class RobotContainer {
     // The robot's subsystems and commands are defined here...
     private final DrivetrainSubsystem mDrivetrainSubsystem = new DrivetrainSubsystem();
-    private final IntakeSubsystem mIntakeSubsystem = new IntakeSubsystem();
-    private final SubsystemIO subsystemIO = SubsystemIO.getInstance();
+    private final IntakePivot mIntakePivot = new IntakePivot();
+    private final IntakeWheels mIntakeWheels = new IntakeWheels();
+    private final ShooterFlywheel mShooterFlywheel = new ShooterFlywheel();
+    private final ThePivot mThePivot = new ThePivot();
+    private final SubsystemIO subsystemIO = new SubsystemIO(mIntakeWheels, mIntakePivot);
+    private Intake a = new Intake(mIntakePivot, mIntakeWheels);
 
     // Replace with CommandPS4Controller or CommandJoystick if needed
     private final CommandXboxController mPilot =
         new CommandXboxController(0);
-
-    private final ShooterSubsystem mShooterSubsystem = new ShooterSubsystem();
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
@@ -55,10 +60,14 @@ public class RobotContainer {
      */
     private void configureBindings() {
         mPilot.y().whileTrue(mDrivetrainSubsystem.zeroGyroscope(0));
-        mPilot.rightBumper().whileTrue(mIntakeSubsystem.intake());
-        mPilot.leftBumper().whileTrue(mIntakeSubsystem.outtake());
-        mPilot.povUp().whileTrue(mShooterSubsystem.run());
-    
+        mPilot.rightTrigger().whileTrue(mShooterFlywheel.runVoltage(9));
+        mPilot.leftTrigger().whileTrue(mIntakeWheels.intakeCommand());
+        mPilot.leftBumper().whileTrue(mIntakeWheels.runVoltage(-6));
+        mPilot.povLeft().whileTrue(mIntakePivot.runVoltage(-4));
+        mPilot.povRight().whileTrue(mIntakePivot.runVoltage(4));
+        mPilot.povUp().whileTrue(mThePivot.runVoltage(-3));
+        mPilot.povDown().whileTrue(mThePivot.runVoltage(3));
+        mPilot.b().whileTrue(mIntakePivot.setPositionCommand(() -> 0.3));
     }
 
     /**

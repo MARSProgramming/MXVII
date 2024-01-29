@@ -1,1 +1,34 @@
-[]
+[
+  {
+    "name": "/Shuffleboard/Example/Example: exampleConstant",
+    "type": "double",
+    "value": 0.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Shuffleboard/Intake/Intake: irSensorThreshold",
+    "type": "double",
+    "value": 0.5,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Shuffleboard/Intake/Intake: pivotIntakePosition",
+    "type": "double",
+    "value": 0.5,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Shuffleboard/Intake/Intake: pivotStowPosition",
+    "type": "double",
+    "value": 0.03,
+    "properties": {
+      "persistent": true
+    }
+  }
+]

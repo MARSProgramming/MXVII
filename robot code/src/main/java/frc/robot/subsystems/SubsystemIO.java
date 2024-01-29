@@ -14,7 +14,7 @@ public class SubsystemIO extends SubsystemBase{
      */
     private static SubsystemIO mInstance;
     public static SubsystemIO getInstance(){
-        if(mInstance == null) mInstance = new SubsystemIO();
+        if(mInstance == null) return null;
         return mInstance;
     }
 
@@ -22,14 +22,17 @@ public class SubsystemIO extends SubsystemBase{
     /*
      * Creates a dashboard displaying the pilot/copilot controls and subsystem information
      */
-    private SubsystemIO(){
+    public SubsystemIO(IntakeWheels intakeWheels, IntakePivot intakePivot){
+        mInstance = this;
+
         Map<String, String> pilotControls = new HashMap<>();
         pilotControls.put("Right Trigger", "Shoot");
         pilotControls.put("X", "Amp");
         Map<String, String> copilotControls = new HashMap<>();
         copilotControls.put("Left Trigger", "test");
         Map<String, Supplier<?>> displayedValues = new HashMap<>();
-        //displayedValues.put("Shooter: Match Time", () -> t.getFPGATimestamp());
+        displayedValues.put("Intake: IR sensor", () -> intakeWheels.getIrReading());
+        displayedValues.put("Intake: Pivot Position", () -> intakePivot.getPosition());
         dashboard = new BasicDash(pilotControls, copilotControls, displayedValues);
     }
 
