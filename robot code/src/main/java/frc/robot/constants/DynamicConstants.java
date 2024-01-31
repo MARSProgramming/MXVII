@@ -24,8 +24,14 @@ public final class DynamicConstants {
         public static double irSensorThreshold = 0.5;
 
         public static double pivotIntakePosition = 0.5;
+        public static double pivotAmpPosition = 0.5;
         public static double pivotUprightPosition = 0.16;
         public static double pivotStowPosition = 0.03;
+    }
+    public static class ThePivot{
+        public static double uprightPosition = 0.31;
+        public static double ampPosition = 0.15;
+        public static double zeroPosition = 0;
     }
 
 
@@ -39,7 +45,7 @@ public final class DynamicConstants {
         entries = new HashMap<>();
 
         //add all .class values of the static classes above
-        Class<?>[] subsystems = {Intake.class};
+        Class<?>[] subsystems = {Intake.class, ThePivot.class};
         
         for(Class<?> subsystem : subsystems){
             Field[] fields = subsystem.getDeclaredFields();

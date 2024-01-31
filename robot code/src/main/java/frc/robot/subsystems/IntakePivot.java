@@ -32,12 +32,12 @@ public class IntakePivot extends SubsystemBase {
         .withReverseSoftLimitEnable(true)
         .withReverseSoftLimitThreshold(StaticConstants.IntakePivot.reverseLimit / positionCoefficient));
         pivotMotor.getConfigurator().apply(new VoltageConfigs()
-        .withPeakForwardVoltage(4)
-        .withPeakReverseVoltage(4));
+        .withPeakForwardVoltage(3)
+        .withPeakReverseVoltage(3));
         pivotMotor.setNeutralMode(NeutralModeValue.Brake);
         pivotMotor.setInverted(false);
         profiledPIDController = new ProfiledPIDController(0.01, 0, 0, new TrapezoidProfile.Constraints(1, 1));
-        armFeedforward = new ArmFeedforward(0, 0.1, 0, 0);
+        armFeedforward = new ArmFeedforward(0, 0.7, 0, 0);
     }
     public Command runVoltage(double voltage) {
         return runEnd(() -> {
@@ -53,7 +53,7 @@ public class IntakePivot extends SubsystemBase {
             pivotMotor.getPosition().getValueAsDouble() * positionCoefficient - DynamicConstants.Intake.pivotUprightPosition,
             pivotMotor.getVelocity().getValueAsDouble() * positionCoefficient,
             pivotMotor.getAcceleration().getValueAsDouble() * positionCoefficient);
-        pivotMotor.setVoltage(12 * (output));
+        pivotMotor.setVoltage(output);
     }
     public double getPosition(){
         return pivotMotor.getPosition().getValueAsDouble() * positionCoefficient;
@@ -64,6 +64,6 @@ public class IntakePivot extends SubsystemBase {
         },
         () -> {
             pivotMotor.setVoltage(0);
-        }).until(() -> pivotMotor.getClosedLoopError().getValueAsDouble() < 0.5);
+        }).until(() -> profiledPIDController.getPositionError() < 0.5);
     }
 }

@@ -22,7 +22,8 @@ public class SubsystemIO extends SubsystemBase{
     /*
      * Creates a dashboard displaying the pilot/copilot controls and subsystem information
      */
-    public SubsystemIO(IntakeWheels intakeWheels, IntakePivot intakePivot){
+    
+    public SubsystemIO(IntakeWheels intakeWheels, IntakePivot intakePivot, ShooterFlywheel shooterFlywheel, ThePivot thePivot){
         mInstance = this;
 
         Map<String, String> pilotControls = new HashMap<>();

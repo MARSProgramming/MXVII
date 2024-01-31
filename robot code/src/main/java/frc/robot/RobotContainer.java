@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.AmpSetpoint;
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.commands.Intake;
 import frc.robot.subsystems.DrivetrainSubsystem;
@@ -29,7 +30,7 @@ public class RobotContainer {
     private final IntakeWheels mIntakeWheels = new IntakeWheels();
     private final ShooterFlywheel mShooterFlywheel = new ShooterFlywheel();
     private final ThePivot mThePivot = new ThePivot();
-    private final SubsystemIO subsystemIO = new SubsystemIO(mIntakeWheels, mIntakePivot);
+    private final SubsystemIO subsystemIO = new SubsystemIO(mIntakeWheels, mIntakePivot, mShooterFlywheel, mThePivot);
     private Intake a = new Intake(mIntakePivot, mIntakeWheels);
 
     // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -63,8 +64,8 @@ public class RobotContainer {
         mPilot.rightTrigger().whileTrue(mShooterFlywheel.runVoltage(9));
         mPilot.leftTrigger().whileTrue(mIntakeWheels.intakeCommand());
         mPilot.leftBumper().whileTrue(mIntakeWheels.runVoltage(-6));
-        mPilot.povLeft().whileTrue(mIntakePivot.runVoltage(-4));
-        mPilot.povRight().whileTrue(mIntakePivot.runVoltage(4));
+        mPilot.povLeft().whileTrue(mIntakePivot.runVoltage(-2));
+        mPilot.povRight().whileTrue(mIntakePivot.runVoltage(2));
         mPilot.povUp().whileTrue(mThePivot.runVoltage(-3));
         mPilot.povDown().whileTrue(mThePivot.runVoltage(3));
         mPilot.b().whileTrue(mIntakePivot.setPositionCommand(() -> 0.3));

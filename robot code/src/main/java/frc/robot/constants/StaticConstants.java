@@ -59,5 +59,7 @@ public final class StaticConstants {
     }
     public static class ThePivot{
         public static int ID = 33;
+        public static double forwardLimit = 5;
+        public static double reverseLimit = 0;
     }
 }
