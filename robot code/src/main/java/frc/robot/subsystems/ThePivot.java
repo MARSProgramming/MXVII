@@ -35,7 +35,7 @@ public class ThePivot extends SubsystemBase {
         motor.setNeutralMode(NeutralModeValue.Brake);
         motor.setInverted(false);
 
-        profiledPIDController = new ProfiledPIDController(0.01, 0, 0, new TrapezoidProfile.Constraints(1, 1));
+        profiledPIDController = new ProfiledPIDController(0.0, 0, 0, new TrapezoidProfile.Constraints(1, 1));
         armFeedforward = new ArmFeedforward(0, 0.9, 0, 0);
     }
     public Command runVoltage(double voltage) {
@@ -46,15 +46,25 @@ public class ThePivot extends SubsystemBase {
         });
     }
     public void setPosition(double position){
+        Object intakePositionObj = SubsystemIO.getInstance().getValue("Intake: Pivot Position").get();
         double output = profiledPIDController.calculate(motor.getPosition().getValueAsDouble(), position / positionCoefficient)
         + armFeedforward.calculate(
             motor.getPosition().getValueAsDouble() * positionCoefficient - DynamicConstants.ThePivot.uprightPosition,
             motor.getVelocity().getValueAsDouble() * positionCoefficient,
-            motor.getAcceleration().getValueAsDouble() * positionCoefficient);
+            motor.getAcceleration().getValueAsDouble() * positionCoefficient)
+        + Math.cos(
+            Math.PI * 2 * (
+                    (intakePositionObj instanceof Double ? (Double) intakePositionObj : 0.0)
+                    - DynamicConstants.Intake.pivotUprightPosition
+                )
+            ) * DynamicConstants.ThePivot.secondSegmentFeedforwardConstant;
         motor.setVoltage(output);
     }
     public double getPosition(){
         return motor.getPosition().getValueAsDouble() * positionCoefficient;
+    }
+    public double getVoltage(){
+        return motor.getMotorVoltage().getValueAsDouble();
     }
     public Command setPositionCommand(DoubleSupplier position){
         return runEnd(() -> {

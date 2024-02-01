@@ -5,8 +5,8 @@ import frc.robot.constants.DynamicConstants;
 import frc.robot.subsystems.IntakePivot;
 import frc.robot.subsystems.IntakeWheels;
 
-public class Intake extends SequentialCommandGroup{
-    public Intake(IntakePivot intakePivot, IntakeWheels intakeWheels){
+public class IntakeCommand extends SequentialCommandGroup{
+    public IntakeCommand(IntakePivot intakePivot, IntakeWheels intakeWheels){
         addCommands(
             intakeWheels.intakeCommand().deadlineWith(
             intakePivot.setPositionCommand(() -> DynamicConstants.Intake.pivotIntakePosition)),

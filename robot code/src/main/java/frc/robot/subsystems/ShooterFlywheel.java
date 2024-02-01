@@ -16,6 +16,7 @@ public class ShooterFlywheel extends SubsystemBase {
     private TalonFX master;
     private TalonFX follower;
     
+    private double RPStoRPM = 60.0;
     public ShooterFlywheel() {
         master = new TalonFX(StaticConstants.ShooterFlywheel.masterID);
         follower = new TalonFX(StaticConstants.ShooterFlywheel.followID);
@@ -40,7 +41,10 @@ public class ShooterFlywheel extends SubsystemBase {
         });
     }
     public void setVelocity(double velocity){
-        master.setControl(new VelocityDutyCycle(velocity));
+        master.setControl(new VelocityDutyCycle(velocity / RPStoRPM));
+    }
+    public double getVelocity(){
+        return master.getVelocity().getValueAsDouble() * RPStoRPM;
     }
     public Command runVelocity(double velocity) {
         return runEnd(() -> {

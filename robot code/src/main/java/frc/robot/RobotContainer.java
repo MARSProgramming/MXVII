@@ -4,12 +4,14 @@
 
 package frc.robot;
 
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AmpSetpoint;
 import frc.robot.commands.DefaultDriveCommand;
-import frc.robot.commands.Intake;
+import frc.robot.commands.IntakeCommand;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.IntakePivot;
 import frc.robot.subsystems.IntakeWheels;
@@ -31,7 +33,6 @@ public class RobotContainer {
     private final ShooterFlywheel mShooterFlywheel = new ShooterFlywheel();
     private final ThePivot mThePivot = new ThePivot();
     private final SubsystemIO subsystemIO = new SubsystemIO(mIntakeWheels, mIntakePivot, mShooterFlywheel, mThePivot);
-    private Intake a = new Intake(mIntakePivot, mIntakeWheels);
 
     // Replace with CommandPS4Controller or CommandJoystick if needed
     private final CommandXboxController mPilot =

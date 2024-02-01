@@ -32,6 +32,7 @@ public final class DynamicConstants {
         public static double uprightPosition = 0.31;
         public static double ampPosition = 0.15;
         public static double zeroPosition = 0;
+        public static double secondSegmentFeedforwardConstant = 0.02;
     }
 
 

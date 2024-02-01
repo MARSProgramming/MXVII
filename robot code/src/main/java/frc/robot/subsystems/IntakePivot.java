@@ -36,7 +36,7 @@ public class IntakePivot extends SubsystemBase {
         .withPeakReverseVoltage(3));
         pivotMotor.setNeutralMode(NeutralModeValue.Brake);
         pivotMotor.setInverted(false);
-        profiledPIDController = new ProfiledPIDController(0.01, 0, 0, new TrapezoidProfile.Constraints(1, 1));
+        profiledPIDController = new ProfiledPIDController(0.0, 0, 0, new TrapezoidProfile.Constraints(1, 1));
         armFeedforward = new ArmFeedforward(0, 0.7, 0, 0);
     }
     public Command runVoltage(double voltage) {
@@ -57,6 +57,9 @@ public class IntakePivot extends SubsystemBase {
     }
     public double getPosition(){
         return pivotMotor.getPosition().getValueAsDouble() * positionCoefficient;
+    }
+    public double getVoltage(){
+        return pivotMotor.getMotorVoltage().getValueAsDouble();
     }
     public Command setPositionCommand(DoubleSupplier position){
         return runEnd(() -> {

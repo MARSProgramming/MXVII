@@ -42,6 +42,9 @@ public class IntakeWheels extends SubsystemBase {
     public void intake(){
         intakeMotor.setVoltage(6);
     }
+    public double getVoltage(){
+        return intakeMotor.getMotorVoltage().getValueAsDouble();
+    }
     public Command intakeCommand(){
         return runEnd(() -> {
             intake();
