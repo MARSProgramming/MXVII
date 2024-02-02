@@ -13,6 +13,7 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.DynamicConstants;
@@ -20,12 +21,13 @@ import frc.robot.constants.StaticConstants;
 
 public class IntakePivot extends SubsystemBase {
     private TalonFX pivotMotor;
-    private double positionCoefficient = 1.0/16.0;
+    private double positionCoefficient = 1.0/16.0*15.0/24.0;
     private ProfiledPIDController profiledPIDController;
     private ArmFeedforward armFeedforward;
     public IntakePivot() {
         pivotMotor = new TalonFX(StaticConstants.IntakePivot.ID);
         pivotMotor.getConfigurator().apply(new TalonFXConfiguration());
+        pivotMotor.setPosition(0);
         pivotMotor.getConfigurator().apply(new SoftwareLimitSwitchConfigs()
         .withForwardSoftLimitEnable(true)
         .withForwardSoftLimitThreshold(StaticConstants.IntakePivot.forwardLimit / positionCoefficient)
@@ -33,18 +35,20 @@ public class IntakePivot extends SubsystemBase {
         .withReverseSoftLimitThreshold(StaticConstants.IntakePivot.reverseLimit / positionCoefficient));
         pivotMotor.getConfigurator().apply(new VoltageConfigs()
         .withPeakForwardVoltage(3)
-        .withPeakReverseVoltage(3));
+        .withPeakReverseVoltage(-3));
         pivotMotor.setNeutralMode(NeutralModeValue.Brake);
         pivotMotor.setInverted(false);
         profiledPIDController = new ProfiledPIDController(0.0, 0, 0, new TrapezoidProfile.Constraints(1, 1));
         armFeedforward = new ArmFeedforward(0, 0.7, 0, 0);
+
+        SmartDashboard.putData("Intake Pivot PID", profiledPIDController);
     }
     public Command runVoltage(double voltage) {
         return runEnd(() -> {
             pivotMotor.setVoltage(voltage);
         },
         () -> {
-            pivotMotor.setVoltage(0);
+            pivotMotor.set(0);
         });
     }
     public void setPosition(double position){

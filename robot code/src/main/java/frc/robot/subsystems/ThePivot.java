@@ -31,9 +31,10 @@ public class ThePivot extends SubsystemBase {
         .withReverseSoftLimitThreshold(StaticConstants.ThePivot.reverseLimit / positionCoefficient));
         motor.getConfigurator().apply(new VoltageConfigs()
         .withPeakForwardVoltage(3)
-        .withPeakReverseVoltage(3));
+        .withPeakReverseVoltage(-3));
         motor.setNeutralMode(NeutralModeValue.Brake);
-        motor.setInverted(false);
+        motor.setInverted(true);
+        motor.setPosition(0);
 
         profiledPIDController = new ProfiledPIDController(0.0, 0, 0, new TrapezoidProfile.Constraints(1, 1));
         armFeedforward = new ArmFeedforward(0, 0.9, 0, 0);
@@ -42,7 +43,7 @@ public class ThePivot extends SubsystemBase {
         return runEnd(() -> {
             motor.setVoltage(voltage);
         }, () -> {
-            motor.setVoltage(0);
+            motor.set(0);
         });
     }
     public void setPosition(double position){

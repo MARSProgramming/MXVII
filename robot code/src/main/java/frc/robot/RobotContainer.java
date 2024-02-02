@@ -63,12 +63,13 @@ public class RobotContainer {
     private void configureBindings() {
         mPilot.y().whileTrue(mDrivetrainSubsystem.zeroGyroscope(0));
         mPilot.rightTrigger().whileTrue(mShooterFlywheel.runVoltage(9));
-        mPilot.leftTrigger().whileTrue(mIntakeWheels.intakeCommand());
-        mPilot.leftBumper().whileTrue(mIntakeWheels.runVoltage(-6));
-        mPilot.povLeft().whileTrue(mIntakePivot.runVoltage(-2));
-        mPilot.povRight().whileTrue(mIntakePivot.runVoltage(2));
-        mPilot.povUp().whileTrue(mThePivot.runVoltage(-3));
-        mPilot.povDown().whileTrue(mThePivot.runVoltage(3));
+        //mPilot.leftTrigger().whileTrue(mIntakeWheels.intakeCommand());
+        mPilot.leftBumper().whileTrue(mIntakeWheels.runVoltage(-10.5));
+        mPilot.rightBumper().whileTrue(mIntakeWheels.runVoltage(4));
+        mPilot.povLeft().whileTrue(mIntakePivot.runVoltage(-1.5));
+        mPilot.povRight().whileTrue(mIntakePivot.runVoltage(1.5));
+        mPilot.povUp().whileTrue(mThePivot.runVoltage(-1));
+        mPilot.povDown().whileTrue(mThePivot.runVoltage(1));
         mPilot.b().whileTrue(mIntakePivot.setPositionCommand(() -> 0.3));
     }
 

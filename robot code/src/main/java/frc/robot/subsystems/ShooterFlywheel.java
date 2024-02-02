@@ -25,7 +25,7 @@ public class ShooterFlywheel extends SubsystemBase {
         master.setNeutralMode(NeutralModeValue.Coast);
         follower.setNeutralMode(NeutralModeValue.Coast);
         master.setInverted(false);
-        follower.setControl(new Follower(StaticConstants.ShooterFlywheel.masterID, true));
+        follower.setControl(new Follower(StaticConstants.ShooterFlywheel.masterID, false));
         Slot0Configs config = new Slot0Configs();
         config.kP = 0.0;
         config.kI = 0.0;
