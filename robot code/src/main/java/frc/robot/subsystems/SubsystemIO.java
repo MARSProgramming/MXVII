@@ -27,7 +27,7 @@ public class SubsystemIO extends SubsystemBase{
     private ShooterFlywheel mShooterFlywheel;
     private ThePivot mThePivot;*/
     private Map<String, Supplier<?>> displayedValues = new HashMap<>();
-    public SubsystemIO(IntakeWheels intakeWheels, IntakePivot intakePivot, ShooterFlywheel shooterFlywheel, ThePivot thePivot){
+    public SubsystemIO(IntakeWheels intakeWheels, IntakePivot intakePivot, ShooterFlywheel shooterFlywheel, ThePivot thePivot, Climber climber){
         mInstance = this;
         /*mIntakeWheels = intakeWheels;
         mIntakePivot = intakePivot;
@@ -47,6 +47,7 @@ public class SubsystemIO extends SubsystemBase{
         displayedValues.put("The Pivot: Position", () -> thePivot.getPosition());
         displayedValues.put("The Pivot: Voltage", () -> thePivot.getVoltage());
         displayedValues.put("Shooter: Velocity(RPM)", () -> shooterFlywheel.getVelocity());
+        displayedValues.put("Climber: Voltage", () -> climber.getVoltage());
         dashboard = new BasicDash(pilotControls, copilotControls, displayedValues);
     }
 

@@ -62,4 +62,9 @@ public final class StaticConstants {
         public static double forwardLimit = 0.4;
         public static double reverseLimit = 0.05;
     }
+
+    public static class Climber{
+        public static int masterID = 18;
+        public static int followID = 28;
+    }
 }
