@@ -36,10 +36,12 @@ public class Climber extends SubsystemBase {
        // follower.setControl(new Follower(StaticConstants.ShooterFlywheel.masterID, false));
     }
 
-
-    public Command runVoltage(double voltage) {
+    public void periodic() {
+        max = inputVoltage.getDouble(0.5);
+    }
+    public Command runVoltage() {
         return runEnd(() -> {
-            master.setVoltage(voltage);
+            master.setVoltage(max);
         },
         () -> {
             master.setVoltage(0);
