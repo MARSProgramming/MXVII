@@ -80,7 +80,7 @@ public class RobotContainer {
 
         // copilot
         mCopilot.rightBumper().whileTrue(mClimber.runVoltage());
-        mCopilot.leftBumper().whileTrue(mClimber.runVoltageBackwards());
+        mCopilot.leftBumper().whileTrue(mClimber.runVoltageSecondary());
 
     }
 

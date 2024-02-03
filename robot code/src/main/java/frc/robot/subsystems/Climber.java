@@ -33,8 +33,8 @@ public class Climber extends SubsystemBase {
         master.setInverted(false);
 
         tab = Shuffleboard.getTab("Climber");
-        inputVoltage = tab.add("Voltage", 0.5).withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", 0, "max", 1)).getEntry();
-        secondaryInputVoltage = tab.add("Reverse Voltage", 0.5).withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", 0, "max", 1)).getEntry();
+        inputVoltage = tab.add("Voltage", 0.5).getEntry();
+        secondaryInputVoltage = tab.add("Reverse Voltage", 0.5).getEntry();
         max = inputVoltage.getDouble(0.5);
         opposingMax = inputVoltage.getDouble(-0.5);
         follower.setControl(new Follower(StaticConstants.ShooterFlywheel.masterID, false));
@@ -53,7 +53,7 @@ public class Climber extends SubsystemBase {
         });
     }
 
-    public Command runVoltageBackwards() {
+    public Command runVoltageSecondary() {
         return runEnd(() -> {
             master.setVoltage(opposingMax);
         },
