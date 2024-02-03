@@ -1,12 +1,11 @@
 package frc.robot.subsystems;
-import java.lang.constant.DynamicConstantDesc;
 import java.util.function.DoubleSupplier;
 
-import com.ctre.phoenix6.configs.Slot0Configs;
+import com.ctre.phoenix6.configs.ClosedLoopRampsConfigs;
+import com.ctre.phoenix6.configs.OpenLoopRampsConfigs;
 import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.configs.VoltageConfigs;
-import com.ctre.phoenix6.controls.PositionDutyCycle;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
@@ -34,14 +33,15 @@ public class IntakePivot extends SubsystemBase {
         .withReverseSoftLimitEnable(true)
         .withReverseSoftLimitThreshold(StaticConstants.IntakePivot.reverseLimit / positionCoefficient));
         pivotMotor.getConfigurator().apply(new VoltageConfigs()
-        .withPeakForwardVoltage(3)
-        .withPeakReverseVoltage(-3));
+        .withPeakForwardVoltage(1.1)
+        .withPeakReverseVoltage(-1.1));
+        pivotMotor.getConfigurator().apply(new OpenLoopRampsConfigs().withVoltageOpenLoopRampPeriod(0.5));
+        pivotMotor.getConfigurator().apply(new ClosedLoopRampsConfigs().withVoltageClosedLoopRampPeriod(0.5));
         pivotMotor.setNeutralMode(NeutralModeValue.Brake);
         pivotMotor.setInverted(false);
-        profiledPIDController = new ProfiledPIDController(0.0, 0, 0, new TrapezoidProfile.Constraints(1, 1));
-        armFeedforward = new ArmFeedforward(0, 0.7, 0, 0);
-
-        SmartDashboard.putData("Intake Pivot PID", profiledPIDController);
+        profiledPIDController = new ProfiledPIDController(0.35, 0, 0, new TrapezoidProfile.Constraints(100, 100));
+        armFeedforward = new ArmFeedforward(0, 0.4, 0, 0);
+        profiledPIDController.setTolerance(0.01);
     }
     public Command runVoltage(double voltage) {
         return runEnd(() -> {
@@ -51,12 +51,16 @@ public class IntakePivot extends SubsystemBase {
             pivotMotor.set(0);
         });
     }
+    public void setDutyCycle(double d){
+        pivotMotor.set(d);
+    }
     public void setPosition(double position){
         double output = profiledPIDController.calculate(pivotMotor.getPosition().getValueAsDouble(), position / positionCoefficient)
-        + armFeedforward.calculate(
-            pivotMotor.getPosition().getValueAsDouble() * positionCoefficient - DynamicConstants.Intake.pivotUprightPosition,
-            pivotMotor.getVelocity().getValueAsDouble() * positionCoefficient,
-            pivotMotor.getAcceleration().getValueAsDouble() * positionCoefficient);
+        - armFeedforward.calculate(
+            Math.PI * 2 * (pivotMotor.getPosition().getValueAsDouble() * positionCoefficient - DynamicConstants.Intake.pivotUprightPosition - 0.25),
+            Math.PI * 2 * (pivotMotor.getVelocity().getValueAsDouble() * positionCoefficient),
+            Math.PI * 2 * (pivotMotor.getAcceleration().getValueAsDouble() * positionCoefficient));
+        SmartDashboard.putNumber("Output", output);
         pivotMotor.setVoltage(output);
     }
     public double getPosition(){
@@ -70,7 +74,11 @@ public class IntakePivot extends SubsystemBase {
             setPosition(position.getAsDouble());
         },
         () -> {
-            pivotMotor.setVoltage(0);
-        }).until(() -> profiledPIDController.getPositionError() < 0.5);
+            resetProfiledPIDController();
+            pivotMotor.set(0);
+        }).until(() -> profiledPIDController.atSetpoint());
+    }
+    public void resetProfiledPIDController(){
+        profiledPIDController.reset(pivotMotor.getPosition().getValueAsDouble());
     }
 }

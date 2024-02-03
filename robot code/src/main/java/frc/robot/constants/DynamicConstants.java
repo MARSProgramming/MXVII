@@ -24,15 +24,15 @@ public final class DynamicConstants {
         public static double irSensorThreshold = 0.5;
 
         public static double pivotIntakePosition = 0.5;
-        public static double pivotAmpPosition = 0.5;
+        public static double pivotAmpPosition = 0.6;
         public static double pivotUprightPosition = 0.16;
         public static double pivotStowPosition = 0.03;
     }
     public static class ThePivot{
-        public static double uprightPosition = 0.31;
-        public static double ampPosition = 0.15;
+        public static double uprightPosition = 0.325;
+        public static double ampPosition = 0.2;
         public static double zeroPosition = 0;
-        public static double secondSegmentFeedforwardConstant = 0.02;
+        public static double secondSegmentFeedforwardConstant = 0.5;
     }
 
 

@@ -47,7 +47,7 @@ public final class StaticConstants {
 
     public static class IntakePivot{
         public static int ID = 22;
-        public static double forwardLimit = 0.9;
+        public static double forwardLimit = 0.93;
         public static double reverseLimit = 0.05;
     }
     public static class IntakeWheels{
@@ -59,7 +59,7 @@ public final class StaticConstants {
     }
     public static class ThePivot{
         public static int ID = 33;
-        public static double forwardLimit = 0.5;
+        public static double forwardLimit = 0.4;
         public static double reverseLimit = 0.05;
     }
 }

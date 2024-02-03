@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AmpSetpoint;
 import frc.robot.commands.DefaultDriveCommand;
+import frc.robot.commands.GoToZero;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.IntakePivot;
@@ -62,15 +63,17 @@ public class RobotContainer {
      */
     private void configureBindings() {
         mPilot.y().whileTrue(mDrivetrainSubsystem.zeroGyroscope(0));
-        mPilot.rightTrigger().whileTrue(mShooterFlywheel.runVoltage(9));
-        //mPilot.leftTrigger().whileTrue(mIntakeWheels.intakeCommand());
-        mPilot.leftBumper().whileTrue(mIntakeWheels.runVoltage(-10.5));
-        mPilot.rightBumper().whileTrue(mIntakeWheels.runVoltage(4));
+        mPilot.rightTrigger().whileTrue(mShooterFlywheel.runVelocity(() -> 6000.0));
+        mPilot.leftTrigger().whileTrue(new IntakeCommand(mIntakePivot, mIntakeWheels));
+        mPilot.rightBumper().whileTrue(mIntakeWheels.runVoltage(-4));
         mPilot.povLeft().whileTrue(mIntakePivot.runVoltage(-1.5));
         mPilot.povRight().whileTrue(mIntakePivot.runVoltage(1.5));
         mPilot.povUp().whileTrue(mThePivot.runVoltage(-1));
         mPilot.povDown().whileTrue(mThePivot.runVoltage(1));
-        mPilot.b().whileTrue(mIntakePivot.setPositionCommand(() -> 0.3));
+        mPilot.b().whileTrue(new AmpSetpoint(mIntakePivot, mIntakeWheels, mThePivot));
+        mPilot.a().whileTrue(new GoToZero(mIntakePivot, mThePivot));
+        mPilot.x().whileTrue(mShooterFlywheel.runVelocity(() -> 4000.0));
+        mPilot.leftBumper().whileTrue(mShooterFlywheel.runVelocity(() -> 3000.0));
     }
 
     /**

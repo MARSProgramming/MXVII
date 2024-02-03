@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import java.util.function.DoubleSupplier;
+
 import com.ctre.phoenix6.configs.ClosedLoopGeneralConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
@@ -30,14 +32,14 @@ public class ShooterFlywheel extends SubsystemBase {
         config.kP = 0.0;
         config.kI = 0.0;
         config.kD = 0.0;
-        config.kV = 0.5;
+        config.kV = 0.0093;
         master.getConfigurator().apply(config);
     }
     public Command runVoltage(double voltage) {
         return runEnd(() -> {
             master.setVoltage(voltage);
         }, () -> {
-            master.setVoltage(0);
+            master.set(0);
         });
     }
     public void setVelocity(double velocity){
@@ -46,11 +48,11 @@ public class ShooterFlywheel extends SubsystemBase {
     public double getVelocity(){
         return master.getVelocity().getValueAsDouble() * RPStoRPM;
     }
-    public Command runVelocity(double velocity) {
+    public Command runVelocity(DoubleSupplier velocity) {
         return runEnd(() -> {
-            setVelocity(velocity);
+            setVelocity(velocity.getAsDouble());
         }, () -> {
-            master.setVoltage(0);
+            master.set(0);
         });
     }
 }

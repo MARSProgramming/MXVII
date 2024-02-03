@@ -20,15 +20,15 @@ public class IntakeWheels extends SubsystemBase {
         .withPeakForwardVoltage(12)
         .withPeakReverseVoltage(12));
         intakeMotor.setNeutralMode(NeutralModeValue.Brake);
-        intakeMotor.setInverted(false);
+        intakeMotor.setInverted(true);
 
-        irSensor = new AnalogInput(0);
+        irSensor = new AnalogInput(3);
         irSensor.setAverageBits(4);
         irSensor.setOversampleBits(4);
     }
 
     public double getIrReading(){
-        return irSensor.getAverageValue();
+        return irSensor.getAverageVoltage();
     }
 
     public Command runVoltage(double voltage) {
@@ -40,7 +40,7 @@ public class IntakeWheels extends SubsystemBase {
         });
     }
     public void intake(){
-        intakeMotor.setVoltage(6);
+        intakeMotor.setVoltage(10.5);
     }
     public double getVoltage(){
         return intakeMotor.getMotorVoltage().getValueAsDouble();
@@ -51,6 +51,6 @@ public class IntakeWheels extends SubsystemBase {
         },
         () -> {
             intakeMotor.setVoltage(0);
-        }).until(() -> irSensor.getAverageValue() > DynamicConstants.Intake.irSensorThreshold);
+        }).until(() -> getIrReading() > DynamicConstants.Intake.irSensorThreshold);
     }
 }
