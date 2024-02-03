@@ -19,7 +19,9 @@ public class Climber extends SubsystemBase {
     private TalonFX follower;
     private ShuffleboardTab tab;
     private GenericEntry inputVoltage;
+    private GenericEntry secondaryInputVoltage;
     private double max; 
+    private double opposingMax;
 
     public Climber() {
         master = new TalonFX(StaticConstants.Climber.masterID);
@@ -32,16 +34,28 @@ public class Climber extends SubsystemBase {
 
         tab = Shuffleboard.getTab("Climber");
         inputVoltage = tab.add("Voltage", 0.5).withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", 0, "max", 1)).getEntry();
+        secondaryInputVoltage = tab.add("Reverse Voltage", 0.5).withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", 0, "max", 1)).getEntry();
         max = inputVoltage.getDouble(0.5);
-       // follower.setControl(new Follower(StaticConstants.ShooterFlywheel.masterID, false));
+        opposingMax = inputVoltage.getDouble(-0.5);
+        follower.setControl(new Follower(StaticConstants.ShooterFlywheel.masterID, false));
     }
 
     public void periodic() {
         max = inputVoltage.getDouble(0.5);
+        opposingMax = secondaryInputVoltage.getDouble(-0.5);
     }
     public Command runVoltage() {
         return runEnd(() -> {
             master.setVoltage(max);
+        },
+        () -> {
+            master.setVoltage(0);
+        });
+    }
+
+    public Command runVoltageBackwards() {
+        return runEnd(() -> {
+            master.setVoltage(opposingMax);
         },
         () -> {
             master.setVoltage(0);
