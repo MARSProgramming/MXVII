@@ -79,7 +79,7 @@ public class RobotContainer {
         mPilot.leftBumper().whileTrue(mShooterFlywheel.runVelocity(() -> 3000.0));
 
         // copilot
-        mCopilot.rightTrigger().whileTrue(mClimber.runVoltage(1));
+        mCopilot.rightTrigger().whileTrue(mClimber.runVoltage());
     }
 
     /**
