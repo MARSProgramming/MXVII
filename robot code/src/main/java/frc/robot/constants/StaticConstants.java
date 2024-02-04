@@ -47,6 +47,8 @@ public final class StaticConstants {
 
     public static class IntakePivot{
         public static int ID = 22;
+
+        //Limits are in rotations from zero
         public static double forwardLimit = 0.93;
         public static double reverseLimit = 0.05;
     }
@@ -59,6 +61,8 @@ public final class StaticConstants {
     }
     public static class ThePivot{
         public static int ID = 33;
+
+        //Limits are in rotations from zero
         public static double forwardLimit = 0.4;
         public static double reverseLimit = 0.05;
     }

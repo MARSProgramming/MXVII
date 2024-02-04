@@ -21,17 +21,22 @@ public final class DynamicConstants {
         public static double exampleConstant = 0;
     }
     public static class Intake{
+        //voltage threshold for note detection
         public static double irSensorThreshold = 0.35;
 
+        //Setpoints in rotations from zero
         public static double pivotIntakePosition = 0.6;
         public static double pivotAmpPosition = 0.6;
         public static double pivotUprightPosition = 0.16;
         public static double pivotStowPosition = 0.03;
     }
     public static class ThePivot{
+        //Setpoints in rotations from zero
         public static double uprightPosition = 0.325;
         public static double ampPosition = 0.2;
         public static double zeroPosition = 0;
+
+        //in volts
         public static double secondSegmentFeedforwardConstant = 0.5;
     }
 

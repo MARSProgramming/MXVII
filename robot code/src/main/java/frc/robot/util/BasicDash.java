@@ -1,6 +1,9 @@
 package frc.robot.util;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
@@ -25,8 +28,12 @@ public class BasicDash {
         for(String key : copilotControls.keySet()){
             copilotLayout.add(key, copilotControls.get(key));
         }
+
+        List<String> sortedKeys = new ArrayList<>(output.keySet());
+        Collections.sort(sortedKeys);
+
         int i = 0;
-        for(String key : output.keySet()){
+        for(String key : sortedKeys){
             String name = key;
             widgetMap.put(name, infoTab.add(name, output.get(key).get()).withSize(2, 1).withPosition((i / 5) * 2, i % 5));
             i++;
