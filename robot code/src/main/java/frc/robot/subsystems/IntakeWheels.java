@@ -40,7 +40,8 @@ public class IntakeWheels extends SubsystemBase {
         });
     }
     public void intake(){
-        intakeMotor.setVoltage(10.5);
+        //TODO: make dynamic constant
+        intakeMotor.setVoltage(8);
     }
 
     

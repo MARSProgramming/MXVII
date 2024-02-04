@@ -16,9 +16,11 @@ import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.IntakePivot;
 import frc.robot.subsystems.IntakeWheels;
+import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.ShooterFlywheel;
 import frc.robot.subsystems.SubsystemIO;
 import frc.robot.subsystems.ThePivot;
+import frc.robot.util.AutoChooser;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -34,7 +36,9 @@ public class RobotContainer {
     private final ShooterFlywheel mShooterFlywheel = new ShooterFlywheel();
     private final ThePivot mThePivot = new ThePivot();
     private final Climber mClimber = new Climber();
-    private final SubsystemIO subsystemIO = new SubsystemIO(mIntakeWheels, mIntakePivot, mShooterFlywheel, mThePivot, mClimber);
+    private final Limelight mLimelight = new Limelight(mDrivetrainSubsystem);
+    private final SubsystemIO subsystemIO = new SubsystemIO(mDrivetrainSubsystem, mIntakeWheels, mIntakePivot, mShooterFlywheel, mThePivot, mClimber);
+    private final AutoChooser autoChooser = new AutoChooser(mDrivetrainSubsystem, mIntakeWheels, mIntakePivot, mShooterFlywheel, mThePivot);
 
     // Replace with CommandPS4Controller or CommandJoystick if needed
     private final CommandXboxController mPilot =
@@ -90,7 +94,7 @@ public class RobotContainer {
      * @return the command to run in autonomous
      */
     public Command getAutonomousCommand() {
-        return null;
+        return autoChooser.getSelected();
     }
 
     private static double deadband(double value, double deadband) {

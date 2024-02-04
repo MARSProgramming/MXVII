@@ -35,7 +35,7 @@ public final class StaticConstants {
         public static final double holonomicXkP = 2.0;
         public static final double holonomicXkI = 0;
         public static final double holonomicXkD = 0;
-        public static final double holonomicYkP = 2.4;
+        public static final double holonomicYkP = 2.0;
         public static final double holonomicYkI = 0;
         public static final double holonomicYkD = 0;
         public static final double holonomicOkP = 2.0;

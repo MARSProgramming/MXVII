@@ -80,7 +80,7 @@ public class ThePivot extends SubsystemBase {
         () -> {
             resetProfiledPIDController();
             motor.set(0);
-        }).until(() -> profiledPIDController.atSetpoint());
+        }).until(() -> profiledPIDController.atGoal());
     }
     public void resetProfiledPIDController(){
         profiledPIDController.reset(motor.getPosition().getValueAsDouble());

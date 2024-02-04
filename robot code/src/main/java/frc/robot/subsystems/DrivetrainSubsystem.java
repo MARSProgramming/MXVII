@@ -101,10 +101,12 @@ public class DrivetrainSubsystem extends SubsystemBase {
         createSwerveModules(fl, fr, bl, br);
         SmartDashboard.putData("Zero Swerves", zeroSwerveCommand().ignoringDisable(true));
 
-        mPoseEstimator = new SwerveDrivePoseEstimator(m_kinematics, new Rotation2d(getPigeonAngle()),
+        mPoseEstimator = new SwerveDrivePoseEstimator(m_kinematics, Rotation2d.fromRadians(getPigeonAngle()),
                 getSwerveModulePositions(), new Pose2d(),
-                VecBuilder.fill(0.05, 0.05, Units.degreesToRadians(5)),
-                VecBuilder.fill(0.1, 0.1, Units.degreesToRadians(15)));
+                VecBuilder.fill(0.01, 0.01, Units.degreesToRadians(0.5)),
+                VecBuilder.fill(0.01, 0.01, Units.degreesToRadians(0.5)));
+        /*mPoseEstimator = new SwerveDrivePoseEstimator(m_kinematics, Rotation2d.fromRadians(getPigeonAngle()),
+                getSwerveModulePositions(), new Pose2d());*/
     }
 
     //swerve
@@ -121,11 +123,11 @@ public class DrivetrainSubsystem extends SubsystemBase {
         m_backRightModule.set(states[3].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE,
                 states[3].angle.getRadians());
 
-        mPoseEstimator.updateWithTime(Timer.getFPGATimestamp(), new Rotation2d(getPigeonAngle()),
+        mPoseEstimator.updateWithTime(Timer.getFPGATimestamp(), Rotation2d.fromRadians(getPigeonAngle()),
                 getSwerveModulePositions());
         
-        SmartDashboard.putNumber("Pigeon Angle", getPigeonAngle() * 180.0/Math.PI);
-        SmartDashboard.putNumber("Angular Velocity", m_chassisSpeeds.omegaRadiansPerSecond);
+        //SmartDashboard.putNumber("Pigeon Angle", getPigeonAngle() * 180.0/Math.PI);
+        //SmartDashboard.putNumber("Angular Velocity", m_chassisSpeeds.omegaRadiansPerSecond);
     }
 
     public SwerveModulePosition[] getSwerveModulePositions() {

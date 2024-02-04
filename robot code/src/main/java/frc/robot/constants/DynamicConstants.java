@@ -21,7 +21,7 @@ public final class DynamicConstants {
         public static double exampleConstant = 0;
     }
     public static class Intake{
-        public static double irSensorThreshold = 0.5;
+        public static double irSensorThreshold = 0.35;
 
         public static double pivotIntakePosition = 0.6;
         public static double pivotAmpPosition = 0.6;

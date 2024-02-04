@@ -71,14 +71,14 @@ public class IntakePivot extends SubsystemBase {
     public double getVoltage(){
         return pivotMotor.getMotorVoltage().getValueAsDouble();
     }
-    public Command setPositionCommand(DoubleSupplier position){
+    public Command setPositionCommand(DoubleSupplier position, boolean dontEnd){
         return runEnd(() -> {
             setPosition(position.getAsDouble());
         },
         () -> {
             resetProfiledPIDController();
             pivotMotor.set(0);
-        }).until(() -> profiledPIDController.atSetpoint());
+        }).until(() -> profiledPIDController.atGoal() && !dontEnd);
     }
     public Command setPositionDontEndAtSetpointCommand(DoubleSupplier position){
         return runEnd(() -> {
