@@ -47,7 +47,11 @@ public class SubsystemIO extends SubsystemBase{
         displayedValues.put("The Pivot: Position", () -> thePivot.getPosition());
         displayedValues.put("The Pivot: Voltage", () -> thePivot.getVoltage());
         displayedValues.put("Shooter: Velocity(RPM)", () -> shooterFlywheel.getVelocity());
-        displayedValues.put("Climber: Voltage", () -> climber.getVoltage());
+        displayedValues.put("Left Climber Voltage", () -> climber.getLeftVoltage());
+        displayedValues.put("Right Climber Voltage", () -> climber.getLeftVoltage());
+        displayedValues.put("Left Climber Position", () -> climber.getLeftPosition());
+        displayedValues.put("Right Climber Position", () -> climber.getRightPosition());
+
         dashboard = new BasicDash(pilotControls, copilotControls, displayedValues);
     }
 

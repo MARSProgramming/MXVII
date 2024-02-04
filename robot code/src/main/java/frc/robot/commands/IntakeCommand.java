@@ -9,7 +9,7 @@ public class IntakeCommand extends SequentialCommandGroup{
     public IntakeCommand(IntakePivot intakePivot, IntakeWheels intakeWheels){
         addCommands(
             intakeWheels.intakeCommand().deadlineWith(
-            intakePivot.setPositionCommand(() -> DynamicConstants.Intake.pivotIntakePosition)),
+            intakePivot.setPositionDontEndAtSetpointCommand(() -> DynamicConstants.Intake.pivotIntakePosition)),
             intakePivot.setPositionCommand(() -> DynamicConstants.Intake.pivotStowPosition)
         );
     }

@@ -39,8 +39,8 @@ public class RobotContainer {
     // Replace with CommandPS4Controller or CommandJoystick if needed
     private final CommandXboxController mPilot =
         new CommandXboxController(0);
-    private final CommandXboxController mCopilot = 
-        new CommandXboxController(1);
+    //private final CommandXboxController mCopilot = 
+        //new CommandXboxController(1);
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
@@ -71,17 +71,17 @@ public class RobotContainer {
         mPilot.rightBumper().whileTrue(mIntakeWheels.runVoltage(-4));
         mPilot.povLeft().whileTrue(mIntakePivot.runVoltage(-1.5));
         mPilot.povRight().whileTrue(mIntakePivot.runVoltage(1.5));
-        mPilot.povUp().whileTrue(mThePivot.runVoltage(-1));
+        mPilot.povUp().whileTrue(mThePivot.runVoltage(-2));
         mPilot.povDown().whileTrue(mThePivot.runVoltage(1));
         mPilot.b().whileTrue(new AmpSetpoint(mIntakePivot, mIntakeWheels, mThePivot));
         mPilot.a().whileTrue(new GoToZero(mIntakePivot, mThePivot));
         mPilot.x().whileTrue(mShooterFlywheel.runVelocity(() -> 4000.0));
         mPilot.leftBumper().whileTrue(mShooterFlywheel.runVelocity(() -> 3000.0));
+        mPilot.start().whileTrue(mIntakeWheels.runVoltage(10.5));
 
         // copilot
-        mCopilot.rightBumper().whileTrue(mClimber.runVoltage());
-        mCopilot.leftBumper().whileTrue(mClimber.runVoltageSecondary());
-
+        //mCopilot.rightBumper().whileTrue(mClimber.runVoltage());
+        //mCopilot.leftBumper().whileTrue(mClimber.runVoltageNegative());
     }
 
     /**

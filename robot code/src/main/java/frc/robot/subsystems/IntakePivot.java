@@ -63,6 +63,8 @@ public class IntakePivot extends SubsystemBase {
         SmartDashboard.putNumber("Output", output);
         pivotMotor.setVoltage(output);
     }
+
+
     public double getPosition(){
         return pivotMotor.getPosition().getValueAsDouble() * positionCoefficient;
     }
@@ -77,6 +79,15 @@ public class IntakePivot extends SubsystemBase {
             resetProfiledPIDController();
             pivotMotor.set(0);
         }).until(() -> profiledPIDController.atSetpoint());
+    }
+    public Command setPositionDontEndAtSetpointCommand(DoubleSupplier position){
+        return runEnd(() -> {
+            setPosition(position.getAsDouble());
+        },
+        () -> {
+            resetProfiledPIDController();
+            pivotMotor.set(0);
+        });
     }
     public void resetProfiledPIDController(){
         profiledPIDController.reset(pivotMotor.getPosition().getValueAsDouble());

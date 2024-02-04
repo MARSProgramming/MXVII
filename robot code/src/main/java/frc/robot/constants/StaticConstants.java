@@ -64,7 +64,7 @@ public final class StaticConstants {
     }
 
     public static class Climber{
-        public static int masterID = 18;
-        public static int followID = 28;
+        public static int leftID = 18;
+        public static int rightID = 28;
     }
 }
