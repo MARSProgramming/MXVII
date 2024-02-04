@@ -4,15 +4,11 @@
 
 package frc.robot;
 
-import com.ctre.phoenix6.hardware.TalonFX;
-
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.constants.DynamicConstants;
 import frc.robot.constants.RioConstants;
-import frc.robot.util.Limelight;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -54,7 +50,6 @@ public class Robot extends TimedRobot {
         // block in order for anything in the Command-based framework to work.
         CommandScheduler.getInstance().run();
         DynamicConstants.periodic();
-        Limelight.getInstance().periodic();
     }
 
     /** This function is called once each time the robot enters Disabled mode. */

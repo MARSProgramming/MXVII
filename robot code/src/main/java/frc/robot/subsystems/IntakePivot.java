@@ -60,7 +60,6 @@ public class IntakePivot extends SubsystemBase {
             Math.PI * 2 * (pivotMotor.getPosition().getValueAsDouble() * positionCoefficient - DynamicConstants.Intake.pivotUprightPosition - 0.25),
             Math.PI * 2 * (pivotMotor.getVelocity().getValueAsDouble() * positionCoefficient),
             Math.PI * 2 * (pivotMotor.getAcceleration().getValueAsDouble() * positionCoefficient));
-        SmartDashboard.putNumber("Output", output);
         pivotMotor.setVoltage(output);
     }
 

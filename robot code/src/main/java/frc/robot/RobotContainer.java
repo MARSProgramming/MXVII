@@ -15,7 +15,6 @@ import frc.robot.commands.GoToZero;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DrivetrainSubsystem;
-import frc.robot.util.Rumble;
 import frc.robot.subsystems.IntakePivot;
 import frc.robot.subsystems.IntakeWheels;
 import frc.robot.subsystems.Limelight;
@@ -23,6 +22,7 @@ import frc.robot.subsystems.ShooterFlywheel;
 import frc.robot.subsystems.SubsystemIO;
 import frc.robot.subsystems.ThePivot;
 import frc.robot.util.AutoChooser;
+import frc.robot.util.Rumble;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -74,7 +74,7 @@ public class RobotContainer {
      */
     private void configureBindings() {
         mPilot.y().whileTrue(mDrivetrainSubsystem.zeroGyroscope(0));
-        mPilot.leftTrigger().whileTrue(new AlignToPiece(mDrivetrainSubsystem,
+        mPilot.leftTrigger().whileTrue(new AlignToPiece(mDrivetrainSubsystem, mLimelight,
             () -> -modifyAxis(mPilot.getLeftY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
             () -> -modifyAxis(mPilot.getLeftX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND));
         mPilot.rightTrigger().whileTrue(mShooterFlywheel.runVelocity(() -> 6000.0));

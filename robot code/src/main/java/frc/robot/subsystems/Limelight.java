@@ -3,11 +3,13 @@ package frc.robot.subsystems;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Limelight extends SubsystemBase{
     double[] botpose;
     private DrivetrainSubsystem dt;
+    private Timer pieceLLTimer = new Timer(); 
     public Limelight(DrivetrainSubsystem drive){
         dt = drive;
     }
@@ -30,5 +32,18 @@ public class Limelight extends SubsystemBase{
     @Override
     public void periodic(){
         resetPose();
+        if(NetworkTableInstance.getDefault().getTable("limelight-piece").getEntry("tv").getDouble(0) != 1.0){
+            pieceLLTimer.start();
+        }
+    }
+
+    public boolean pieceLLhasTarget(){
+        return pieceLLTimer.get() > 0.25;
+    }
+    public double getPiecePosition(){
+        if(pieceLLhasTarget()){
+            return NetworkTableInstance.getDefault().getTable("limelight-piece").getEntry("tx").getDouble(0);
+        }
+        return 0;
     }
 }
