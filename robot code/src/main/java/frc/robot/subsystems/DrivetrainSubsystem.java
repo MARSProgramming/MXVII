@@ -236,7 +236,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
                         .withPosition(0, 0),
                 config,
                 Mk4iSwerveModuleHelper.GearRatio.L3,
-                15,
+                StaticConstants.Drive.FRONT_LEFT_MODULE_DRIVE_MOTOR,
                 StaticConstants.Drive.FRONT_LEFT_MODULE_STEER_MOTOR,
                 StaticConstants.Drive.FRONT_LEFT_MODULE_STEER_ENCODER,
                 fl);
@@ -247,7 +247,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
                         .withPosition(2, 0),
                 config,
                 Mk4iSwerveModuleHelper.GearRatio.L3,
-                14,
+                StaticConstants.Drive.FRONT_RIGHT_MODULE_DRIVE_MOTOR,
                 StaticConstants.Drive.FRONT_RIGHT_MODULE_STEER_MOTOR,
                 StaticConstants.Drive.FRONT_RIGHT_MODULE_STEER_ENCODER,
                 fr);
@@ -257,7 +257,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
                         .withPosition(4, 0),
                 config,
                 Mk4iSwerveModuleHelper.GearRatio.L3,
-                16,
+                StaticConstants.Drive.BACK_LEFT_MODULE_DRIVE_MOTOR,
                 StaticConstants.Drive.BACK_LEFT_MODULE_STEER_MOTOR,
                 StaticConstants.Drive.BACK_LEFT_MODULE_STEER_ENCODER,
                 bl);
@@ -267,7 +267,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
                         .withPosition(6, 0),
                 config,
                 Mk4iSwerveModuleHelper.GearRatio.L3,
-                17,
+                StaticConstants.Drive.BACK_RIGHT_MODULE_DRIVE_MOTOR,
                 StaticConstants.Drive.BACK_RIGHT_MODULE_STEER_MOTOR,
                 StaticConstants.Drive.BACK_RIGHT_MODULE_STEER_ENCODER,
                 br);
