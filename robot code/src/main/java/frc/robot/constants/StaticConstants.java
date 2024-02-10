@@ -49,8 +49,8 @@ public final class StaticConstants {
         public static int ID = 22;
 
         //Limits are in rotations from zero
-        public static double forwardLimit = 0.93;
-        public static double reverseLimit = 0.05;
+        public static double forwardLimit = 0.55;
+        public static double reverseLimit = 0.02;
     }
     public static class IntakeWheels{
         public static int ID = 12;

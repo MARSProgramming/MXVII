@@ -29,7 +29,7 @@ public class IntakeWheels extends SubsystemBase {
         .withPeakForwardVoltage(12)
         .withPeakReverseVoltage(12));
         intakeMotor.setNeutralMode(NeutralModeValue.Brake);
-        intakeMotor.setInverted(true);
+        intakeMotor.setInverted(false);
 
         irSensor = new AnalogInput(3);
         irSensor.setAverageBits(4);

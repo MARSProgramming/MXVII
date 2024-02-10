@@ -25,26 +25,27 @@ public class IntakePivot extends SubsystemBase {
     public IntakePivot() {
         pivotMotor = new TalonFX(StaticConstants.IntakePivot.ID);
         pivotMotor.getConfigurator().apply(new TalonFXConfiguration());
-        pivotMotor.setPosition(0);
         pivotMotor.getConfigurator().apply(new SoftwareLimitSwitchConfigs()
         .withForwardSoftLimitEnable(true)
         .withForwardSoftLimitThreshold(StaticConstants.IntakePivot.forwardLimit / positionCoefficient)
         .withReverseSoftLimitEnable(true)
         .withReverseSoftLimitThreshold(StaticConstants.IntakePivot.reverseLimit / positionCoefficient));
         pivotMotor.getConfigurator().apply(new VoltageConfigs()
-        .withPeakForwardVoltage(1.1)
-        .withPeakReverseVoltage(-1.1));
-        pivotMotor.getConfigurator().apply(new OpenLoopRampsConfigs().withVoltageOpenLoopRampPeriod(0.5));
-        pivotMotor.getConfigurator().apply(new ClosedLoopRampsConfigs().withVoltageClosedLoopRampPeriod(0.5));
+        .withPeakForwardVoltage(6)
+        .withPeakReverseVoltage(-6));
         pivotMotor.setNeutralMode(NeutralModeValue.Brake);
-        pivotMotor.setInverted(false);
-        profiledPIDController = new ProfiledPIDController(0.35, 0, 0, new TrapezoidProfile.Constraints(100, 100));
+        pivotMotor.setInverted(true);
+        pivotMotor.setPosition(0);
+        profiledPIDController = new ProfiledPIDController(0.35, 0, 0, new TrapezoidProfile.Constraints(120, 80));
         armFeedforward = new ArmFeedforward(0, 0.4, 0, 0);
         profiledPIDController.setTolerance(0.01);
     }
     public Command runVoltage(double voltage) {
         return runEnd(() -> {
-            pivotMotor.setVoltage(voltage);
+            double v = voltage;
+            if(v > 1){v = 1;}
+            if(v < -1){v = -1;}
+            pivotMotor.setVoltage(v);
         },
         () -> {
             pivotMotor.set(0);
