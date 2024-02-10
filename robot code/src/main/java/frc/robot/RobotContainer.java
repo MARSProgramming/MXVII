@@ -13,6 +13,8 @@ import frc.robot.commands.AmpSetpoint;
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.commands.GoToZero;
 import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.IntegratedShooterCommand;
+import frc.robot.constants.DynamicConstants;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.IntakePivot;
@@ -77,8 +79,10 @@ public class RobotContainer {
         mPilot.leftTrigger().whileTrue(new AlignToPiece(mDrivetrainSubsystem, mLimelight,
             () -> -modifyAxis(mPilot.getLeftY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
             () -> -modifyAxis(mPilot.getLeftX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND));
-        mPilot.rightTrigger().whileTrue(mShooterFlywheel.runVelocity(() -> 6000.0));
+      
+        mPilot.rightTrigger().whileTrue(new IntegratedShooterCommand(mIntakeWheels, mShooterFlywheel));
         mPilot.leftTrigger().whileTrue(new IntakeCommand(mIntakePivot, mIntakeWheels));
+
         mPilot.rightBumper().whileTrue(mIntakeWheels.runVoltage(-4));
         mPilot.povLeft().whileTrue(mIntakePivot.runVoltage(-1.5));
         mPilot.povRight().whileTrue(mIntakePivot.runVoltage(1.5));
@@ -86,8 +90,9 @@ public class RobotContainer {
         mPilot.povDown().whileTrue(mThePivot.runVoltage(1));
         mPilot.b().whileTrue(new AmpSetpoint(mIntakePivot, mIntakeWheels, mThePivot));
         mPilot.a().whileTrue(new GoToZero(mIntakePivot, mThePivot));
-        mPilot.x().whileTrue(mShooterFlywheel.runVelocity(() -> 4000.0));
-        mPilot.leftBumper().whileTrue(mShooterFlywheel.runVelocity(() -> 3000.0));
+       // mPilot.x().whileTrue(mShooterFlywheel.runVelocity(() -> 4000.0));
+       mPilot.x().whileTrue(mThePivot.setPositionCommand(() -> DynamicConstants.ThePivot.trapPosition));
+       mPilot.leftBumper().whileTrue(mShooterFlywheel.runVelocity(() -> 3000.0));
         mPilot.start().whileTrue(mIntakeWheels.runVoltage(10.5));
 
         // copilot

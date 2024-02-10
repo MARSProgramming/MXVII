@@ -37,7 +37,7 @@ public class ThePivot extends SubsystemBase {
         motor.setPosition(0);
 
         profiledPIDController = new ProfiledPIDController(0.4, 0, 0, new TrapezoidProfile.Constraints(100, 100));
-        armFeedforward = new ArmFeedforward(0, 0.7, 0, 0);
+        armFeedforward = new ArmFeedforward(0, 0, 0, 0);
         profiledPIDController.setTolerance(0.005);
 
         SmartDashboard.putData(profiledPIDController);
