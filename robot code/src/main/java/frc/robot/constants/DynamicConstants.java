@@ -25,10 +25,10 @@ public final class DynamicConstants {
         public static double irSensorThreshold = 0.35;
 
         //Setpoints in rotations from zero
-        public static double pivotIntakePosition = 0.6;
+        public static double pivotIntakePosition = 0.55;
         public static double pivotAmpPosition = 0.6;
         public static double pivotUprightPosition = 0.16;
-        public static double pivotStowPosition = 0.03;
+        public static double pivotStowPosition = 0.01;
     }
     public static class ThePivot{
         //Setpoints in rotations from zero
