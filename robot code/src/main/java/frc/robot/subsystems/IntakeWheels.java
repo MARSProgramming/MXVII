@@ -12,7 +12,10 @@ import frc.robot.constants.StaticConstants;
 
 public class IntakeWheels extends SubsystemBase {
     private TalonFX intakeMotor;
-    private AnalogInput irSensor;
+
+    //left and right relative to the robot's front
+    private AnalogInput irSensorLeft;
+    private AnalogInput irSensorRight;
     public IntakeWheels() {
         intakeMotor = new TalonFX(StaticConstants.IntakeWheels.ID);
         intakeMotor.getConfigurator().apply(new TalonFXConfiguration());
@@ -22,13 +25,17 @@ public class IntakeWheels extends SubsystemBase {
         intakeMotor.setNeutralMode(NeutralModeValue.Brake);
         intakeMotor.setInverted(false);
 
-        irSensor = new AnalogInput(3);
-        irSensor.setAverageBits(4);
-        irSensor.setOversampleBits(4);
+        irSensorLeft = new AnalogInput(StaticConstants.IntakeWheels.leftIrID);
+        irSensorLeft.setAverageBits(4);
+        irSensorLeft.setOversampleBits(4);
+
+        irSensorRight = new AnalogInput(StaticConstants.IntakeWheels.rightIrID);
+        irSensorRight.setAverageBits(4);
+        irSensorRight.setOversampleBits(4);
     }
 
     public double getIrReading(){
-        return irSensor.getAverageVoltage();
+        return Math.max(irSensorLeft.getAverageVoltage(), irSensorRight.getAverageVoltage());
     }
 
     public Command runVoltage(double voltage) {

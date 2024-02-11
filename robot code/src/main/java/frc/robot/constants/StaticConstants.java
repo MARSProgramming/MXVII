@@ -54,6 +54,8 @@ public final class StaticConstants {
     }
     public static class IntakeWheels{
         public static int ID = 12;
+        public static int leftIrID = 1;
+        public static int rightIrID = 2;
     }
     public static class ShooterFlywheel{
         public static int masterID = 13;
