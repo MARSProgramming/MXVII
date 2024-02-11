@@ -22,7 +22,7 @@ public final class DynamicConstants {
     }
     public static class Intake{
         //voltage threshold for note detection
-        public static double irSensorThreshold = 0.35;
+        public static double irSensorThreshold = 1.0;
 
         //Setpoints in rotations from zero
         public static double pivotIntakePosition = 0.55;

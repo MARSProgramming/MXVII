@@ -5,6 +5,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.DynamicConstants;
@@ -35,9 +36,16 @@ public class IntakeWheels extends SubsystemBase {
     }
 
     public double getIrReading(){
-        return Math.max(irSensorLeft.getAverageVoltage(), irSensorRight.getAverageVoltage());
+       return Math.max(irSensorLeft.getAverageVoltage(), irSensorRight.getAverageVoltage());
+      
     }
 
+    public void periodic() {
+        SmartDashboard.putNumber("left sensor reading", irSensorLeft.getAverageVoltage());
+        SmartDashboard.putNumber("right sensor reading", irSensorRight.getAverageVoltage());
+        SmartDashboard.putBoolean("ir sensor boolean",  (getIrReading() > DynamicConstants.Intake.irSensorThreshold));
+    }
+    
     public Command runVoltage(double voltage) {
         return runEnd(() -> {
             intakeMotor.setVoltage(voltage);
@@ -61,6 +69,9 @@ public class IntakeWheels extends SubsystemBase {
         },
         () -> {
             intakeMotor.setVoltage(0);
-        }).until(() -> getIrReading() > DynamicConstants.Intake.irSensorThreshold);
+        }).until(() -> (getIrReading() > 1.0));
+        
     }
+
+
 }

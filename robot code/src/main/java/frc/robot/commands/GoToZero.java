@@ -8,7 +8,7 @@ import frc.robot.subsystems.ThePivot;
 public class GoToZero extends ParallelCommandGroup{
     public GoToZero(IntakePivot intakePivot, ThePivot thePivot){
         addCommands(
-            intakePivot.setPositionCommand(() -> DynamicConstants.Intake.pivotStowPosition, false),
+            intakePivot.zeroIntake(),
             thePivot.setPositionCommand(() -> DynamicConstants.ThePivot.zeroPosition)
         );
     }
