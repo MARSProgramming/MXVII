@@ -54,8 +54,8 @@ public final class StaticConstants {
     }
     public static class IntakeWheels{
         public static int ID = 12;
-        public static int leftIrID = 1;
-        public static int rightIrID = 2;
+        public static int leftIrID = 2;
+        public static int rightIrID = 1;
     }
     public static class ShooterFlywheel{
         public static int masterID = 13;
@@ -65,8 +65,8 @@ public final class StaticConstants {
         public static int ID = 33;
 
         //Limits are in rotations from zero
-        public static double forwardLimit = 0.4;
-        public static double reverseLimit = 0.05;
+        public static double forwardLimit = 0.3;
+        public static double reverseLimit = 0.01;
     }
 
     public static class Climber{

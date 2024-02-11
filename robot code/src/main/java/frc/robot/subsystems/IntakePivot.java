@@ -1,8 +1,6 @@
 package frc.robot.subsystems;
 import java.util.function.DoubleSupplier;
 
-import com.ctre.phoenix6.configs.ClosedLoopRampsConfigs;
-import com.ctre.phoenix6.configs.OpenLoopRampsConfigs;
 import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.configs.VoltageConfigs;
@@ -31,8 +29,8 @@ public class IntakePivot extends SubsystemBase {
         .withReverseSoftLimitEnable(true)
         .withReverseSoftLimitThreshold(StaticConstants.IntakePivot.reverseLimit / positionCoefficient));
         pivotMotor.getConfigurator().apply(new VoltageConfigs()
-        .withPeakForwardVoltage(6)
-        .withPeakReverseVoltage(-6));
+        .withPeakForwardVoltage(3)
+        .withPeakReverseVoltage(-3));
         pivotMotor.setNeutralMode(NeutralModeValue.Brake);
         pivotMotor.setInverted(true);
         pivotMotor.setPosition(0);
