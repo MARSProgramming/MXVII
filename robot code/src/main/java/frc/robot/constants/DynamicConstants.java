@@ -30,11 +30,18 @@ public final class DynamicConstants {
         public static double pivotUprightPosition = 0.16;
         public static double pivotStowPosition = 0.01;
     }
+
+    public static class ShooterFlywheel{
+        public static double testVelocity = 3000;
+    }
     public static class ThePivot{
         //Setpoints in rotations from zero
         public static double uprightPosition = 0.325;
         public static double ampPosition = 0.2;
         public static double zeroPosition = 0;
+
+        // setpoints for trap
+        public static double trapPosition = 0.2;
 
         //in volts
         public static double secondSegmentFeedforwardConstant = 0.5;
@@ -51,7 +58,7 @@ public final class DynamicConstants {
         entries = new HashMap<>();
 
         //add all .class values of the static classes above
-        Class<?>[] subsystems = {Intake.class, ThePivot.class};
+        Class<?>[] subsystems = {Intake.class, ThePivot.class, ShooterFlywheel.class};
         
         for(Class<?> subsystem : subsystems){
             Field[] fields = subsystem.getDeclaredFields();
