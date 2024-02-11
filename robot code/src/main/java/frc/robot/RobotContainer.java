@@ -13,6 +13,7 @@ import frc.robot.commands.AmpSetpoint;
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.commands.GoToZero;
 import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.IntegratedShooterCommand;
 import frc.robot.constants.DynamicConstants;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DrivetrainSubsystem;
@@ -77,7 +78,7 @@ public class RobotContainer {
         mPilot.y().whileTrue(mDrivetrainSubsystem.zeroGyroscope(0));
         /*mPilot.leftTrigger().whileTrue(new AlignToPiece(mDrivetrainSubsystem, mLimelight,
             () -> -modifyAxis(mPilot.getLeftY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-            () -> -modifyAxis(mPilot.getLeftX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+            () -> -modifyAxis(mPilot.getLeftX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,w
             () -> -modifyAxis(mPilot.getRightX()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND));*/
         //mPilot.rightTrigger().whileTrue(mShooterFlywheel.runVelocity(() -> 6000.0));
       //  mPilot.leftTrigger().whileTrue(mIntakePivot.setPositionCommand(() -> DynamicConstants.Intake.pivotIntakePosition, false));
@@ -90,10 +91,11 @@ public class RobotContainer {
         mPilot.povDown().whileTrue(mThePivot.runVoltage(1));
         mPilot.b().whileTrue(new AmpSetpoint(mIntakePivot, mIntakeWheels, mThePivot));
        // mPilot.a().whileTrue(new GoToZero(mIntakePivot, mThePivot));
-       mPilot.a().whileTrue(mIntakePivot.setPositionCommand(() -> DynamicConstants.Intake.pivotStowPosition, false));
+        mPilot.a().whileTrue(mIntakePivot.zeroIntake());
         mPilot.x().whileTrue(mThePivot.setPositionCommand(() -> 0.2));
-        mPilot.leftBumper().whileTrue(mShooterFlywheel.runVelocity(() -> 3000.0));
-        //mPilot.leftBumper().whileTrue(mIntakeWheels.intakeCommand());
+       // mPilot.leftBumper().whileTrue(mShooterFlywheel.runVelocity(() -> 3000.0));
+       
+        mPilot.leftBumper().whileTrue(new IntegratedShooterCommand(mIntakeWheels, mShooterFlywheel));
 
         mPilot.start().whileTrue(mIntakeWheels.runVoltage(10.5));
 

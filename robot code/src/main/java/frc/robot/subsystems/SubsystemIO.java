@@ -44,6 +44,7 @@ public class SubsystemIO extends SubsystemBase{
         displayedValues.put("Intake Wheels: Voltage", () -> intakeWheels.getVoltage());
         displayedValues.put("Intake Pivot: Position", () -> intakePivot.getPosition());
         displayedValues.put("Intake Pivot: Voltage", () -> intakePivot.getVoltage());
+        displayedValues.put("Intake Pivot: Limit Switch", () -> intakePivot.getLimitSwitch());
         displayedValues.put("The Pivot: Position", () -> thePivot.getPosition());
         displayedValues.put("The Pivot: Voltage", () -> thePivot.getVoltage());
         displayedValues.put("Shooter: Velocity(RPM)", () -> shooterFlywheel.getVelocity());

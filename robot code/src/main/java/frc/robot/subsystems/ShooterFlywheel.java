@@ -23,9 +23,7 @@ public class ShooterFlywheel extends SubsystemBase {
     private TalonFX master;
     private TalonFX follower;
 
-    private ShuffleboardTab tab; 
-    private double max;
-    private GenericEntry speed; 
+ 
     
     private double RPStoRPM = 60.0;
     public ShooterFlywheel() {
@@ -46,10 +44,12 @@ public class ShooterFlywheel extends SubsystemBase {
     }
 
     public void periodic() {
-        max = speed.getDouble(3000);
+        //max = speed.getDouble(3000);
     }
 
-
+    public void runDutyCycle(double dc) {
+        master.set(dc);
+    }
     public Command runVoltage(double voltage) {
         return runEnd(() -> {
             master.setVoltage(voltage);
@@ -64,12 +64,9 @@ public class ShooterFlywheel extends SubsystemBase {
         return master.getVelocity().getValueAsDouble() * RPStoRPM;
     }
 
-    public boolean atSpeed() {
-        if (getVelocity() >= (DynamicConstants.ShooterFlywheel.testVelocity - 200)) {
-            return true;
-        } else {
-            return false;
-        }
+    public boolean atSpeed(DoubleSupplier speed) {
+        System.out.println(Math.abs(getVelocity() - speed.getAsDouble()) + "");
+        return Math.abs(getVelocity() - speed.getAsDouble()) <= 30;
     }
 
 

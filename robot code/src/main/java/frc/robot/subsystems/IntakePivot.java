@@ -31,12 +31,12 @@ public class IntakePivot extends SubsystemBase {
         .withReverseSoftLimitEnable(true)
         .withReverseSoftLimitThreshold(StaticConstants.IntakePivot.reverseLimit / positionCoefficient));
         pivotMotor.getConfigurator().apply(new VoltageConfigs()
-        .withPeakForwardVoltage(3)
-        .withPeakReverseVoltage(-3));
+        .withPeakForwardVoltage(2)
+        .withPeakReverseVoltage(-2));
         pivotMotor.setNeutralMode(NeutralModeValue.Coast);
         pivotMotor.setInverted(true);
         pivotMotor.setPosition(0);
-        profiledPIDController = new ProfiledPIDController(0.35, 0, 0, new TrapezoidProfile.Constraints(120, 80));
+        profiledPIDController = new ProfiledPIDController(0.35, 0, 0, new TrapezoidProfile.Constraints(1000,1000));
         armFeedforward = new ArmFeedforward(0, 0.4, 0, 0);
         profiledPIDController.setTolerance(0.01);
 
@@ -86,15 +86,18 @@ public class IntakePivot extends SubsystemBase {
         return runOnce(() -> {
             pivotMotor.getConfigurator().apply(new SoftwareLimitSwitchConfigs().withReverseSoftLimitEnable(false));
         }).andThen(runEnd(() -> {
-            pivotMotor.setVoltage(-1);
+            pivotMotor.setVoltage(-2);
         }, () -> {
-          //  pivotMotor.setPosition(0);
-           // resetProfiledPIDController();
+            pivotMotor.setPosition(0);
+            resetProfiledPIDController();
             pivotMotor.set(0);
             pivotMotor.getConfigurator().apply(new SoftwareLimitSwitchConfigs().withReverseSoftLimitEnable(true));
-        }).until(() -> reverseLimitSwitch.get()));
+        }).until(() -> getLimitSwitch()));
     }
 
+    public boolean getLimitSwitch(){
+        return !reverseLimitSwitch.get();
+    }
     public Command setPositionDontEndAtSetpointCommand(DoubleSupplier position){
         return runEnd(() -> {
             setPosition(position.getAsDouble());

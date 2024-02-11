@@ -1,4 +1,6 @@
 package frc.robot.subsystems;
+import java.time.DayOfWeek;
+
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.configs.VoltageConfigs;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -46,6 +48,9 @@ public class IntakeWheels extends SubsystemBase {
         SmartDashboard.putBoolean("ir sensor boolean",  (getIrReading() > DynamicConstants.Intake.irSensorThreshold));
     }
     
+    public void runDutyCycle(double dc) {
+        intakeMotor.set(dc);
+    }
     public Command runVoltage(double voltage) {
         return runEnd(() -> {
             intakeMotor.setVoltage(voltage);
@@ -59,6 +64,14 @@ public class IntakeWheels extends SubsystemBase {
         intakeMotor.setVoltage(8);
     }
 
+    public Command outtake() {
+        return runEnd(() -> {
+            intakeMotor.setVoltage(-4);
+        }, () -> {
+            intakeMotor.setVoltage(0);
+        });
+    }
+
     
     public double getVoltage(){
         return intakeMotor.getMotorVoltage().getValueAsDouble();
@@ -69,7 +82,7 @@ public class IntakeWheels extends SubsystemBase {
         },
         () -> {
             intakeMotor.setVoltage(0);
-        }).until(() -> (getIrReading() > 1.0));
+        }).until(() -> (getIrReading() > DynamicConstants.Intake.irSensorThreshold));
         
     }
 

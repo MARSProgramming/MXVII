@@ -59,12 +59,13 @@ public class ThePivot extends SubsystemBase {
             Math.PI * 2 * (motor.getPosition().getValueAsDouble() * positionCoefficient - DynamicConstants.ThePivot.uprightPosition - 0.25),
             Math.PI * 2 * (motor.getVelocity().getValueAsDouble() * positionCoefficient),
             Math.PI * 2 * (motor.getAcceleration().getValueAsDouble() * positionCoefficient))
-        - Math.cos(
-            Math.PI * 2 * (
-                    (intakePositionObj != null && intakePositionObj.get() instanceof Double ? (Double) intakePositionObj.get() : 0.0)
-                    - DynamicConstants.Intake.pivotUprightPosition
-                )
-            ) * DynamicConstants.ThePivot.secondSegmentFeedforwardConstant;
+        // - Math.cos(
+        //     Math.PI * 2 * (
+        //             (intakePositionObj != null && intakePositionObj.get() instanceof Double ? (Double) intakePositionObj.get() : 0.0)
+        //             - DynamicConstants.Intake.pivotUprightPosition
+        //         )
+        //     ) * DynamicConstants.ThePivot.secondSegmentFeedforwardConstant
+        ;
         motor.setVoltage(output);
     }
     public double getPosition(){
