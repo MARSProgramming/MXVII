@@ -16,6 +16,7 @@ import frc.robot.auto.RB0213;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.IntakePivot;
 import frc.robot.subsystems.IntakeWheels;
+import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.ShooterFlywheel;
 import frc.robot.subsystems.ThePivot;
 
@@ -24,14 +25,14 @@ public class AutoChooser {
     private SendableChooser<Command> autoChooser = new SendableChooser<>();
     private DrivetrainSubsystem drivetrainSubsystem;
 
-    public AutoChooser(DrivetrainSubsystem mDrivetrainSubsystem, IntakeWheels intakeWheels, IntakePivot intakePivot, ShooterFlywheel shooterFlywheel, ThePivot thePivot){
+    public AutoChooser(DrivetrainSubsystem mDrivetrainSubsystem, IntakeWheels intakeWheels, IntakePivot intakePivot, ShooterFlywheel shooterFlywheel, ThePivot thePivot, Limelight ll){
         preMatch = Shuffleboard.getTab("Match");
         drivetrainSubsystem = mDrivetrainSubsystem;
 
         //auto plays
         autoChooser.setDefaultOption("Do Nothing", new DoNothing());
-        autoChooser.addOption("RB0", new RB0(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot));
-        autoChooser.addOption("RB0213", new RB0213(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot));
+        autoChooser.addOption("RB0", new RB0(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll));
+        autoChooser.addOption("RB0213", new RB0213(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll));
 
         preMatch.add("Auto Play", autoChooser).withSize(2, 1).withPosition(4, 5);
     }
@@ -41,7 +42,7 @@ public class AutoChooser {
     }
 
     public static PathPlannerTrajectory openTrajectoryFile(String name, DrivetrainSubsystem drivetrainSubsystem, Rotation2d startingRotation){
-        PathPlannerTrajectory t = PathPlannerPath.fromPathFile(name).getTrajectory(drivetrainSubsystem.getChassisSpeeds(), startingRotation);
+        PathPlannerTrajectory t = PathPlannerPath.fromPathFile(name).getTrajectory(drivetrainSubsystem.getChassisSpeeds(), Rotation2d.fromRadians(drivetrainSubsystem.getPigeonAngle()));
         return t;
     }
     public PathPlannerTrajectory openTrajectoryFileForAlliance(String name, DriverStation.Alliance alliance){

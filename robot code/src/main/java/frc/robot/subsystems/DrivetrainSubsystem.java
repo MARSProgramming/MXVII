@@ -98,6 +98,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
         double bl = RioConstants.Drive.BACK_LEFT_MODULE_STEER_OFFSET;
 
         initSnapController();
+        initPieceAlignController();
         createSwerveModules(fl, fr, bl, br);
         SmartDashboard.putData("Zero Swerves", zeroSwerveCommand().ignoringDisable(true));
 
@@ -156,15 +157,29 @@ public class DrivetrainSubsystem extends SubsystemBase {
     //heading snap controller
     private ProfiledPIDController mSnapController;
     private void initSnapController(){
-        mSnapController = new ProfiledPIDController(StaticConstants.Drive.kP,
-                StaticConstants.Drive.kI,
-                StaticConstants.Drive.kD,
+        mSnapController = new ProfiledPIDController(StaticConstants.Drive.kPSnap,
+                StaticConstants.Drive.kISnap,
+                StaticConstants.Drive.kDSnap,
                 new TrapezoidProfile.Constraints(StaticConstants.Auto.holonomicOMaxVelocity,
                         StaticConstants.Auto.holonomicOMaxAcceleration));
         mSnapController.enableContinuousInput(-Math.PI, Math.PI);
     }
     public ProfiledPIDController getSnapController() {
         return mSnapController;
+    }
+
+    //align to piece controller
+    private ProfiledPIDController mPieceAlignController;
+    private void initPieceAlignController(){
+        mPieceAlignController = new ProfiledPIDController(StaticConstants.Drive.kPAlignPiece,
+                StaticConstants.Drive.kIAlignPiece,
+                StaticConstants.Drive.kDAlignPiece,
+                new TrapezoidProfile.Constraints(StaticConstants.Auto.holonomicOMaxVelocity,
+                        StaticConstants.Auto.holonomicOMaxAcceleration));
+        mPieceAlignController.enableContinuousInput(-Math.PI, Math.PI);
+    }
+    public ProfiledPIDController getAlignPieceController() {
+        return mPieceAlignController;
     }
 
     //auto drive controller

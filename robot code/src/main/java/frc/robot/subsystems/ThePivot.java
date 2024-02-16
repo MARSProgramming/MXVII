@@ -30,15 +30,15 @@ public class ThePivot extends SubsystemBase {
         .withReverseSoftLimitEnable(true)
         .withReverseSoftLimitThreshold(StaticConstants.ThePivot.reverseLimit / positionCoefficient));
         motor.getConfigurator().apply(new VoltageConfigs()
-        .withPeakForwardVoltage(2)
-        .withPeakReverseVoltage(-2));
+        .withPeakForwardVoltage(6)
+        .withPeakReverseVoltage(-3));
         motor.setNeutralMode(NeutralModeValue.Brake);
         motor.setInverted(true);
         motor.setPosition(0);
 
-        profiledPIDController = new ProfiledPIDController(0.4, 0, 0, new TrapezoidProfile.Constraints(100, 100));
-        armFeedforward = new ArmFeedforward(0, 0, 0, 0);
-        profiledPIDController.setTolerance(0.005);
+        profiledPIDController = new ProfiledPIDController(1.6, 0, 0, new TrapezoidProfile.Constraints(80, 50));
+        armFeedforward = new ArmFeedforward(0, 0.45, 0, 0);
+        profiledPIDController.setTolerance(0.0015 / positionCoefficient);
 
         SmartDashboard.putData(profiledPIDController);
     }
@@ -67,6 +67,7 @@ public class ThePivot extends SubsystemBase {
         //     ) * DynamicConstants.ThePivot.secondSegmentFeedforwardConstant
         ;
         motor.setVoltage(output);
+        SmartDashboard.putNumber("ThePivot Position Error", profiledPIDController.getPositionError());
     }
     public double getPosition(){
         return motor.getPosition().getValueAsDouble() * positionCoefficient;
@@ -74,14 +75,19 @@ public class ThePivot extends SubsystemBase {
     public double getVoltage(){
         return motor.getMotorVoltage().getValueAsDouble();
     }
-    public Command setPositionCommand(DoubleSupplier position){
-        return runEnd(() -> {
+    public boolean atSetpoint(){
+        return profiledPIDController.atGoal();
+    }
+    public boolean belowVelocityThreshold(){
+        return motor.getVelocity().getValueAsDouble() < DynamicConstants.ThePivot.shootVelocityThreshold;
+    }
+    public Command setPositionCommand(DoubleSupplier position, boolean dontEnd){
+        return runOnce(() -> {resetProfiledPIDController();}).andThen(runEnd(() -> {
             setPosition(position.getAsDouble());
         },
         () -> {
-            resetProfiledPIDController();
             motor.set(0);
-        }).until(() -> profiledPIDController.atGoal());
+        }).until(() -> profiledPIDController.atGoal() && !dontEnd));
     }
     public void resetProfiledPIDController(){
         profiledPIDController.reset(motor.getPosition().getValueAsDouble());

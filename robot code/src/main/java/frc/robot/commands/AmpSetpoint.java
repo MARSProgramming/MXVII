@@ -1,12 +1,13 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.constants.DynamicConstants;
 import frc.robot.subsystems.IntakePivot;
 import frc.robot.subsystems.IntakeWheels;
 import frc.robot.subsystems.ThePivot;
 
-public class AmpSetpoint extends Command{
+public class AmpSetpoint extends SequentialCommandGroup{
     IntakePivot mIntakePivot;
     IntakeWheels mIntakeWheels;
     ThePivot mThePivot;
@@ -14,19 +15,10 @@ public class AmpSetpoint extends Command{
         mIntakePivot = intakePivot;
         mThePivot = thePivot;
         addRequirements(thePivot, intakePivot);
+        addCommands(
+            intakePivot.setPositionCommand(() -> DynamicConstants.Intake.pivotAmpPosition, false),
+            thePivot.setPositionCommand(() -> DynamicConstants.ThePivot.ampPosition, true)
+        );
     }
-    @Override
-    public void execute(){
-        if(mThePivot.getPosition() > 0.15){
-            mIntakePivot.setPosition(DynamicConstants.Intake.pivotAmpPosition);
-        }
-        mThePivot.setPosition(DynamicConstants.ThePivot.ampPosition);
-    }
-    @Override
-    public void end(boolean interrupted){
-        mThePivot.resetProfiledPIDController();
-        mIntakePivot.resetProfiledPIDController();
-        mIntakePivot.setDutyCycle(0);
-        mThePivot.setDutyCycle(0);
-    }
+
 }

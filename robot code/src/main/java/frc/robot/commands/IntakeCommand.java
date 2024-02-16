@@ -10,7 +10,7 @@ public class IntakeCommand extends SequentialCommandGroup{
         addCommands(
             intakeWheels.intakeCommand().deadlineWith(
             intakePivot.setPositionCommand(() -> DynamicConstants.Intake.pivotIntakePosition, true)),
-            intakePivot.setPositionCommand(() -> DynamicConstants.Intake.pivotStowPosition, false)
+            intakePivot.zeroIntake()
         );
     }
 }

@@ -38,8 +38,10 @@ public class IntakeWheels extends SubsystemBase {
     }
 
     public double getIrReading(){
-       return Math.max(irSensorLeft.getAverageVoltage(), irSensorRight.getAverageVoltage());
-      
+       return Math.max(irSensorLeft.getAverageVoltage(), irSensorRight.getAverageVoltage()); 
+    }
+    public boolean hasPiece(){
+        return getIrReading() > DynamicConstants.Intake.irSensorThreshold;
     }
 
     public void periodic() {
@@ -48,7 +50,7 @@ public class IntakeWheels extends SubsystemBase {
         SmartDashboard.putBoolean("ir sensor boolean",  (getIrReading() > DynamicConstants.Intake.irSensorThreshold));
     }
     
-    public void runDutyCycle(double dc) {
+    public void setDutyCycle(double dc) {
         intakeMotor.set(dc);
     }
     public Command runVoltage(double voltage) {
@@ -61,12 +63,12 @@ public class IntakeWheels extends SubsystemBase {
     }
     public void intake(){
         //TODO: make dynamic constant
-        intakeMotor.setVoltage(8);
+        intakeMotor.setVoltage(6);
     }
 
     public Command outtake() {
         return runEnd(() -> {
-            intakeMotor.setVoltage(-4);
+            intakeMotor.setVoltage(-9.0);
         }, () -> {
             intakeMotor.setVoltage(0);
         });

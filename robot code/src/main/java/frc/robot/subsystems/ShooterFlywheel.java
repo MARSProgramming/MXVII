@@ -1,6 +1,5 @@
 package frc.robot.subsystems;
 
-import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 import com.ctre.phoenix6.configs.Slot0Configs;
@@ -10,13 +9,8 @@ import com.ctre.phoenix6.controls.VelocityDutyCycle;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
-import edu.wpi.first.networktables.GenericEntry;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.constants.DynamicConstants;
 import frc.robot.constants.StaticConstants;
 
 public class ShooterFlywheel extends SubsystemBase {
@@ -36,7 +30,7 @@ public class ShooterFlywheel extends SubsystemBase {
         master.setInverted(false);
         follower.setControl(new Follower(StaticConstants.ShooterFlywheel.masterID, false));
         Slot0Configs config = new Slot0Configs();
-        config.kP = 0.0;
+        config.kP = 0.03;
         config.kI = 0.0;
         config.kD = 0.0;
         config.kV = 0.0093;
@@ -47,7 +41,7 @@ public class ShooterFlywheel extends SubsystemBase {
         //max = speed.getDouble(3000);
     }
 
-    public void runDutyCycle(double dc) {
+    public void setDutyCycle(double dc) {
         master.set(dc);
     }
     public Command runVoltage(double voltage) {
@@ -65,7 +59,6 @@ public class ShooterFlywheel extends SubsystemBase {
     }
 
     public boolean atSpeed(DoubleSupplier speed) {
-        System.out.println(Math.abs(getVelocity() - speed.getAsDouble()) + "");
         return Math.abs(getVelocity() - speed.getAsDouble()) <= 30;
     }
 

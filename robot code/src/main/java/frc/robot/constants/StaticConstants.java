@@ -26,9 +26,13 @@ public final class StaticConstants {
         public static final int BACK_RIGHT_MODULE_STEER_MOTOR = 7; 
         public static final int BACK_RIGHT_MODULE_STEER_ENCODER = 27; 
 
-        public static final double kP = 5;
-        public static final double kI = 0.0;
-        public static final double kD = 0.0;
+        public static final double kPSnap = 0.5;
+        public static final double kISnap = 0.0;
+        public static final double kDSnap = 0.0;
+
+        public static final double kPAlignPiece = 2;
+        public static final double kIAlignPiece = 0.0;
+        public static final double kDAlignPiece = 0.0;
     }
 
     public static class Auto{
@@ -66,12 +70,18 @@ public final class StaticConstants {
         public static int ID = 33;
 
         //Limits are in rotations from zero
-        public static double forwardLimit = 0.3;
-        public static double reverseLimit = 0.01;
+        public static double forwardLimit = 0.25;
+        public static double reverseLimit = 0.0;
     }
 
     public static class Climber{
         public static int leftID = 18;
         public static int rightID = 28;
+
+        public static double leftForwardLimit = 2.3;
+        public static double leftReverseLimit = -0.5;
+
+        public static double rightForwardLimit = 2.3;
+        public static double rightReverseLimit = -0.5;
     }
 }

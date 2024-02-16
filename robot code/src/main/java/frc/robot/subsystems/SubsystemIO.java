@@ -50,6 +50,7 @@ public class SubsystemIO extends SubsystemBase{
         displayedValues.put("Shooter: Velocity(RPM)", () -> shooterFlywheel.getVelocity());
         displayedValues.put("Drivetrain: X Position", () -> dt.getPose().getX());
         displayedValues.put("Drivetrain: Y Position", () -> dt.getPose().getY());
+        displayedValues.put("Drivetrain: Rotation", () -> dt.getPigeonAngle());
         displayedValues.put("Left Climber Voltage", () -> climber.getLeftVoltage());
         displayedValues.put("Right Climber Voltage", () -> climber.getLeftVoltage());
         displayedValues.put("Left Climber Position", () -> climber.getLeftPosition());

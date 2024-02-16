@@ -1,4 +1,5 @@
 package frc.robot.subsystems;
+import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -24,10 +25,22 @@ public class Climber extends SubsystemBase {
     public Climber() {
         left = new TalonFX(StaticConstants.Climber.leftID);
         right = new TalonFX(StaticConstants.Climber.rightID);
+
         left.getConfigurator().apply(new TalonFXConfiguration());
         right.getConfigurator().apply(new TalonFXConfiguration());
         left.setNeutralMode(NeutralModeValue.Brake);
         right.setNeutralMode(NeutralModeValue.Brake);
+
+        left.getConfigurator().apply(new SoftwareLimitSwitchConfigs()
+        .withForwardSoftLimitEnable(true)
+        .withForwardSoftLimitThreshold(StaticConstants.Climber.leftForwardLimit / positionCoefficient)
+        .withReverseSoftLimitEnable(true)
+        .withReverseSoftLimitThreshold(StaticConstants.Climber.leftReverseLimit / positionCoefficient));
+        right.getConfigurator().apply(new SoftwareLimitSwitchConfigs()
+        .withForwardSoftLimitEnable(true)
+        .withForwardSoftLimitThreshold(StaticConstants.Climber.rightForwardLimit / positionCoefficient)
+        .withReverseSoftLimitEnable(true)
+        .withReverseSoftLimitThreshold(StaticConstants.Climber.rightReverseLimit / positionCoefficient));
 
         left.setInverted(true);
 
@@ -62,6 +75,22 @@ public class Climber extends SubsystemBase {
         () -> {
             left.setVoltage(0);
             right.setVoltage(0);
+        });
+    }
+    public Command runVoltageLeft() {
+        return runEnd(() -> {
+            left.setVoltage(max);
+        },
+        () -> {
+            left.set(0);
+        });
+    }
+    public Command runVoltageRight() {
+        return runEnd(() -> {
+            right.setVoltage(max);
+        },
+        () -> {
+            right.set(0);
         });
     }
 

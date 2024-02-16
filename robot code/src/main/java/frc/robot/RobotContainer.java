@@ -42,13 +42,13 @@ public class RobotContainer {
     private final Climber mClimber = new Climber();
     private final Limelight mLimelight = new Limelight(mDrivetrainSubsystem);
     private final SubsystemIO subsystemIO = new SubsystemIO(mDrivetrainSubsystem, mIntakeWheels, mIntakePivot, mShooterFlywheel, mThePivot, mClimber);
-    private final AutoChooser autoChooser = new AutoChooser(mDrivetrainSubsystem, mIntakeWheels, mIntakePivot, mShooterFlywheel, mThePivot);
+    private final AutoChooser autoChooser = new AutoChooser(mDrivetrainSubsystem, mIntakeWheels, mIntakePivot, mShooterFlywheel, mThePivot, mLimelight);
 
     // Replace with CommandPS4Controller or CommandJoystick if needed
     private final CommandXboxController mPilot =
         new CommandXboxController(0);
-    // private final CommandXboxController mCopilot = 
-    //     new CommandXboxController(1);
+    private final CommandXboxController mCopilot = 
+        new CommandXboxController(1);
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
@@ -76,12 +76,12 @@ public class RobotContainer {
      */
     private void configureBindings() {
         mPilot.y().whileTrue(mDrivetrainSubsystem.zeroGyroscope(0));
-        /*mPilot.leftTrigger().whileTrue(new AlignToPiece(mDrivetrainSubsystem, mLimelight,
+        mPilot.leftTrigger().whileTrue(new AlignToPiece(mDrivetrainSubsystem, mLimelight,
             () -> -modifyAxis(mPilot.getLeftY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-            () -> -modifyAxis(mPilot.getLeftX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,w
-            () -> -modifyAxis(mPilot.getRightX()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND));*/
+            () -> -modifyAxis(mPilot.getLeftX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+            () -> -modifyAxis(mPilot.getRightX()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND));
         //mPilot.rightTrigger().whileTrue(mShooterFlywheel.runVelocity(() -> 6000.0));
-      //  mPilot.leftTrigger().whileTrue(mIntakePivot.setPositionCommand(() -> DynamicConstants.Intake.pivotIntakePosition, false));
+      // mPilot.leftTrigger().whileTrue(mIntakePivot.setPositionCommand(() -> DynamicConstants.Intake.pivotIntakePosition, false));
         
         mPilot.leftTrigger().whileTrue(new IntakeCommand(mIntakePivot, mIntakeWheels));
         mPilot.rightBumper().whileTrue(mIntakeWheels.runVoltage(-4));
@@ -90,12 +90,11 @@ public class RobotContainer {
         mPilot.povUp().whileTrue(mThePivot.runVoltage(-1));
         mPilot.povDown().whileTrue(mThePivot.runVoltage(1));
         mPilot.b().whileTrue(new AmpSetpoint(mIntakePivot, mIntakeWheels, mThePivot));
-       // mPilot.a().whileTrue(new GoToZero(mIntakePivot, mThePivot));
-        mPilot.a().whileTrue(mIntakePivot.zeroIntake());
-        mPilot.x().whileTrue(mThePivot.setPositionCommand(() -> 0.2));
+        mPilot.a().whileTrue(new GoToZero(mIntakePivot, mThePivot));
+        mPilot.x().whileTrue(mThePivot.setPositionCommand(() -> 0.1, true));
        // mPilot.leftBumper().whileTrue(mShooterFlywheel.runVelocity(() -> 3000.0));
        
-        mPilot.leftBumper().whileTrue(new IntegratedShooterCommand(mIntakeWheels, mShooterFlywheel));
+        mPilot.rightTrigger().whileTrue(new IntegratedShooterCommand(mIntakeWheels, mShooterFlywheel, mThePivot, mDrivetrainSubsystem).andThen(mThePivot.setPositionCommand(() -> DynamicConstants.ThePivot.zeroPosition, false)));
 
         mPilot.start().whileTrue(mIntakeWheels.runVoltage(10.5));
 
@@ -103,6 +102,10 @@ public class RobotContainer {
         // copilot
         // mCopilot.rightBumper().whileTrue(mClimber.runVoltage());
         // mCopilot.leftBumper().whileTrue(mClimber.runVoltageNegative());
+        // mCopilot.leftTrigger().whileTrue(mClimber.runVoltageLeft());
+        // mCopilot.rightTrigger().whileTrue(mClimber.runVoltageRight());
+        mCopilot.b().whileTrue(new AmpSetpoint(mIntakePivot, mIntakeWheels, mThePivot));
+        mCopilot.a().whileTrue(new GoToZero(mIntakePivot, mThePivot));
     }
 
     /**

@@ -26,7 +26,7 @@ public class AlignToPiece extends Command{
         this.m_translationYSupplier = translationYSupplier;
         this.m_rotationSupplier = rotationSupplier;
         mLimelight = ll;
-        snapPID = drivetrainSubsystem.getSnapController();
+        snapPID = drivetrainSubsystem.getAlignPieceController();
 
         addRequirements(drivetrainSubsystem);
     }

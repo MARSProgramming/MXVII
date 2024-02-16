@@ -34,8 +34,8 @@ public class AimAtGoal extends Command{
 
     public static Pair<Double, Double> calculateFlywheelRPM(Pose2d pos, Translation2d goalPos){
         InterpolatingDoubleTreeMap distToRPM = new InterpolatingDoubleTreeMap();
-        distToRPM.put(1.0, 100.0);
-        distToRPM.put(2.0, 150.0);
+        distToRPM.put(1.0, 3000.0);
+        distToRPM.put(2.0, 3500.0);
         distToRPM.put(3.0, 190.0);
 
         double dist = goalPos.getDistance(pos.getTranslation());
