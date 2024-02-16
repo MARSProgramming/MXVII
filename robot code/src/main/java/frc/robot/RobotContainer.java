@@ -13,6 +13,9 @@ import frc.robot.commands.AmpSetpoint;
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.commands.GoToZero;
 import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.Test.DisableLimitsCommand;
+import frc.robot.commands.Test.ResetPositions;
+import frc.robot.commands.Test.SwitchNeutralModeCommand;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.IntakePivot;
@@ -47,6 +50,9 @@ public class RobotContainer {
         new CommandXboxController(0);
     //private final CommandXboxController mCopilot = 
         //new CommandXboxController(1);
+
+    private final CommandXboxController mTestPilot =
+        new CommandXboxController(2);
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
@@ -96,6 +102,37 @@ public class RobotContainer {
         // copilot
         //mCopilot.rightBumper().whileTrue(mClimber.runVoltage());
         //mCopilot.leftBumper().whileTrue(mClimber.runVoltageNegative());
+
+
+
+    }
+
+    public void configureTestBindings() {
+        // PIVOT CONTROLS
+        mTestPilot.povUp().whileTrue(mIntakePivot.runVoltage(1));
+        mTestPilot.povDown().whileTrue(mIntakePivot.runVoltage(-1));
+        mTestPilot.povRight().whileTrue(mThePivot.runVoltage(1));
+        mTestPilot.povLeft().whileTrue(mThePivot.runVoltage(-1));
+
+        // FLYWHEEL AND INTAKE WHEEL CONTROLS
+        mTestPilot.rightBumper().whileTrue(mIntakeWheels.runVoltage(1));
+        mTestPilot.leftBumper().whileTrue(mIntakeWheels.runVoltage(-1));
+        mTestPilot.rightTrigger().whileTrue(mShooterFlywheel.runVoltage(1));
+        mTestPilot.leftBumper().whileTrue(mShooterFlywheel.runVoltage(-1));
+
+        // CLIMBER CONTROLS
+        mTestPilot.y().whileTrue(mClimber.runVoltage(1));
+        mTestPilot.a().whileTrue(mClimber.runVoltage(-1));
+
+        // DISABLE SOFTWARE LIMITS
+        mTestPilot.x().onTrue(new DisableLimitsCommand(mIntakePivot, mThePivot, mClimber));
+
+        // SWITCH NEUTRAL MODE
+        mTestPilot.b().onTrue(new SwitchNeutralModeCommand(mIntakePivot, mThePivot));
+
+        // RESET POSITIONS
+        mTestPilot.start().onTrue(new ResetPositions(mIntakePivot, mThePivot, mClimber));
+
     }
 
     /**

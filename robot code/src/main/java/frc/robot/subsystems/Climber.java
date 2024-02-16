@@ -1,4 +1,5 @@
 package frc.robot.subsystems;
+import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -19,6 +20,7 @@ public class Climber extends SubsystemBase {
     private double max; 
     private double opposingMax;
     private double positionCoefficient;
+    private boolean softLimitEnabled;
     
 
     public Climber() {
@@ -28,6 +30,8 @@ public class Climber extends SubsystemBase {
         right.getConfigurator().apply(new TalonFXConfiguration());
         left.setNeutralMode(NeutralModeValue.Brake);
         right.setNeutralMode(NeutralModeValue.Brake);
+        softLimitEnabled = true;
+        // where are the limits
 
         left.setInverted(true);
 
@@ -44,20 +48,10 @@ public class Climber extends SubsystemBase {
         opposingMax = secondaryInputVoltage.getDouble(-1);
         
     }
-    public Command runVoltage() {
+    public Command runVoltage(int voltage) {
         return runEnd(() -> {
-            left.setVoltage(max);
-            right.setVoltage(max);
-        },
-        () -> {
-            left.setVoltage(0);
-            right.setVoltage(0);
-        });
-    }
-    public Command runVoltageNegative() {
-        return runEnd(() -> {
-            left.setVoltage(opposingMax);
-            right.setVoltage(opposingMax);
+            left.setVoltage(voltage);
+            right.setVoltage(voltage);
         },
         () -> {
             left.setVoltage(0);
@@ -80,14 +74,38 @@ public class Climber extends SubsystemBase {
     public double getLeftPosition() {
         return left.getPosition().getValueAsDouble() * positionCoefficient;
     }
-  /*
-    public Command runVoltageCommand(double voltage){
-        return runEnd(() -> {
-            left.setVoltage(voltage);
-        },
-        () -> {
-            right.setVoltage(0);
-        });
-    } */
 
+
+    public Command switchSoftLimit() {
+        return runOnce(() -> {
+        if (softLimitEnabled == true) {
+            left.getConfigurator().apply(new SoftwareLimitSwitchConfigs()
+            .withForwardSoftLimitEnable(false)
+            .withReverseSoftLimitEnable(false));
+            right.getConfigurator().apply(new SoftwareLimitSwitchConfigs()
+            .withForwardSoftLimitEnable(false)
+            .withReverseSoftLimitEnable(false));
+        }
+        if (softLimitEnabled == false) {
+            // WE DO NOT HAVE ANY CLIMBER POSITION LIMITS IN STATIC CONSTANTS
+            left.getConfigurator().apply(new SoftwareLimitSwitchConfigs()
+            .withForwardSoftLimitEnable(true)
+            .withForwardSoftLimitThreshold(0)
+            .withReverseSoftLimitEnable(true)
+            .withReverseSoftLimitThreshold(0));
+            right.getConfigurator().apply(new SoftwareLimitSwitchConfigs()
+            .withForwardSoftLimitEnable(true)
+            .withForwardSoftLimitThreshold(0)
+            .withReverseSoftLimitEnable(true)
+            .withReverseSoftLimitThreshold(0));
+        }
+        });
+    }
+
+    public Command zeroPosition() {
+        return runOnce(() -> {
+        left.getConfigurator().setPosition(0);
+        right.getConfigurator().setPosition(0);
+        });
+    }
 }

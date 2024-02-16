@@ -22,6 +22,8 @@ public class IntakePivot extends SubsystemBase {
     private double positionCoefficient = 1.0/16.0*15.0/24.0;
     private ProfiledPIDController profiledPIDController;
     private ArmFeedforward armFeedforward;
+    private boolean brakeEnabled;
+    private boolean softLimitEnabled;
     public IntakePivot() {
         pivotMotor = new TalonFX(StaticConstants.IntakePivot.ID);
         pivotMotor.getConfigurator().apply(new TalonFXConfiguration());
@@ -34,6 +36,7 @@ public class IntakePivot extends SubsystemBase {
         .withPeakForwardVoltage(6)
         .withPeakReverseVoltage(-6));
         pivotMotor.setNeutralMode(NeutralModeValue.Brake);
+        boolean brakeEnabled = true;
         pivotMotor.setInverted(true);
         pivotMotor.setPosition(0);
         profiledPIDController = new ProfiledPIDController(0.35, 0, 0, new TrapezoidProfile.Constraints(120, 80));
@@ -90,5 +93,42 @@ public class IntakePivot extends SubsystemBase {
     }
     public void resetProfiledPIDController(){
         profiledPIDController.reset(pivotMotor.getPosition().getValueAsDouble());
+    }
+
+    public Command switchNeutralMode() {
+        return runOnce(() -> {
+        if (brakeEnabled == true) {
+            pivotMotor.setNeutralMode(NeutralModeValue.Coast);
+            brakeEnabled = false;
+        } 
+
+        if (brakeEnabled == false) {
+            pivotMotor.setNeutralMode(NeutralModeValue.Brake);
+            brakeEnabled = true;
+        }
+        });
+    }
+
+    public Command switchSoftLimit() {
+        return runOnce(() -> {
+        if (softLimitEnabled == true) {
+            pivotMotor.getConfigurator().apply(new SoftwareLimitSwitchConfigs()
+            .withForwardSoftLimitEnable(false)
+            .withReverseSoftLimitEnable(false));
+        }
+        if (softLimitEnabled == false) {
+            pivotMotor.getConfigurator().apply(new SoftwareLimitSwitchConfigs()
+            .withForwardSoftLimitEnable(true)
+            .withForwardSoftLimitThreshold(StaticConstants.IntakePivot.forwardLimit / positionCoefficient)
+            .withReverseSoftLimitEnable(true)
+            .withReverseSoftLimitThreshold(StaticConstants.IntakePivot.reverseLimit / positionCoefficient));
+        }
+     }); 
+    }
+
+    public Command zeroPosition() {
+        return runOnce(() -> {
+        pivotMotor.getConfigurator().setPosition(0);
+        });
     }
 }
