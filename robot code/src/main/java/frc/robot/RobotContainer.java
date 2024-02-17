@@ -24,6 +24,7 @@ import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.IntakePivot;
 import frc.robot.subsystems.IntakeWheels;
+import frc.robot.subsystems.LED;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.ShooterFlywheel;
 import frc.robot.subsystems.SubsystemIO;
@@ -48,6 +49,7 @@ public class RobotContainer {
     private final Limelight mLimelight = new Limelight(mDrivetrainSubsystem);
     private final SubsystemIO subsystemIO = new SubsystemIO(mDrivetrainSubsystem, mIntakeWheels, mIntakePivot, mShooterFlywheel, mThePivot, mClimber);
     private final AutoChooser autoChooser = new AutoChooser(mDrivetrainSubsystem, mIntakeWheels, mIntakePivot, mShooterFlywheel, mThePivot, mLimelight);
+    private final LED m_Led = new LED();
 
     // Replace with CommandPS4Controller or CommandJoystick if needed
     private final CommandXboxController mPilot =
