@@ -34,7 +34,6 @@ public class AutoChooser {
         autoChooser.setDefaultOption("Do Nothing", new DoNothing());
         autoChooser.addOption("RB0", new RB0(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll));
         autoChooser.addOption("RDL", new RDL(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll));
-        autoChooser.addOption("RB0321", new RB0321(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll));
 
         preMatch.add("Auto Play", autoChooser).withSize(2, 1).withPosition(4, 5);
     }
