@@ -82,10 +82,10 @@ public final class StaticConstants {
         public static int rightLimitSwitchID = 1;
 
         public static double leftForwardLimit = 5.5;
-        public static double leftReverseLimit = -1;
+        public static double leftReverseLimit = -1.5;
 
         public static double rightForwardLimit = 5.5;
-        public static double rightReverseLimit = -1;
+        public static double rightReverseLimit = -1.5;
         
         public static double rightkP = 0.03;
         public static double rightkI = 0.0;

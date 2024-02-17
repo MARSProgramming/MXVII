@@ -14,8 +14,8 @@ public class Limelight extends SubsystemBase{
         dt = drive;
     }
 
-    public boolean hasTarget(){
-        return false;
+    public boolean hasAprilTagTarget(){
+        return NetworkTableInstance.getDefault().getTable("limelight-shooter").getEntry("tv").getDouble(0) == 1.0 || NetworkTableInstance.getDefault().getTable("limelight-trap").getEntry("tv").getDouble(0) == 1.0;
     }
 
     public void resetPose(){
