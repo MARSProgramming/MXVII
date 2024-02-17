@@ -12,6 +12,8 @@ import frc.robot.commands.AlignToPiece;
 import frc.robot.commands.AmpSetpoint;
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.commands.GoToZero;
+import frc.robot.commands.InitializeClimbSetpoint;
+import frc.robot.commands.InitializeTrapSetpoint;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.Test.DisableLimitsCommand;
 import frc.robot.commands.Test.ResetPositions;
@@ -112,9 +114,12 @@ public class RobotContainer {
         mCopilot.leftTrigger().whileTrue(new AmpSetpoint(mIntakePivot, mIntakeWheels, mThePivot));
         mCopilot.leftBumper().whileTrue(new GoToZero(mIntakePivot, mThePivot));
         mCopilot.b().whileTrue(mClimber.climbToLimit());
-        mCopilot.povUp().whileTrue(mClimber.runVoltage(1));
         mCopilot.x().whileTrue(mClimber.setPositionCommand(5.4));
+        mCopilot.a().toggleOnTrue(new InitializeClimbSetpoint(mIntakePivot, mThePivot));
+        mCopilot.y().toggleOnTrue(new InitializeTrapSetpoint(mIntakePivot, mThePivot));
 
+        mCopilot.povUp().whileTrue(mClimber.runVoltage(1));
+        mCopilot.povRight().whileTrue(mIntakePivot.runVoltage(-1));
     }
 
     public void configureTestBindings() {
