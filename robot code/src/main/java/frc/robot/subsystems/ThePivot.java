@@ -11,6 +11,7 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -26,6 +27,11 @@ public class ThePivot extends SubsystemBase {
     private ArmFeedforward armFeedforward;
     private TrapezoidProfile.Constraints lowerConstraints = new TrapezoidProfile.Constraints(50, 30);
     private TrapezoidProfile.Constraints raiseConstraints = new TrapezoidProfile.Constraints(50, 300);
+    private DutyCycleEncoder absoluteEncoder = new DutyCycleEncoder(StaticConstants.ThePivot.encoderID);
+
+    //TODO: set as a rio constant
+    private double encoderZero = 0;
+    
     public ThePivot(){
         motor = new TalonFX(StaticConstants.ThePivot.ID);
         motor.getConfigurator().apply(new SoftwareLimitSwitchConfigs()
@@ -53,6 +59,11 @@ public class ThePivot extends SubsystemBase {
     }
     public void setDutyCycle(double d){
         motor.set(d);
+    }
+    public double getEncoderPosition(){
+        double pos = absoluteEncoder.getAbsolutePosition() - encoderZero;
+        if(pos < 0) pos++;
+        return Math.abs(pos - getPosition()) < 0.05 ? pos : getPosition();
     }
     public Command runVoltage(double voltage) {
         return runEnd(() -> {

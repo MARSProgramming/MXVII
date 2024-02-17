@@ -72,6 +72,8 @@ public final class StaticConstants {
         //Limits are in rotations from zero
         public static double forwardLimit = 0.25;
         public static double reverseLimit = 0.0;
+
+        public static int encoderID = 3;
     }
 
     public static class Climber{

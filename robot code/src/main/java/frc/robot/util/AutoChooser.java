@@ -15,6 +15,8 @@ import frc.robot.auto.RA0;
 import frc.robot.auto.RA01;
 import frc.robot.auto.RA012;
 import frc.robot.auto.RA0123;
+import frc.robot.auto.RA014;
+import frc.robot.auto.RA0145;
 import frc.robot.auto.RB0;
 import frc.robot.auto.RB02;
 import frc.robot.auto.RC0;
