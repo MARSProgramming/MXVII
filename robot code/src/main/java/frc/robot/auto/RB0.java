@@ -22,7 +22,7 @@ public class RB0 extends SequentialCommandGroup{
         PathPlannerTrajectory RB2 = AutoChooser.openTrajectoryFile("RB2", drivetrainSubsystem, Rotation2d.fromDegrees(0));
         addCommands(
             new IntegratedShooterCommand(intakeWheels, shooterFlywheel, thePivot, drivetrainSubsystem).withTimeout(3),
-            new DriveAtPath(drivetrainSubsystem, RB2, ll)
+            new DriveAtPath(drivetrainSubsystem, RB2, ll, true)
         );
     }
 }

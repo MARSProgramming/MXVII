@@ -26,7 +26,7 @@ public final class StaticConstants {
         public static final int BACK_RIGHT_MODULE_STEER_MOTOR = 7; 
         public static final int BACK_RIGHT_MODULE_STEER_ENCODER = 27; 
 
-        public static final double kPSnap = 0.5;
+        public static final double kPSnap = 0.6;
         public static final double kISnap = 0.0;
         public static final double kDSnap = 0.0;
 

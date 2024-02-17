@@ -22,6 +22,8 @@ public class ThePivot extends SubsystemBase {
     private double positionCoefficient = 1.0/116.666666667;
     private ProfiledPIDController profiledPIDController;
     private ArmFeedforward armFeedforward;
+    private TrapezoidProfile.Constraints lowerConstraints = new TrapezoidProfile.Constraints(80, 50);
+    private TrapezoidProfile.Constraints raiseConstraints = new TrapezoidProfile.Constraints(50, 300);
     public ThePivot(){
         motor = new TalonFX(StaticConstants.ThePivot.ID);
         motor.getConfigurator().apply(new SoftwareLimitSwitchConfigs()
@@ -30,13 +32,14 @@ public class ThePivot extends SubsystemBase {
         .withReverseSoftLimitEnable(true)
         .withReverseSoftLimitThreshold(StaticConstants.ThePivot.reverseLimit / positionCoefficient));
         motor.getConfigurator().apply(new VoltageConfigs()
-        .withPeakForwardVoltage(6)
+        .withPeakForwardVoltage(9)
         .withPeakReverseVoltage(-3));
         motor.setNeutralMode(NeutralModeValue.Brake);
         motor.setInverted(true);
         motor.setPosition(0);
 
-        profiledPIDController = new ProfiledPIDController(1.6, 0, 0, new TrapezoidProfile.Constraints(80, 50));
+        //TODO: set them in constants
+        profiledPIDController = new ProfiledPIDController(2.0, 3, 0, lowerConstraints);
         armFeedforward = new ArmFeedforward(0, 0.45, 0, 0);
         profiledPIDController.setTolerance(0.0015 / positionCoefficient);
 
@@ -54,7 +57,9 @@ public class ThePivot extends SubsystemBase {
     }
     public void setPosition(double position){
         Supplier<?> intakePositionObj = SubsystemIO.getInstance().getValue("Intake Pivot: Position");
-        double output = profiledPIDController.calculate(motor.getPosition().getValueAsDouble(), position / positionCoefficient)
+        TrapezoidProfile.Constraints constraints = position < getPosition() ? lowerConstraints : raiseConstraints;
+        TrapezoidProfile.State state = new TrapezoidProfile.State(position / positionCoefficient, 0);
+        double output = profiledPIDController.calculate(motor.getPosition().getValueAsDouble(), state, constraints)
         - armFeedforward.calculate(
             Math.PI * 2 * (motor.getPosition().getValueAsDouble() * positionCoefficient - DynamicConstants.ThePivot.uprightPosition - 0.25),
             Math.PI * 2 * (motor.getVelocity().getValueAsDouble() * positionCoefficient),
@@ -67,7 +72,8 @@ public class ThePivot extends SubsystemBase {
         //     ) * DynamicConstants.ThePivot.secondSegmentFeedforwardConstant
         ;
         motor.setVoltage(output);
-        SmartDashboard.putNumber("ThePivot Position Error", profiledPIDController.getPositionError());
+        SmartDashboard.putNumber("ThePivot goal", profiledPIDController.getSetpoint().position * positionCoefficient);
+        SmartDashboard.putNumber("ThePivot Position Error", profiledPIDController.getPositionError() * positionCoefficient);
     }
     public double getPosition(){
         return motor.getPosition().getValueAsDouble() * positionCoefficient;
@@ -90,7 +96,7 @@ public class ThePivot extends SubsystemBase {
         }).until(() -> profiledPIDController.atGoal() && !dontEnd));
     }
     public void resetProfiledPIDController(){
-        profiledPIDController.reset(motor.getPosition().getValueAsDouble());
+        profiledPIDController.reset(motor.getPosition().getValueAsDouble(), motor.getVelocity().getValueAsDouble());
     }
 
     @Override

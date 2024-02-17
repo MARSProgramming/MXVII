@@ -10,9 +10,10 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.auto.DoNothing;
 import frc.robot.auto.RB0;
-import frc.robot.auto.RB0213;
+import frc.robot.auto.RB0321;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.IntakePivot;
 import frc.robot.subsystems.IntakeWheels;
@@ -32,7 +33,7 @@ public class AutoChooser {
         //auto plays
         autoChooser.setDefaultOption("Do Nothing", new DoNothing());
         autoChooser.addOption("RB0", new RB0(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll));
-        autoChooser.addOption("RB0213", new RB0213(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll));
+        autoChooser.addOption("RB0321", new RB0321(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll));
 
         preMatch.add("Auto Play", autoChooser).withSize(2, 1).withPosition(4, 5);
     }

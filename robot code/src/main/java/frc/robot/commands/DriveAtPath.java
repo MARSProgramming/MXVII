@@ -23,13 +23,15 @@ public class DriveAtPath extends Command {
     private Timer mTimer = new Timer();
     private ProfiledPIDController snapPID;
     private DriverStation.Alliance alliance = DriverStation.Alliance.Blue;
+    private boolean alignToPiece = false;
 
-    public DriveAtPath(DrivetrainSubsystem subsystem, PathPlannerTrajectory traj, Limelight ll) {
+    public DriveAtPath(DrivetrainSubsystem subsystem, PathPlannerTrajectory traj, Limelight ll, boolean alignToPiece) {
         mTrajectory = traj;
         mDrivetrainSubsystem = subsystem;
         mController = subsystem.getDrivePathController();
         mLimelight = ll;
         snapPID = subsystem.getSnapController();
+        this.alignToPiece = alignToPiece;
         
         addRequirements(subsystem);
     }
@@ -53,9 +55,9 @@ public class DriveAtPath extends Command {
         }
 
         ChassisSpeeds speeds = mController.calculate(mDrivetrainSubsystem.getPose(), state.getTargetHolonomicPose(), state.velocityMps, state.targetHolonomicRotation);
-        /*if(mLimelight.pieceLLhasTarget()){
+        if(alignToPiece && mLimelight.pieceLLhasTarget()){
             speeds.omegaRadiansPerSecond = snapPID.calculate(mLimelight.getPiecePosition()/180*Math.PI, 0);  
-        }*/
+        }
         mDrivetrainSubsystem.drive(speeds);
         SmartDashboard.putNumber("desiredX", state.positionMeters.getX());
         SmartDashboard.putNumber("autoXError", mDrivetrainSubsystem.getPose().getX() - state.positionMeters.getX());

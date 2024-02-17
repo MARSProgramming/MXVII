@@ -83,7 +83,7 @@ public class RobotContainer {
         //mPilot.rightTrigger().whileTrue(mShooterFlywheel.runVelocity(() -> 6000.0));
       // mPilot.leftTrigger().whileTrue(mIntakePivot.setPositionCommand(() -> DynamicConstants.Intake.pivotIntakePosition, false));
         
-        mPilot.leftTrigger().whileTrue(new IntakeCommand(mIntakePivot, mIntakeWheels));
+        mPilot.leftTrigger().whileTrue(new IntakeCommand(mIntakePivot, mIntakeWheels, mThePivot));
         mPilot.rightBumper().whileTrue(mIntakeWheels.runVoltage(-4));
         mPilot.povLeft().whileTrue(mIntakePivot.runVoltage(-1));
         mPilot.povRight().whileTrue(mIntakePivot.runVoltage(1));
@@ -94,7 +94,14 @@ public class RobotContainer {
         mPilot.x().whileTrue(mThePivot.setPositionCommand(() -> 0.1, true));
        // mPilot.leftBumper().whileTrue(mShooterFlywheel.runVelocity(() -> 3000.0));
        
-        mPilot.rightTrigger().whileTrue(new IntegratedShooterCommand(mIntakeWheels, mShooterFlywheel, mThePivot, mDrivetrainSubsystem).andThen(mThePivot.setPositionCommand(() -> DynamicConstants.ThePivot.zeroPosition, false)));
+        mPilot.rightTrigger().whileTrue(
+            new IntegratedShooterCommand(
+                    mIntakeWheels, mShooterFlywheel, mThePivot, mDrivetrainSubsystem, 
+                    () -> -modifyAxis(mPilot.getLeftY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND, 
+                    () -> -modifyAxis(mPilot.getLeftX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND
+                )
+            .andThen(mThePivot.setPositionCommand(() -> DynamicConstants.ThePivot.zeroPosition, false))
+        );
 
         mPilot.start().whileTrue(mIntakeWheels.runVoltage(10.5));
 

@@ -59,7 +59,7 @@ public class ShooterFlywheel extends SubsystemBase {
     }
 
     public boolean atSpeed(DoubleSupplier speed) {
-        return Math.abs(getVelocity() - speed.getAsDouble()) <= 30;
+        return Math.abs(getVelocity() - speed.getAsDouble()) <= 100;
     }
 
 

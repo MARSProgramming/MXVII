@@ -19,9 +19,11 @@ public class Limelight extends SubsystemBase{
     }
 
     public void resetPose(){
-        botpose = NetworkTableInstance.getDefault().getTable("limelight-shooter").getEntry("botpose_wpiblue").getDoubleArray(new double[7]);
-        double x = botpose[0];
-        double y = botpose[1];
+        botpose = NetworkTableInstance.getDefault().getTable("limelight-shooter").getEntry("botpose").getDoubleArray(new double[7]);
+        
+        //TODO: change to constants
+        double x = botpose[0] + 16.58/2.0;
+        double y = botpose[1] + 8.2/2.0;
 
         double dist = NetworkTableInstance.getDefault().getTable("limelight-shooter").getEntry("targetpose_cameraspace").getDoubleArray(new double[7])[2];
         if(dist < 3 && NetworkTableInstance.getDefault().getTable("limelight-shooter").getEntry("tv").getDouble(0) == 1.0){

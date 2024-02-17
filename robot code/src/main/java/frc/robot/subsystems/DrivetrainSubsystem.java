@@ -32,6 +32,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -127,8 +128,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
         mPoseEstimator.updateWithTime(Timer.getFPGATimestamp(), Rotation2d.fromRadians(getPigeonAngle()),
                 getSwerveModulePositions());
         
-        //SmartDashboard.putNumber("Pigeon Angle", getPigeonAngle() * 180.0/Math.PI);
-        //SmartDashboard.putNumber("Angular Velocity", m_chassisSpeeds.omegaRadiansPerSecond);
+        SmartDashboard.putNumber("Snap Controller Error", mSnapController.getPositionError() * 180.0 / Math.PI);
     }
 
     public SwerveModulePosition[] getSwerveModulePositions() {
@@ -163,6 +163,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
                 new TrapezoidProfile.Constraints(StaticConstants.Auto.holonomicOMaxVelocity,
                         StaticConstants.Auto.holonomicOMaxAcceleration));
         mSnapController.enableContinuousInput(-Math.PI, Math.PI);
+        mSnapController.setTolerance(0.1);
     }
     public ProfiledPIDController getSnapController() {
         return mSnapController;
@@ -181,7 +182,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
     public ProfiledPIDController getAlignPieceController() {
         return mPieceAlignController;
     }
-
     //auto drive controller
     private HolonomicDriveController mHolonomicDriveController = new HolonomicDriveController(
             new PIDController(StaticConstants.Auto.holonomicXkP, StaticConstants.Auto.holonomicXkI,
