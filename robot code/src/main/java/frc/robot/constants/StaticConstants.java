@@ -1,6 +1,10 @@
 package frc.robot.constants;
 
 public final class StaticConstants {
+    public static class Field{
+        public static final double fieldLength = 16.58;
+        public static final double fieldWidth = 8.2;
+    }
     public static class Drive{
         public static final double DRIVETRAIN_TRACKWIDTH_METERS = 0.57;
         public static final double DRIVETRAIN_WHEELBASE_METERS = 0.57;
@@ -83,11 +87,11 @@ public final class StaticConstants {
         public static int leftLimitSwitchID = 2;
         public static int rightLimitSwitchID = 1;
 
-        public static double leftForwardLimit = 5.5;
-        public static double leftReverseLimit = -1.5;
+        public static double leftForwardLimit = 5.6;
+        public static double leftReverseLimit = -2;
 
-        public static double rightForwardLimit = 5.5;
-        public static double rightReverseLimit = -1.5;
+        public static double rightForwardLimit = 5.6;
+        public static double rightReverseLimit = -2;
         
         public static double rightkP = 0.03;
         public static double rightkI = 0.0;

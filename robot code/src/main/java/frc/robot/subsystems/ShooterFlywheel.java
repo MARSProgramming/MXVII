@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import java.util.function.DoubleSupplier;
+import java.util.function.Supplier;
 
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
@@ -9,17 +10,19 @@ import com.ctre.phoenix6.controls.VelocityDutyCycle;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.constants.DynamicConstants;
 import frc.robot.constants.StaticConstants;
 
 public class ShooterFlywheel extends SubsystemBase {
     private TalonFX master;
     private TalonFX follower;
-
- 
-    
     private double RPStoRPM = 60.0;
+    private boolean runFlywheelWhenInRange = false;
+    private DriverStation.Alliance alliance = DriverStation.Alliance.Blue;
     public ShooterFlywheel() {
         master = new TalonFX(StaticConstants.ShooterFlywheel.masterID);
         follower = new TalonFX(StaticConstants.ShooterFlywheel.followID);
@@ -38,7 +41,7 @@ public class ShooterFlywheel extends SubsystemBase {
     }
 
     public void periodic() {
-        //max = speed.getDouble(3000);
+        
     }
 
     public void setDutyCycle(double dc) {

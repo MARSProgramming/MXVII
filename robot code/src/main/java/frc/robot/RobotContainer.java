@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AlignToPiece;
 import frc.robot.commands.AmpSetpoint;
 import frc.robot.commands.DefaultDriveCommand;
+import frc.robot.commands.DefaultShooterCommand;
 import frc.robot.commands.GoToZero;
 import frc.robot.commands.InitializeClimbSetpoint;
 import frc.robot.commands.InitializeTrapSetpoint;
@@ -67,6 +68,7 @@ public class RobotContainer {
             () -> -modifyAxis(mPilot.getRightX()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
         ));
 
+        //mShooterFlywheel.setDefaultCommand(new DefaultShooterCommand(mShooterFlywheel, mDrivetrainSubsystem));
         // Configure the trigger bindings
         configureBindings();
     }
@@ -116,15 +118,19 @@ public class RobotContainer {
         mCopilot.leftTrigger().whileTrue(new AmpSetpoint(mIntakePivot, mIntakeWheels, mThePivot));
         mCopilot.leftBumper().whileTrue(new GoToZero(mIntakePivot, mThePivot));
         mCopilot.b().whileTrue(mClimber.climbToLimit());
-        mCopilot.x().whileTrue(mClimber.setPositionCommand(5.4));
+        mCopilot.x().whileTrue(mClimber.setPositionCommand(() -> DynamicConstants.Climber.uprightPosition));
         mCopilot.a().toggleOnTrue(new InitializeClimbSetpoint(mIntakePivot, mThePivot));
         mCopilot.y().toggleOnTrue(new InitializeTrapSetpoint(mIntakePivot, mThePivot));
 
         mCopilot.povUp().whileTrue(mClimber.runVoltage(1));
-        mCopilot.povRight().whileTrue(mIntakePivot.runVoltage(-1));
+        mCopilot.povDown().whileTrue(mClimber.runVoltage(-1));
+        mCopilot.povRight().whileTrue(mIntakePivot.runVoltage(-0.5));
+        mCopilot.povLeft().whileTrue(mIntakePivot.runVoltage(1));
     }
 
     public void configureTestBindings() {
+        mShooterFlywheel.removeDefaultCommand();
+
         CommandXboxController mTestPilot =
         new CommandXboxController(2);
 

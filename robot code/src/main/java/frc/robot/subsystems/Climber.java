@@ -1,4 +1,6 @@
 package frc.robot.subsystems;
+import java.util.function.DoubleSupplier;
+
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
@@ -87,10 +89,10 @@ public class Climber extends SubsystemBase {
         });
     }
 
-    public Command setPositionCommand(double position) {
+    public Command setPositionCommand(DoubleSupplier position) {
         return runEnd(() -> {
-            setLeftPosition(position);
-            setRightPosition(position);
+            setLeftPosition(position.getAsDouble());
+            setRightPosition(position.getAsDouble());
         }, () -> {
             left.set(0);
             right.set(0);

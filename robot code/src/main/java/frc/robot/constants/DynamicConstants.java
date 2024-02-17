@@ -34,6 +34,7 @@ public final class DynamicConstants {
 
     public static class ShooterFlywheel{
         public static double testVelocity = 3000;
+        public static double idleVelocity = 3500;
     }
     public static class ThePivot{
         //Setpoints in rotations from zero
@@ -52,6 +53,9 @@ public final class DynamicConstants {
         //velocity threshold
         public static double shootVelocityThreshold = 0.001;
     }
+    public static class Climber{
+        public static double uprightPosition = 4.7;
+    }
 
 
     private static HashMap<Field, SimpleWidget> entries;
@@ -64,7 +68,7 @@ public final class DynamicConstants {
         entries = new HashMap<>();
 
         //add all .class values of the static classes above
-        Class<?>[] subsystems = {Intake.class, ThePivot.class, ShooterFlywheel.class};
+        Class<?>[] subsystems = {Intake.class, ThePivot.class, ShooterFlywheel.class, Climber.class};
         
         for(Class<?> subsystem : subsystems){
             Field[] fields = subsystem.getDeclaredFields();

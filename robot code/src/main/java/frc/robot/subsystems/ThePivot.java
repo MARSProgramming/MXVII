@@ -30,7 +30,7 @@ public class ThePivot extends SubsystemBase {
     private DutyCycleEncoder absoluteEncoder = new DutyCycleEncoder(StaticConstants.ThePivot.encoderID);
 
     //TODO: set as a rio constant
-    private double encoderZero = 0;
+    private double encoderZero = 0.2245;
     
     public ThePivot(){
         motor = new TalonFX(StaticConstants.ThePivot.ID);
@@ -61,9 +61,10 @@ public class ThePivot extends SubsystemBase {
         motor.set(d);
     }
     public double getEncoderPosition(){
-        double pos = absoluteEncoder.getAbsolutePosition() - encoderZero;
+        double pos = 1 - absoluteEncoder.getAbsolutePosition() - encoderZero;
         if(pos < 0) pos++;
-        return Math.abs(pos - getPosition()) < 0.05 ? pos : getPosition();
+        return Math.abs(pos - getPosition()) < 0.1 ? pos : getPosition();
+        //return pos;
     }
     public Command runVoltage(double voltage) {
         return runEnd(() -> {

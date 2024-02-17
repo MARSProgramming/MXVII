@@ -41,11 +41,13 @@ public class SubsystemIO extends SubsystemBase{
         copilotControls.put("Left Trigger", "test");
 
         displayedValues.put("Intake Wheels: IR sensor", () -> intakeWheels.getIrReading());
+        displayedValues.put("Intake Wheels: Has Piece", () -> intakeWheels.hasPiece());
         displayedValues.put("Intake Wheels: Voltage", () -> intakeWheels.getVoltage());
         displayedValues.put("Intake Pivot: Position", () -> intakePivot.getPosition());
         displayedValues.put("Intake Pivot: Voltage", () -> intakePivot.getVoltage());
         displayedValues.put("Intake Pivot: Limit Switch", () -> intakePivot.getLimitSwitch());
-        displayedValues.put("The Pivot: Position", () -> thePivot.getPosition());
+        displayedValues.put("The Pivot: Integrated Position", () -> thePivot.getPosition());
+        displayedValues.put("The Pivot: Encoder Position", () -> thePivot.getEncoderPosition());
         displayedValues.put("The Pivot: Voltage", () -> thePivot.getVoltage());
         displayedValues.put("Shooter: Velocity(RPM)", () -> shooterFlywheel.getVelocity());
         displayedValues.put("Drivetrain: X Position", () -> dt.getPose().getX());

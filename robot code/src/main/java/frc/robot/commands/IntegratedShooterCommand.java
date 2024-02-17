@@ -142,6 +142,6 @@ public class IntegratedShooterCommand extends Command {
         distToPivotAngle.put(3.7, 0.09);
         distToPivotAngle.put(4.82, 0.096);
         
-        return new double[]{distToRPM.get(dist), Math.atan2(newGoal.getY()-pos.getY(), newGoal.getX()-pos.getX()), distToPivotAngle.get(dist)};
+        return new double[]{distToRPM.get(dist), Math.atan2(newGoal.getY()-pos.getY(), newGoal.getX()-pos.getX()), distToPivotAngle.get(dist) - 0.019};
     }
 }
