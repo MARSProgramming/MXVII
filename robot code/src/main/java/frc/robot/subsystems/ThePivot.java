@@ -18,6 +18,8 @@ import frc.robot.constants.DynamicConstants;
 import frc.robot.constants.StaticConstants;
 
 public class ThePivot extends SubsystemBase {
+    private boolean brakeEnabled;
+    private boolean softLimitEnabled;
     private TalonFX motor;
     private double positionCoefficient = 1.0/116.666666667;
     private ProfiledPIDController profiledPIDController;
@@ -34,6 +36,8 @@ public class ThePivot extends SubsystemBase {
         motor.getConfigurator().apply(new VoltageConfigs()
         .withPeakForwardVoltage(9)
         .withPeakReverseVoltage(-3));
+        brakeEnabled = true;
+        softLimitEnabled = true;
         motor.setNeutralMode(NeutralModeValue.Brake);
         motor.setInverted(true);
         motor.setPosition(0);
@@ -99,6 +103,42 @@ public class ThePivot extends SubsystemBase {
         profiledPIDController.reset(motor.getPosition().getValueAsDouble(), motor.getVelocity().getValueAsDouble());
     }
 
+
+    public Command switchNeutralMode() {
+        return runOnce(() -> {
+        if (brakeEnabled == true) {
+            motor.setNeutralMode(NeutralModeValue.Coast);
+            brakeEnabled = false;
+        } 
+
+        if (brakeEnabled == false) {
+            motor.setNeutralMode(NeutralModeValue.Brake);
+            brakeEnabled = true;
+        }
+        });
+    }
+
+    public Command switchSoftLimit() {
+        return runOnce(() -> {
+        if (softLimitEnabled == true) {
+            motor.getConfigurator().apply(new SoftwareLimitSwitchConfigs()
+            .withForwardSoftLimitEnable(false)
+            .withReverseSoftLimitEnable(false));
+        }
+        if (softLimitEnabled == false) {
+            motor.getConfigurator().apply(new SoftwareLimitSwitchConfigs()
+            .withForwardSoftLimitEnable(true)
+            .withForwardSoftLimitThreshold(StaticConstants.IntakePivot.forwardLimit / positionCoefficient)
+            .withReverseSoftLimitEnable(true)
+            .withReverseSoftLimitThreshold(StaticConstants.IntakePivot.reverseLimit / positionCoefficient));
+        }
+     }); 
+    }
+    public Command zeroPosition() {
+        return runOnce(() -> {
+        motor.getConfigurator().setPosition(0);
+        });
+    }
     @Override
     public void periodic(){
         
