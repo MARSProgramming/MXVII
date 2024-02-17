@@ -109,8 +109,12 @@ public class RobotContainer {
 
 
         // copilot
-        mCopilot.b().whileTrue(new AmpSetpoint(mIntakePivot, mIntakeWheels, mThePivot));
-        mCopilot.a().whileTrue(new GoToZero(mIntakePivot, mThePivot));
+        mCopilot.leftTrigger().whileTrue(new AmpSetpoint(mIntakePivot, mIntakeWheels, mThePivot));
+        mCopilot.leftBumper().whileTrue(new GoToZero(mIntakePivot, mThePivot));
+        mCopilot.b().whileTrue(mClimber.climbToLimit());
+        mCopilot.povUp().whileTrue(mClimber.runVoltage(1));
+        mCopilot.x().whileTrue(mClimber.setPositionCommand(5.4));
+
     }
 
     public void configureTestBindings() {

@@ -1,6 +1,9 @@
 package frc.robot.subsystems;
+import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.PositionDutyCycle;
+import com.ctre.phoenix6.controls.VelocityDutyCycle;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
@@ -27,11 +30,24 @@ public class Climber extends SubsystemBase {
         left.setNeutralMode(NeutralModeValue.Brake);
         right.setNeutralMode(NeutralModeValue.Brake);
         softLimitEnabled = true;
+        Slot0Configs rightconfig = new Slot0Configs();
+        Slot0Configs leftconfig = new Slot0Configs();
+
+        rightconfig.kP = StaticConstants.Climber.rightkP;
+        rightconfig.kI = StaticConstants.Climber.rightkI;
+        rightconfig.kD = StaticConstants.Climber.rightkD;
+
+        leftconfig.kP = StaticConstants.Climber.leftkP;
+        leftconfig.kI = StaticConstants.Climber.leftkI;
+        leftconfig.kD = StaticConstants.Climber.leftkD;
 
         left.setPosition(0);
         right.setPosition(0);
 
         left.setInverted(true);
+        right.getConfigurator().apply(rightconfig);
+        left.getConfigurator().apply(leftconfig);
+
 
         left.getConfigurator().apply(new SoftwareLimitSwitchConfigs()
         .withForwardSoftLimitEnable(true)
@@ -48,14 +64,58 @@ public class Climber extends SubsystemBase {
         rightLimitSwitch = new DigitalInput(StaticConstants.Climber.rightLimitSwitchID);
     }
 
+    public void setRightPosition(double position){
+        right.setControl(new PositionDutyCycle(position / positionCoefficient));
+    }
+
+    public Command setRightPositionCommand(double position){
+        return runEnd(() -> {
+            setRightPosition(position);
+        }, () -> {
+            right.set(0);
+        });
+    }
+
+    public void setLeftPosition(double position){
+        left.setControl(new PositionDutyCycle(position / positionCoefficient));
+    }
+    public Command setLeftPositionCommand(double position){
+        return runEnd(() -> {
+            setLeftPosition(position);
+        }, () -> {
+            left.set(0);
+        });
+    }
+
+    public Command setPositionCommand(double position) {
+        return runEnd(() -> {
+            setLeftPosition(position);
+            setRightPosition(position);
+        }, () -> {
+            left.set(0);
+            right.set(0);
+        });
+    }
+
+    public Command climbToLimit() {
+        return runEnd(() -> {
+            left.setVoltage(-2);
+            right.setVoltage(-2);
+        }, () -> {
+            left.set(0);
+            right.set(0);
+        }).until(() -> (getLeftLimitSwitch() && getRightLimitSwitch()));
+    }
+
     public void periodic() {
         if(getLeftLimitSwitch()){
-            left.setPosition(StaticConstants.Climber.leftReverseLimit / positionCoefficient);
+            left.setPosition(StaticConstants.Climber.leftReverseLimit / positionCoefficient * 1.05);
         }
         if(getRightLimitSwitch()){
-            right.setPosition(StaticConstants.Climber.rightReverseLimit / positionCoefficient);
+            right.setPosition(StaticConstants.Climber.rightReverseLimit / positionCoefficient * 1.05);
         }
     }
+    
     public Command runVoltage(double voltage) {
         return runEnd(() -> {
             left.setVoltage(voltage);

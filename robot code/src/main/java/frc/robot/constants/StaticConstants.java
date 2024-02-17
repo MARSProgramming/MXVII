@@ -86,5 +86,14 @@ public final class StaticConstants {
 
         public static double rightForwardLimit = 5.5;
         public static double rightReverseLimit = -1;
+        
+        public static double rightkP = 0.03;
+        public static double rightkI = 0.0;
+        public static double rightkD = 0.0;
+
+
+        public static double leftkP = 0.03;
+        public static double leftkI = 0.0;
+        public static double leftkD = 0.0;
     }
 }
