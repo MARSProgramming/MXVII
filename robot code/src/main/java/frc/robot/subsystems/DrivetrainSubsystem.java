@@ -237,7 +237,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
     public void drive(ChassisSpeeds chassisSpeeds) {
         m_chassisSpeeds = chassisSpeeds;
     }
-    
 
     public void createSwerveModules(double fl, double fr, double bl, double br) {
         ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
