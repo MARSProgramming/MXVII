@@ -105,7 +105,7 @@ public class RobotContainer {
             .andThen(mThePivot.setPositionCommand(() -> DynamicConstants.ThePivot.zeroPosition, false))
         );
 
-        mPilot.start().whileTrue(mIntakeWheels.runVoltage(10.5));
+        mPilot.start().whileTrue(mIntakeWheels.runVoltage(6));
 
 
         // copilot
