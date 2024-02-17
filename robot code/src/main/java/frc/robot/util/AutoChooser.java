@@ -17,7 +17,6 @@ import frc.robot.auto.RA012;
 import frc.robot.auto.RA0123;
 import frc.robot.auto.RB0;
 import frc.robot.auto.RB02;
-import frc.robot.auto.RB0321;
 import frc.robot.auto.RC0;
 import frc.robot.auto.RC03;
 import frc.robot.auto.RD0;
@@ -44,6 +43,8 @@ public class AutoChooser {
         autoChooser.addOption("RA01", new RA01(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll));
         autoChooser.addOption("RA012", new RA012(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll));
         autoChooser.addOption("RA0123", new RA0123(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll));
+        autoChooser.addOption("RA014", new RA014(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll));
+        autoChooser.addOption("RA0145", new RA0145(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll));
         autoChooser.addOption("RB0", new RB0(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll));
         autoChooser.addOption("RB02", new RB02(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll));
         autoChooser.addOption("RC0", new RC0(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll));
