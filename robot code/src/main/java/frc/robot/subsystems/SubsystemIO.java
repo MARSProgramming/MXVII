@@ -55,6 +55,8 @@ public class SubsystemIO extends SubsystemBase{
         displayedValues.put("Right Climber Voltage", () -> climber.getLeftVoltage());
         displayedValues.put("Left Climber Position", () -> climber.getLeftPosition());
         displayedValues.put("Right Climber Position", () -> climber.getRightPosition());
+        displayedValues.put("Left Climber Limit Switch", () -> climber.getLeftLimitSwitch());
+        displayedValues.put("Right Climber Limit Switch", () -> climber.getRightLimitSwitch());
 
         dashboard = new BasicDash(pilotControls, copilotControls, displayedValues);
     }

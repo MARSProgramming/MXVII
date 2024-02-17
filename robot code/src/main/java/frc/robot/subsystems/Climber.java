@@ -4,9 +4,7 @@ import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
-import edu.wpi.first.networktables.GenericEntry;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.StaticConstants;
@@ -14,13 +12,10 @@ import frc.robot.constants.StaticConstants;
 public class Climber extends SubsystemBase {
     private TalonFX left;
     private TalonFX right;
-    private ShuffleboardTab tab;
-    private GenericEntry inputVoltage;
-    private GenericEntry secondaryInputVoltage;
-    private double max; 
-    private double opposingMax;
-    private double positionCoefficient;
+    private double positionCoefficient = 1.0/16.0;
     private boolean softLimitEnabled;
+    private DigitalInput leftLimitSwitch;
+    private DigitalInput rightLimitSwitch;
     
 
     public Climber() {
@@ -32,7 +27,11 @@ public class Climber extends SubsystemBase {
         left.setNeutralMode(NeutralModeValue.Brake);
         right.setNeutralMode(NeutralModeValue.Brake);
         softLimitEnabled = true;
-        // where are the limits
+
+        left.setPosition(0);
+        right.setPosition(0);
+
+        left.setInverted(true);
 
         left.getConfigurator().apply(new SoftwareLimitSwitchConfigs()
         .withForwardSoftLimitEnable(true)
@@ -44,23 +43,20 @@ public class Climber extends SubsystemBase {
         .withForwardSoftLimitThreshold(StaticConstants.Climber.rightForwardLimit / positionCoefficient)
         .withReverseSoftLimitEnable(true)
         .withReverseSoftLimitThreshold(StaticConstants.Climber.rightReverseLimit / positionCoefficient));
-
-        left.setInverted(true);
-
-        tab = Shuffleboard.getTab("Climber");
-        inputVoltage = tab.add("Voltage", 1).getEntry();
-        secondaryInputVoltage = tab.add("Reverse Voltage", -1).getEntry();
-        max = inputVoltage.getDouble(1);
-        opposingMax = inputVoltage.getDouble(-1);
-        positionCoefficient = 1.0/16.0;
+        
+        leftLimitSwitch = new DigitalInput(StaticConstants.Climber.leftLimitSwitchID);
+        rightLimitSwitch = new DigitalInput(StaticConstants.Climber.rightLimitSwitchID);
     }
 
     public void periodic() {
-        max = inputVoltage.getDouble(1);
-        opposingMax = secondaryInputVoltage.getDouble(-1);
-        
+        if(getLeftLimitSwitch()){
+            left.setPosition(StaticConstants.Climber.leftReverseLimit / positionCoefficient);
+        }
+        if(getRightLimitSwitch()){
+            right.setPosition(StaticConstants.Climber.rightReverseLimit / positionCoefficient);
+        }
     }
-    public Command runVoltage(int voltage) {
+    public Command runVoltage(double voltage) {
         return runEnd(() -> {
             left.setVoltage(voltage);
             right.setVoltage(voltage);
@@ -70,23 +66,16 @@ public class Climber extends SubsystemBase {
             right.setVoltage(0);
         });
     }
-    public Command runVoltageLeft() {
+    public Command runOneSideVoltage(double voltage, boolean leftSide){
         return runEnd(() -> {
-            left.setVoltage(max);
+            if(leftSide) left.setVoltage(voltage);
+            else right.setVoltage(voltage);
         },
         () -> {
-            left.set(0);
+            if(leftSide) left.setVoltage(0);
+            else right.setVoltage(0);
         });
     }
-    public Command runVoltageRight() {
-        return runEnd(() -> {
-            right.setVoltage(max);
-        },
-        () -> {
-            right.set(0);
-        });
-    }
-
     public double getLeftVoltage(){
         return left.getMotorVoltage().getValueAsDouble();
     }
@@ -102,7 +91,12 @@ public class Climber extends SubsystemBase {
     public double getLeftPosition() {
         return left.getPosition().getValueAsDouble() * positionCoefficient;
     }
-
+    public boolean getLeftLimitSwitch(){
+        return !leftLimitSwitch.get();
+    }
+    public boolean getRightLimitSwitch(){
+        return !rightLimitSwitch.get();
+    }
 
     public Command switchSoftLimit() {
         return runOnce(() -> {
@@ -113,27 +107,30 @@ public class Climber extends SubsystemBase {
             right.getConfigurator().apply(new SoftwareLimitSwitchConfigs()
             .withForwardSoftLimitEnable(false)
             .withReverseSoftLimitEnable(false));
+
+            softLimitEnabled = false;
         }
-        if (softLimitEnabled == false) {
-            // WE DO NOT HAVE ANY CLIMBER POSITION LIMITS IN STATIC CONSTANTS
+        else if (softLimitEnabled == false) {
             left.getConfigurator().apply(new SoftwareLimitSwitchConfigs()
             .withForwardSoftLimitEnable(true)
-            .withForwardSoftLimitThreshold(0)
+            .withForwardSoftLimitThreshold(StaticConstants.Climber.leftForwardLimit / positionCoefficient)
             .withReverseSoftLimitEnable(true)
-            .withReverseSoftLimitThreshold(0));
+            .withReverseSoftLimitThreshold(StaticConstants.Climber.leftReverseLimit / positionCoefficient));
             right.getConfigurator().apply(new SoftwareLimitSwitchConfigs()
             .withForwardSoftLimitEnable(true)
-            .withForwardSoftLimitThreshold(0)
+            .withForwardSoftLimitThreshold(StaticConstants.Climber.rightForwardLimit / positionCoefficient)
             .withReverseSoftLimitEnable(true)
-            .withReverseSoftLimitThreshold(0));
+            .withReverseSoftLimitThreshold(StaticConstants.Climber.rightReverseLimit / positionCoefficient));
+
+            softLimitEnabled = true;
         }
         });
     }
 
     public Command zeroPosition() {
         return runOnce(() -> {
-        left.getConfigurator().setPosition(0);
-        right.getConfigurator().setPosition(0);
+            left.getConfigurator().setPosition(0);
+            right.getConfigurator().setPosition(0);
         });
     }
 }

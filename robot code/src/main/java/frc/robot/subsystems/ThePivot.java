@@ -46,6 +46,8 @@ public class ThePivot extends SubsystemBase {
         profiledPIDController = new ProfiledPIDController(2.0, 3, 0, lowerConstraints);
         armFeedforward = new ArmFeedforward(0, 0.45, 0, 0);
         profiledPIDController.setTolerance(0.0015 / positionCoefficient);
+        // profiledPIDController.setIntegratorRange(-10, 10);
+        // profiledPIDController.setIZone(20);
 
         SmartDashboard.putData(profiledPIDController);
     }
@@ -110,8 +112,7 @@ public class ThePivot extends SubsystemBase {
             motor.setNeutralMode(NeutralModeValue.Coast);
             brakeEnabled = false;
         } 
-
-        if (brakeEnabled == false) {
+        else if (brakeEnabled == false) {
             motor.setNeutralMode(NeutralModeValue.Brake);
             brakeEnabled = true;
         }
@@ -124,13 +125,15 @@ public class ThePivot extends SubsystemBase {
             motor.getConfigurator().apply(new SoftwareLimitSwitchConfigs()
             .withForwardSoftLimitEnable(false)
             .withReverseSoftLimitEnable(false));
+            softLimitEnabled = false;
         }
-        if (softLimitEnabled == false) {
+        else if (softLimitEnabled == false) {
             motor.getConfigurator().apply(new SoftwareLimitSwitchConfigs()
             .withForwardSoftLimitEnable(true)
             .withForwardSoftLimitThreshold(StaticConstants.IntakePivot.forwardLimit / positionCoefficient)
             .withReverseSoftLimitEnable(true)
             .withReverseSoftLimitThreshold(StaticConstants.IntakePivot.reverseLimit / positionCoefficient));
+            softLimitEnabled = true;
         }
      }); 
     }

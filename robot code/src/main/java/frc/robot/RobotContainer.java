@@ -53,16 +53,9 @@ public class RobotContainer {
     private final CommandXboxController mCopilot = 
         new CommandXboxController(1);
 
-    private final CommandXboxController mTestPilot =
-        new CommandXboxController(2);
-
-    private final CommandXboxController mTestPilot =
-        new CommandXboxController(2);
-
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
         Rumble.getInstance().setControllers(0, 1);
-
         mDrivetrainSubsystem.setDefaultCommand(new DefaultDriveCommand(
             mDrivetrainSubsystem,
             () -> -modifyAxis(mPilot.getLeftY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
@@ -116,17 +109,17 @@ public class RobotContainer {
 
 
         // copilot
-        // mCopilot.rightBumper().whileTrue(mClimber.runVoltage());
-        // mCopilot.leftBumper().whileTrue(mClimber.runVoltageNegative());
-
-
-
+        mCopilot.b().whileTrue(new AmpSetpoint(mIntakePivot, mIntakeWheels, mThePivot));
+        mCopilot.a().whileTrue(new GoToZero(mIntakePivot, mThePivot));
     }
 
     public void configureTestBindings() {
+        CommandXboxController mTestPilot =
+        new CommandXboxController(2);
+
         // PIVOT CONTROLS
-        mTestPilot.povUp().whileTrue(mIntakePivot.runVoltage(1));
-        mTestPilot.povDown().whileTrue(mIntakePivot.runVoltage(-1));
+        mTestPilot.povUp().whileTrue(mIntakePivot.runVoltage(-1));
+        mTestPilot.povDown().whileTrue(mIntakePivot.runVoltage(1));
         mTestPilot.povRight().whileTrue(mThePivot.runVoltage(1));
         mTestPilot.povLeft().whileTrue(mThePivot.runVoltage(-1));
 
@@ -134,11 +127,13 @@ public class RobotContainer {
         mTestPilot.rightBumper().whileTrue(mIntakeWheels.runVoltage(1));
         mTestPilot.leftBumper().whileTrue(mIntakeWheels.runVoltage(-1));
         mTestPilot.rightTrigger().whileTrue(mShooterFlywheel.runVoltage(1));
-        mTestPilot.leftBumper().whileTrue(mShooterFlywheel.runVoltage(-1));
+        mTestPilot.leftTrigger().whileTrue(mShooterFlywheel.runVoltage(-1));
 
         // CLIMBER CONTROLS
-        mTestPilot.y().whileTrue(mClimber.runVoltage(1));
-        mTestPilot.a().whileTrue(mClimber.runVoltage(-1));
+        new Trigger(() -> mTestPilot.getLeftY() > 0.7).whileTrue(mClimber.runOneSideVoltage(-1, true));
+        new Trigger(() -> mTestPilot.getLeftY() < -0.7).whileTrue(mClimber.runOneSideVoltage(1, true));
+        new Trigger(() -> mTestPilot.getRightY() > 0.7).whileTrue(mClimber.runOneSideVoltage(-1, false));
+        new Trigger(() -> mTestPilot.getRightY() < -0.7).whileTrue(mClimber.runOneSideVoltage(1, false));
 
         // DISABLE SOFTWARE LIMITS
         mTestPilot.x().onTrue(new DisableLimitsCommand(mIntakePivot, mThePivot, mClimber));
@@ -148,11 +143,6 @@ public class RobotContainer {
 
         // RESET POSITIONS
         mTestPilot.start().onTrue(new ResetPositions(mIntakePivot, mThePivot, mClimber));
-
-        // mCopilot.leftTrigger().whileTrue(mClimber.runVoltageLeft());
-        // mCopilot.rightTrigger().whileTrue(mClimber.runVoltageRight());
-        mCopilot.b().whileTrue(new AmpSetpoint(mIntakePivot, mIntakeWheels, mThePivot));
-        mCopilot.a().whileTrue(new GoToZero(mIntakePivot, mThePivot));
     }
 
     /**

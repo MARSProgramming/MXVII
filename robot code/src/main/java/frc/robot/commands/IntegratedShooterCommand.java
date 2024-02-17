@@ -58,12 +58,12 @@ public class IntegratedShooterCommand extends Command {
         mDrivetrainSubsystem.getSnapController().reset(mDrivetrainSubsystem.getPigeonAngle());
         mThePivot.resetProfiledPIDController();
         movePivot = false;
-        results = calculateShootingParameters(mDrivetrainSubsystem.getPose(), goalPos, mDrivetrainSubsystem.getChassisSpeeds());
+        //results = calculateShootingParameters(mDrivetrainSubsystem.getPose(), goalPos, mDrivetrainSubsystem.getChassisSpeeds());
     }
     @Override
     public void execute(){
         //use to shoot while moving
-        //results = calculateShootingParameters(mDrivetrainSubsystem.getPose(), goalPos, mDrivetrainSubsystem.getChassisSpeeds());
+        results = calculateShootingParameters(mDrivetrainSubsystem.getPose(), goalPos, mDrivetrainSubsystem.getChassisSpeeds());
 
         if(DriverStation.getAlliance().isPresent() && !DriverStation.getAlliance().get().equals(alliance)){
             alliance = DriverStation.getAlliance().get();
@@ -140,7 +140,7 @@ public class IntegratedShooterCommand extends Command {
         distToPivotAngle.put(2.9, 0.08);
         distToPivotAngle.put(3.32, 0.086);
         distToPivotAngle.put(3.7, 0.09);
-        distToPivotAngle.put(4.82, 0.96);
+        distToPivotAngle.put(4.82, 0.096);
         
         return new double[]{distToRPM.get(dist), Math.atan2(newGoal.getY()-pos.getY(), newGoal.getX()-pos.getX()), distToPivotAngle.get(dist)};
     }

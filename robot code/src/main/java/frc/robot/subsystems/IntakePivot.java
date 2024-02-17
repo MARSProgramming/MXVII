@@ -36,7 +36,8 @@ public class IntakePivot extends SubsystemBase {
         .withPeakForwardVoltage(3)
         .withPeakReverseVoltage(-3));
         pivotMotor.setNeutralMode(NeutralModeValue.Coast);
-        boolean brakeEnabled = true;
+        brakeEnabled = false;
+        softLimitEnabled = true;
         pivotMotor.setInverted(true);
         pivotMotor.setPosition(0);
         profiledPIDController = new ProfiledPIDController(0.7, 0, 0, new TrapezoidProfile.Constraints(1000,1000));
@@ -118,8 +119,7 @@ public class IntakePivot extends SubsystemBase {
             pivotMotor.setNeutralMode(NeutralModeValue.Coast);
             brakeEnabled = false;
         } 
-
-        if (brakeEnabled == false) {
+        else if (brakeEnabled == false) {
             pivotMotor.setNeutralMode(NeutralModeValue.Brake);
             brakeEnabled = true;
         }
@@ -132,13 +132,15 @@ public class IntakePivot extends SubsystemBase {
             pivotMotor.getConfigurator().apply(new SoftwareLimitSwitchConfigs()
             .withForwardSoftLimitEnable(false)
             .withReverseSoftLimitEnable(false));
+            softLimitEnabled = false;
         }
-        if (softLimitEnabled == false) {
+        else if (softLimitEnabled == false) {
             pivotMotor.getConfigurator().apply(new SoftwareLimitSwitchConfigs()
             .withForwardSoftLimitEnable(true)
             .withForwardSoftLimitThreshold(StaticConstants.IntakePivot.forwardLimit / positionCoefficient)
             .withReverseSoftLimitEnable(true)
             .withReverseSoftLimitThreshold(StaticConstants.IntakePivot.reverseLimit / positionCoefficient));
+            softLimitEnabled = true;
         }
      }); 
     }
