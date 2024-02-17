@@ -24,7 +24,7 @@ public class ThePivot extends SubsystemBase {
     private double positionCoefficient = 1.0/116.666666667;
     private ProfiledPIDController profiledPIDController;
     private ArmFeedforward armFeedforward;
-    private TrapezoidProfile.Constraints lowerConstraints = new TrapezoidProfile.Constraints(80, 50);
+    private TrapezoidProfile.Constraints lowerConstraints = new TrapezoidProfile.Constraints(50, 30);
     private TrapezoidProfile.Constraints raiseConstraints = new TrapezoidProfile.Constraints(50, 300);
     public ThePivot(){
         motor = new TalonFX(StaticConstants.ThePivot.ID);
@@ -35,7 +35,7 @@ public class ThePivot extends SubsystemBase {
         .withReverseSoftLimitThreshold(StaticConstants.ThePivot.reverseLimit / positionCoefficient));
         motor.getConfigurator().apply(new VoltageConfigs()
         .withPeakForwardVoltage(9)
-        .withPeakReverseVoltage(-3));
+        .withPeakReverseVoltage(-2));
         brakeEnabled = true;
         softLimitEnabled = true;
         motor.setNeutralMode(NeutralModeValue.Brake);
