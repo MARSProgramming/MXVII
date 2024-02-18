@@ -121,9 +121,9 @@ public class IntegratedShooterCommand extends Command {
 
         InterpolatingDoubleTreeMap distToTime = new InterpolatingDoubleTreeMap();
         distToTime.put(0.0, 0.0);
-        distToTime.put(1.0, 0.15);
-        distToTime.put(2.0, 0.3);
-        distToTime.put(6.0, 0.9);
+        distToTime.put(1.36, 0.1);
+        distToTime.put(2.8, 0.296);
+        distToTime.put(4.22, 0.38);
         double time = distToTime.get(dist);
 
         Translation2d newGoal = goalPos.minus(new Translation2d(vel.vxMetersPerSecond * time, vel.vyMetersPerSecond * time));
