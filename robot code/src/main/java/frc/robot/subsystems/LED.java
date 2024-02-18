@@ -9,12 +9,15 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 enum LEDState {
   RAINBOW,
+  WHITE,
   RED,
   PURPLE,
   FLASHING_PURPLE,
   YELLOW,
   FLASHING_YELLOW,
-  FLAMES
+  FLAMES,
+  ORANGE,
+  FLASHING_ORANGE
   }  
 
 public class LED extends SubsystemBase {
@@ -49,6 +52,22 @@ public class LED extends SubsystemBase {
     );
   }
 
+  public Command setOrange(){
+    return runOnce(
+      () -> {
+        state = LEDState.RAINBOW;
+      }
+    );
+  }
+
+  public Command setWhite(){
+    return runOnce(
+      () -> {
+        state = LEDState.WHITE;
+      }
+    );
+  }
+
   public Command setRed(){
     return runOnce(
       () -> {
@@ -57,6 +76,13 @@ public class LED extends SubsystemBase {
     );
   }
 
+  public Command setOrangeFlashing(){
+    return runOnce(
+      () -> {
+        state = LEDState.FLASHING_ORANGE;
+      }
+    );
+  }
   
   public Command setYellow(){
     return runOnce(
@@ -145,6 +171,15 @@ public class LED extends SubsystemBase {
    if (state == LEDState.RAINBOW) {
     rainbow();
    } 
+   else if (state == LEDState.WHITE) {
+    white();
+   }
+   else if (state == LEDState.FLASHING_ORANGE) {
+    orange_flash();
+   }
+   else if (state == LEDState.ORANGE) {
+    orange();
+   }
    else if (state == LEDState.RED) {
     red();
    }
@@ -153,16 +188,16 @@ public class LED extends SubsystemBase {
    }
    else if (state == LEDState.FLASHING_PURPLE) {
     purple_flash();
-  }
+   }
    else if (state == LEDState.YELLOW) {
     yellow();
    }
    else if (state == LEDState.FLASHING_YELLOW){
     yellow_flash();
-    }
-    else if (state == LEDState.FLAMES){
-      flames();
-      }
+   }
+   else if (state == LEDState.FLAMES){
+    flames();
+   }
    m_led.setData(m_ledBuffer);
   }
   int index = 0;
@@ -251,6 +286,39 @@ public class LED extends SubsystemBase {
        
        m_led.setData(m_ledBuffer);
         }
-    
+
+      private void white() {
+        // For every pixel
+        for (var i = 0; i < m_ledBuffer.getLength(); i++) {
+          // Sets the specified LED to the RGB values for red
+          m_ledBuffer.setRGB(i, 255, 255, 255);
+       }
+       
+       m_led.setData(m_ledBuffer);
+        }
+
+      private void orange() {
+        // For every pixel
+        for (var i = 0; i < m_ledBuffer.getLength(); i++) {
+          // Sets the specified LED to the RGB values for red
+          m_ledBuffer.setRGB(i, 255, 79, 0);
+       }
+       
+       m_led.setData(m_ledBuffer);
+        }
+
+    private void orange_flash() {
+
+      // For every pixel
+      for (var i = 0; i < m_ledBuffer.getLength(); i++) {
+        // Sets the specified LED to the RGB values for red
+        if ((iterations / 5) % 2 == 0) {
+          m_ledBuffer.setRGB(i, 255, 79, 0);
+        } else {
+          m_ledBuffer.setRGB(i, 0,0,0);
+        }
+     }
+     iterations++;
+    }
   }
 
