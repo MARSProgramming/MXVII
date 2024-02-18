@@ -1,6 +1,4 @@
 package frc.robot.subsystems;
-import java.time.DayOfWeek;
-
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.configs.VoltageConfigs;
@@ -67,13 +65,12 @@ public class IntakeWheels extends SubsystemBase {
         });
     }
     public void intake(){
-        //TODO: make dynamic constant
-        intakeMotor.setVoltage(8);
+        intakeMotor.setVoltage(DynamicConstants.Intake.intakeVoltage);
     }
 
     public Command outtake() {
         return runEnd(() -> {
-            intakeMotor.setVoltage(-9.0);
+            intakeMotor.setVoltage(DynamicConstants.Intake.outtakeVoltage);
         }, () -> {
             intakeMotor.setVoltage(0);
         });

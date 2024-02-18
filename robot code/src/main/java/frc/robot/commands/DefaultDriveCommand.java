@@ -1,6 +1,5 @@
 package frc.robot.commands;
 
-import java.sql.Driver;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.geometry.Rotation2d;

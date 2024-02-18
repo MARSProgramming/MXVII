@@ -1,8 +1,6 @@
 package frc.robot.commands.Test;
 
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.IntakePivot;
 import frc.robot.subsystems.ThePivot;
 

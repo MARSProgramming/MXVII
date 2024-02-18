@@ -21,6 +21,10 @@ public final class DynamicConstants {
         public static double exampleConstant = 0;
     }
     public static class Intake{
+        //voltage of certain movements
+        public static double intakeVoltage = 8;
+        public static double outtakeVoltage = -9;
+
         //voltage threshold for note detection
         public static double irSensorThreshold = 1.6;
 

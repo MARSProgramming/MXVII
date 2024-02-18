@@ -11,15 +11,14 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AlignToPiece;
 import frc.robot.commands.AmpSetpoint;
 import frc.robot.commands.DefaultDriveCommand;
-import frc.robot.commands.DefaultShooterCommand;
 import frc.robot.commands.GoToZero;
 import frc.robot.commands.InitializeClimbSetpoint;
 import frc.robot.commands.InitializeTrapSetpoint;
 import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.IntegratedShooterCommand;
 import frc.robot.commands.Test.DisableLimitsCommand;
 import frc.robot.commands.Test.ResetPositions;
 import frc.robot.commands.Test.SwitchNeutralModeCommand;
-import frc.robot.commands.IntegratedShooterCommand;
 import frc.robot.constants.DynamicConstants;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DrivetrainSubsystem;
@@ -135,10 +134,10 @@ public class RobotContainer {
         new CommandXboxController(2);
 
         // PIVOT CONTROLS
-        mTestPilot.povUp().whileTrue(mIntakePivot.runVoltage(-1));
-        mTestPilot.povDown().whileTrue(mIntakePivot.runVoltage(1));
-        mTestPilot.povRight().whileTrue(mThePivot.runVoltage(1));
-        mTestPilot.povLeft().whileTrue(mThePivot.runVoltage(-1));
+        mTestPilot.povUp().whileTrue(mThePivot.runVoltage(-1));
+        mTestPilot.povDown().whileTrue(mThePivot.runVoltage(1));
+        mTestPilot.povRight().whileTrue(mIntakePivot.runVoltage(1));
+        mTestPilot.povLeft().whileTrue(mIntakePivot.runVoltage(-1));
 
         // FLYWHEEL AND INTAKE WHEEL CONTROLS
         mTestPilot.rightBumper().whileTrue(mIntakeWheels.runVoltage(1));

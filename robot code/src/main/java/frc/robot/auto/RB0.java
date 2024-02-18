@@ -2,9 +2,7 @@ package frc.robot.auto;
 
 import com.pathplanner.lib.path.PathPlannerTrajectory;
 
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.DriveAtPath;
 import frc.robot.commands.IntegratedShooterCommand;
 import frc.robot.commands.ResetPose;
