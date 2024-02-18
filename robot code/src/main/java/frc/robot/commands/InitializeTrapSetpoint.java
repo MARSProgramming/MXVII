@@ -1,12 +1,12 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.constants.DynamicConstants;
 import frc.robot.subsystems.IntakePivot;
 import frc.robot.subsystems.IntakeWheels;
 import frc.robot.subsystems.ThePivot;
 
-public class InitializeTrapSetpoint extends SequentialCommandGroup{
+public class InitializeTrapSetpoint extends ParallelCommandGroup{
     IntakePivot mIntakePivot;
     IntakeWheels mIntakeWheels;
     ThePivot mThePivot;
@@ -15,10 +15,9 @@ public class InitializeTrapSetpoint extends SequentialCommandGroup{
         mIntakePivot = intakePivot;
         mThePivot = thePivot;
         //addRequirements(thePivot, intakePivot);
-        addRequirements(thePivot);
         addCommands(
-            thePivot.setPositionCommand(() -> DynamicConstants.ThePivot.trapPosition, true)
-            //intakePivot.setPositionCommand(() -> DynamicConstants.Intake.pivotTrapPosition, false)
+            thePivot.setPositionCommand(() -> DynamicConstants.ThePivot.trapPosition, true),
+            intakePivot.setPositionCommand(() -> DynamicConstants.Intake.pivotTrapPosition, true)
         );
     }
 

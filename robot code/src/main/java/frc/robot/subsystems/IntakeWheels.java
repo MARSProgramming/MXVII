@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 import java.time.DayOfWeek;
 
+import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.configs.VoltageConfigs;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -27,6 +28,10 @@ public class IntakeWheels extends SubsystemBase {
         .withPeakReverseVoltage(12));
         intakeMotor.setNeutralMode(NeutralModeValue.Brake);
         intakeMotor.setInverted(false);
+        intakeMotor.getConfigurator().apply(new CurrentLimitsConfigs().withSupplyCurrentLimitEnable(true)
+        .withSupplyCurrentLimit(StaticConstants.IntakeWheels.supplyCurrentLimit));
+        intakeMotor.getConfigurator().apply(new CurrentLimitsConfigs().withSupplyCurrentLimitEnable(true)
+        .withSupplyCurrentLimit(StaticConstants.IntakeWheels.statorCurrentLimit));
 
         irSensorLeft = new AnalogInput(StaticConstants.IntakeWheels.leftIrID);
         irSensorLeft.setAverageBits(4);
@@ -63,7 +68,7 @@ public class IntakeWheels extends SubsystemBase {
     }
     public void intake(){
         //TODO: make dynamic constant
-        intakeMotor.setVoltage(6);
+        intakeMotor.setVoltage(8);
     }
 
     public Command outtake() {

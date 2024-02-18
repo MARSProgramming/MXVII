@@ -58,13 +58,16 @@ public class IntegratedShooterCommand extends Command {
         mDrivetrainSubsystem.getSnapController().reset(mDrivetrainSubsystem.getPigeonAngle());
         mThePivot.resetProfiledPIDController();
         movePivot = false;
-        //results = calculateShootingParameters(mDrivetrainSubsystem.getPose(), goalPos, mDrivetrainSubsystem.getChassisSpeeds());
+        mTimer.stop();
+        mTimer.reset();
+        results = calculateShootingParameters(mDrivetrainSubsystem.getPose(), goalPos, mDrivetrainSubsystem.getChassisSpeeds());
     }
     @Override
     public void execute(){
         //use to shoot while moving
-        results = calculateShootingParameters(mDrivetrainSubsystem.getPose(), goalPos, mDrivetrainSubsystem.getChassisSpeeds());
-
+        if(mDrivetrainSubsystem.getTranslationalSpeed() > 0.05){
+            results = calculateShootingParameters(mDrivetrainSubsystem.getPose(), goalPos, mDrivetrainSubsystem.getChassisSpeeds());
+        }
         if(DriverStation.getAlliance().isPresent() && !DriverStation.getAlliance().get().equals(alliance)){
             alliance = DriverStation.getAlliance().get();
         }
@@ -86,7 +89,6 @@ public class IntegratedShooterCommand extends Command {
         SmartDashboard.putNumber("Angle to Target", swerveAngle);
         if(shoot){
             mIntakeWheels.setDutyCycle(-0.9);
-            mTimer.reset();
             mTimer.start();
         }
         double angularVelocity = mDrivetrainSubsystem.getSnapController().calculate(mDrivetrainSubsystem.getPigeonAngle(), swerveAngle)
@@ -131,17 +133,22 @@ public class IntegratedShooterCommand extends Command {
         distToRPM.put(1.0, 3500.0);
         distToRPM.put(2.0, 3500.0);
         distToRPM.put(3.0, 3750.0);
+        distToRPM.put(3.5, 3750.0);
+        distToRPM.put(4.0, 4500.0);
 
         InterpolatingDoubleTreeMap distToPivotAngle = new InterpolatingDoubleTreeMap();
         distToPivotAngle.put(1.5, 0.0);
-        distToPivotAngle.put(2.0, 0.06);
+        distToPivotAngle.put(2.0, 0.055);
         distToPivotAngle.put(2.43, 0.066);
         distToPivotAngle.put(2.64, 0.075);
         distToPivotAngle.put(2.9, 0.08);
         distToPivotAngle.put(3.32, 0.086);
-        distToPivotAngle.put(3.7, 0.09);
-        distToPivotAngle.put(4.82, 0.096);
+        distToPivotAngle.put(3.7, 0.093);
+        distToPivotAngle.put(4.0, 0.098);
+        distToPivotAngle.put(4.3, 0.1);
+        distToPivotAngle.put(5.0, 0.102);
         
-        return new double[]{distToRPM.get(dist), Math.atan2(newGoal.getY()-pos.getY(), newGoal.getX()-pos.getX()), distToPivotAngle.get(dist) - 0.019};
+        //TODO: set fudge factor as dynamic constant
+        return new double[]{distToRPM.get(dist), Math.atan2(newGoal.getY()-pos.getY(), (newGoal.getX() - 0.2 - pos.getX())), Math.max(distToPivotAngle.get(dist) - 0.014, 0)};
     }
 }

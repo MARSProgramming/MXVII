@@ -18,7 +18,7 @@ public class RDL extends SequentialCommandGroup{
     public RDL(DrivetrainSubsystem drivetrainSubsystem, IntakeWheels intakeWheels, IntakePivot intakePivot, ShooterFlywheel shooterFlywheel, ThePivot thePivot, Limelight ll){
         addRequirements(thePivot, shooterFlywheel, intakePivot, intakeWheels, drivetrainSubsystem);
 
-        PathPlannerTrajectory RDL = AutoChooser.openTrajectoryFile("RDL", drivetrainSubsystem);
+        PathPlannerTrajectory RDL = AutoChooser.openTrajectoryFile("RDL", drivetrainSubsystem, () -> drivetrainSubsystem.getPigeonAngle());
         addCommands(
             new ResetPose(drivetrainSubsystem, ll, RDL.getInitialTargetHolonomicPose()),
             new DriveAtPath(drivetrainSubsystem, RDL, ll, false)

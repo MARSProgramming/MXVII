@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
+import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
 import com.ctre.phoenix6.configs.VoltageConfigs;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -11,6 +12,7 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -47,11 +49,15 @@ public class ThePivot extends SubsystemBase {
         motor.setNeutralMode(NeutralModeValue.Brake);
         motor.setInverted(true);
         motor.setPosition(0);
+        motor.getConfigurator().apply(new CurrentLimitsConfigs().withSupplyCurrentLimitEnable(true)
+        .withSupplyCurrentLimit(StaticConstants.ThePivot.supplyCurrentLimit));
+        motor.getConfigurator().apply(new CurrentLimitsConfigs().withSupplyCurrentLimitEnable(true)
+        .withSupplyCurrentLimit(StaticConstants.ThePivot.statorCurrentLimit));
 
         //TODO: set them in constants
         profiledPIDController = new ProfiledPIDController(2.0, 3, 0, lowerConstraints);
         armFeedforward = new ArmFeedforward(0, 0.45, 0, 0);
-        profiledPIDController.setTolerance(0.0015 / positionCoefficient);
+        profiledPIDController.setTolerance(0.001 / positionCoefficient);
         // profiledPIDController.setIntegratorRange(-10, 10);
         // profiledPIDController.setIZone(20);
 
@@ -63,7 +69,7 @@ public class ThePivot extends SubsystemBase {
     public double getEncoderPosition(){
         double pos = 1 - absoluteEncoder.getAbsolutePosition() - encoderZero;
         if(pos < 0) pos++;
-        return Math.abs(pos - getPosition()) < 0.1 ? pos : getPosition();
+        return Math.abs(pos - getPosition()) < 0.05 ? pos : getPosition();
         //return pos;
     }
     public Command runVoltage(double voltage) {
@@ -156,6 +162,8 @@ public class ThePivot extends SubsystemBase {
     }
     @Override
     public void periodic(){
-        
+        if(getEncoderPosition() < 0.003 && DriverStation.isDisabled()){ 
+            motor.setPosition(0);
+        }
     }
 }

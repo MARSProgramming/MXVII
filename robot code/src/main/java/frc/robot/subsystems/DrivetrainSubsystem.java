@@ -243,6 +243,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
         Mk4ModuleConfiguration config = new Mk4ModuleConfiguration();
         config.setCanivoreName(StaticConstants.Drive.kDriveCANivore);
+        config.setDriveCurrentLimit(40);
 
         m_frontLeftModule = Mk4iSwerveModuleHelper.createFalcon500(
                 tab.getLayout("Front Left Module", BuiltInLayouts.kList)

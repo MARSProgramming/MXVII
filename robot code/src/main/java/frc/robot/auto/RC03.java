@@ -19,7 +19,7 @@ public class RC03 extends SequentialCommandGroup{
     public RC03(DrivetrainSubsystem drivetrainSubsystem, IntakeWheels intakeWheels, IntakePivot intakePivot, ShooterFlywheel shooterFlywheel, ThePivot thePivot, Limelight ll){
         addRequirements(thePivot, shooterFlywheel, intakePivot, intakeWheels, drivetrainSubsystem);
 
-        PathPlannerTrajectory RC3 = AutoChooser.openTrajectoryFile("RC3", drivetrainSubsystem);
+        PathPlannerTrajectory RC3 = AutoChooser.openTrajectoryFile("RC3", drivetrainSubsystem, () -> drivetrainSubsystem.getPigeonAngle());
         addCommands(
             new ResetPose(drivetrainSubsystem, ll, RC3.getInitialTargetHolonomicPose()),
             new IntegratedShooterCommand(intakeWheels, shooterFlywheel, thePivot, drivetrainSubsystem).withTimeout(3),

@@ -36,7 +36,7 @@ public class Limelight extends SubsystemBase{
         y = botpose[1] + StaticConstants.Field.fieldWidth/2.0;
 
         dist = NetworkTableInstance.getDefault().getTable("limelight-trap").getEntry("targetpose_cameraspace").getDoubleArray(new double[7])[2];
-        if(dist < 4 && NetworkTableInstance.getDefault().getTable("limelight-trap").getEntry("tv").getDouble(0) == 1.0){
+        if(dist < 2.5 && NetworkTableInstance.getDefault().getTable("limelight-trap").getEntry("tv").getDouble(0) == 1.0){
             dt.addVisionMeasurement(new Pose2d(x, y, Rotation2d.fromRadians(dt.getPigeonAngle())), botpose[6]/1000);
         }
     }
@@ -45,12 +45,18 @@ public class Limelight extends SubsystemBase{
     public void periodic(){
         resetPose();
         if(NetworkTableInstance.getDefault().getTable("limelight-piece").getEntry("tv").getDouble(0) != 1.0){
+            pieceLLTimer.reset();
             pieceLLTimer.start();
         }
     }
 
     public boolean pieceLLhasTarget(){
         return pieceLLTimer.get() > 0.25;
+    }
+    public double getHeadingFromShooterLL(double defaultvalue){
+        if(NetworkTableInstance.getDefault().getTable("limelight-shooter").getEntry("tv").getDouble(0) != 1.0) return defaultvalue;
+        botpose = NetworkTableInstance.getDefault().getTable("limelight-shooter").getEntry("botpose").getDoubleArray(new double[7]);
+        return botpose[5];
     }
     public double getPiecePosition(){
         if(pieceLLhasTarget()){

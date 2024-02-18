@@ -60,15 +60,24 @@ public final class StaticConstants {
         public static double forwardLimit = 0.55;
         public static double reverseLimit = 0.02;
         public static int reverseLimitSwitchID = 0;
+
+        public static double supplyCurrentLimit = 60;
+        public static double statorCurrentLimit = 60;
     }
     public static class IntakeWheels{
         public static int ID = 12;
         public static int leftIrID = 2;
         public static int rightIrID = 1;
+
+        public static double supplyCurrentLimit = 20;
+        public static double statorCurrentLimit = 40;
     }
     public static class ShooterFlywheel{
         public static int masterID = 13;
         public static int followID = 23;
+
+        public static double supplyCurrentLimit = 20;
+        public static double statorCurrentLimit = 40;
     }
     public static class ThePivot{
         public static int ID = 33;
@@ -78,6 +87,8 @@ public final class StaticConstants {
         public static double reverseLimit = 0.0;
 
         public static int encoderID = 3;
+        public static double supplyCurrentLimit = 20;
+        public static double statorCurrentLimit = 40;
     }
 
     public static class Climber{
@@ -88,10 +99,10 @@ public final class StaticConstants {
         public static int rightLimitSwitchID = 1;
 
         public static double leftForwardLimit = 5.6;
-        public static double leftReverseLimit = -2;
+        public static double leftReverseLimit = -4;
 
         public static double rightForwardLimit = 5.6;
-        public static double rightReverseLimit = -2;
+        public static double rightReverseLimit = -4;
         
         public static double rightkP = 0.03;
         public static double rightkI = 0.0;

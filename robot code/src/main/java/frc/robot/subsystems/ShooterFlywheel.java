@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
+import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
@@ -32,6 +33,11 @@ public class ShooterFlywheel extends SubsystemBase {
         follower.setNeutralMode(NeutralModeValue.Coast);
         master.setInverted(false);
         follower.setControl(new Follower(StaticConstants.ShooterFlywheel.masterID, false));
+
+        master.getConfigurator().apply(new CurrentLimitsConfigs().withSupplyCurrentLimitEnable(true)
+        .withSupplyCurrentLimit(StaticConstants.ShooterFlywheel.supplyCurrentLimit));
+        master.getConfigurator().apply(new CurrentLimitsConfigs().withSupplyCurrentLimitEnable(true)
+        .withSupplyCurrentLimit(StaticConstants.ShooterFlywheel.statorCurrentLimit));
         Slot0Configs config = new Slot0Configs();
         config.kP = 0.03;
         config.kI = 0.0;
