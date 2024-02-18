@@ -51,6 +51,10 @@ public class RobotContainer {
     private final AutoChooser autoChooser = new AutoChooser(mDrivetrainSubsystem, mIntakeWheels, mIntakePivot, mShooterFlywheel, mThePivot, mLimelight);
     private final LED m_Led = new LED();
 
+    public LED getLED(){
+      return m_Led;
+    }
+
     // Replace with CommandPS4Controller or CommandJoystick if needed
     private final CommandXboxController mPilot =
         new CommandXboxController(0);
@@ -70,6 +74,7 @@ public class RobotContainer {
         //mShooterFlywheel.setDefaultCommand(new DefaultShooterCommand(mShooterFlywheel, mDrivetrainSubsystem));
         // Configure the trigger bindings
         configureBindings();
+        configureLEDTriggers();
     }
 
     /**
@@ -81,6 +86,12 @@ public class RobotContainer {
      * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
      * joysticks}.
      */
+
+    private void configureLEDTriggers(){
+      new Trigger(() -> mIntakeWheels.hasPiece()).whileTrue(m_Led.setOrange());
+      mPilot.rightTrigger().whileTrue(m_Led.setOrangeFlashing());
+      m_Led.setDefaultCommand(m_Led.setRed());
+    }
     private void configureBindings() {
         mPilot.y().whileTrue(mDrivetrainSubsystem.zeroGyroscope(0));
         mPilot.leftTrigger().whileTrue(new AlignToPiece(mDrivetrainSubsystem, mLimelight,
