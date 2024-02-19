@@ -76,6 +76,6 @@ public class DriveAtPath extends Command {
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return mDrivetrainSubsystem.getPose().getTranslation().getDistance(mTrajectory.getEndState().positionMeters) < 0.05;
+        return mDrivetrainSubsystem.getPose().getTranslation().getDistance(mTrajectory.getEndState().positionMeters) < 0.06;
     }
 }

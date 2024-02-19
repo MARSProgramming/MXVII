@@ -20,14 +20,14 @@ public class RA014 extends SequentialCommandGroup{
     public RA014(DrivetrainSubsystem drivetrainSubsystem, IntakeWheels intakeWheels, IntakePivot intakePivot, ShooterFlywheel shooterFlywheel, ThePivot thePivot, Limelight ll){
         addRequirements(thePivot, shooterFlywheel, intakePivot, intakeWheels, drivetrainSubsystem);
 
-        PathPlannerTrajectory RA1 = AutoChooser.openTrajectoryFile("RA1", drivetrainSubsystem, () -> drivetrainSubsystem.getPigeonAngle());
-        PathPlannerTrajectory R14 = AutoChooser.openTrajectoryFile("R14", drivetrainSubsystem, () -> drivetrainSubsystem.getPigeonAngle());
-        PathPlannerTrajectory R4G = AutoChooser.openTrajectoryFile("R4G", drivetrainSubsystem, () -> drivetrainSubsystem.getPigeonAngle());
+        PathPlannerTrajectory RA1 = AutoChooser.openTrajectoryFile("RA1", drivetrainSubsystem, drivetrainSubsystem.getPigeonAngle());
+        PathPlannerTrajectory R14 = AutoChooser.openTrajectoryFile("R14", drivetrainSubsystem, drivetrainSubsystem.getPigeonAngle());
+        PathPlannerTrajectory R4G = AutoChooser.openTrajectoryFile("R4G", drivetrainSubsystem, drivetrainSubsystem.getPigeonAngle());
         addCommands(
             new ResetPose(drivetrainSubsystem, ll, RA1.getInitialTargetHolonomicPose()),
-            drivetrainSubsystem.zeroGyroscope(ll.getHeadingFromShooterLL(0)),
+            drivetrainSubsystem.zeroGyroscope(-63.0),
             new IntegratedShooterCommand(intakeWheels, shooterFlywheel, thePivot, drivetrainSubsystem).withTimeout(3),
-            new DriveAtPath(drivetrainSubsystem, RA1, ll, true).alongWith(new IntakeCommand(intakePivot, intakeWheels, thePivot)),
+            new DriveAtPath(drivetrainSubsystem, RA1, ll, false).alongWith(new IntakeCommand(intakePivot, intakeWheels, thePivot)),
             new IntegratedShooterCommand(intakeWheels, shooterFlywheel, thePivot, drivetrainSubsystem).withTimeout(3),
             new DriveAtPath(drivetrainSubsystem, R14, ll, true).alongWith(new WaitCommand(1), new IntakeCommand(intakePivot, intakeWheels, thePivot)),
             new DriveAtPath(drivetrainSubsystem, R4G, ll, false),

@@ -45,7 +45,7 @@ public class LED extends SubsystemBase {
   }
 
   public Command setRainbow(){
-    return runOnce(
+    return run(
       () -> {
         state = LEDState.RAINBOW;
       }
@@ -53,15 +53,15 @@ public class LED extends SubsystemBase {
   }
 
   public Command setOrange(){
-    return runOnce(
+    return run(
       () -> {
-        state = LEDState.RAINBOW;
+        state = LEDState.ORANGE;
       }
     );
   }
 
   public Command setWhite(){
-    return runOnce(
+    return run(
       () -> {
         state = LEDState.WHITE;
       }
@@ -69,7 +69,7 @@ public class LED extends SubsystemBase {
   }
 
   public Command setRed(){
-    return runOnce(
+    return run(
       () -> {
         state = LEDState.RED;
       }
@@ -77,7 +77,7 @@ public class LED extends SubsystemBase {
   }
 
   public Command setOrangeFlashing(){
-    return runOnce(
+    return run(
       () -> {
         state = LEDState.FLASHING_ORANGE;
       }
@@ -85,7 +85,7 @@ public class LED extends SubsystemBase {
   }
   
   public Command setYellow(){
-    return runOnce(
+    return run(
       () -> {
         state = LEDState.YELLOW;
       }
@@ -93,7 +93,7 @@ public class LED extends SubsystemBase {
   }
 
   public Command setYellowFlashing(){
-    return runOnce(
+    return run(
       () -> {
         state = LEDState.FLASHING_YELLOW;
       }
@@ -101,7 +101,7 @@ public class LED extends SubsystemBase {
   }
 
   public Command setPurple(){
-    return runOnce(
+    return run(
       () -> {
         state = LEDState.PURPLE;
       }
@@ -109,7 +109,7 @@ public class LED extends SubsystemBase {
   }
 
   public Command setPurpleFlashing(){
-    return runOnce(
+    return run(
       () -> {
         state = LEDState.FLASHING_PURPLE;
       }
@@ -117,7 +117,7 @@ public class LED extends SubsystemBase {
   }
 
   public Command swapYellowPurple(){
-    return runOnce(
+    return run(
       () -> {
         if(state == LEDState.PURPLE){
           state = LEDState.YELLOW;

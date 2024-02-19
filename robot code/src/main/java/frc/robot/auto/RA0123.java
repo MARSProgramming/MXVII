@@ -21,18 +21,22 @@ public class RA0123 extends SequentialCommandGroup{
     public RA0123(DrivetrainSubsystem drivetrainSubsystem, IntakeWheels intakeWheels, IntakePivot intakePivot, ShooterFlywheel shooterFlywheel, ThePivot thePivot, Limelight ll){
         addRequirements(thePivot, shooterFlywheel, intakePivot, intakeWheels, drivetrainSubsystem);
 
-        PathPlannerTrajectory RA1 = AutoChooser.openTrajectoryFile("RA1", drivetrainSubsystem, () -> drivetrainSubsystem.getPigeonAngle());
-        PathPlannerTrajectory R12 = AutoChooser.openTrajectoryFile("R12", drivetrainSubsystem, () -> drivetrainSubsystem.getPigeonAngle());
-        PathPlannerTrajectory R23 = AutoChooser.openTrajectoryFile("R23", drivetrainSubsystem, () -> drivetrainSubsystem.getPigeonAngle());
+        PathPlannerTrajectory RA1 = AutoChooser.openTrajectoryFile("RA1", drivetrainSubsystem, drivetrainSubsystem.getPigeonAngle());
+        PathPlannerTrajectory R1B = AutoChooser.openTrajectoryFile("R1B", drivetrainSubsystem, drivetrainSubsystem.getPigeonAngle());
+        PathPlannerTrajectory RB2 = AutoChooser.openTrajectoryFile("RB2", drivetrainSubsystem, drivetrainSubsystem.getPigeonAngle());
+        PathPlannerTrajectory R23 = AutoChooser.openTrajectoryFile("R23", drivetrainSubsystem, drivetrainSubsystem.getPigeonAngle());
         addCommands(
             new ResetPose(drivetrainSubsystem, ll, RA1.getInitialTargetHolonomicPose()),
-            drivetrainSubsystem.zeroGyroscope(ll.getHeadingFromShooterLL(0)),
+            drivetrainSubsystem.zeroGyroscope(-63.0),
             new IntegratedShooterCommand(intakeWheels, shooterFlywheel, thePivot, drivetrainSubsystem).withTimeout(3),
-            (new WaitCommand(0.5).andThen(new DriveAtPath(drivetrainSubsystem, RA1, ll, true))).alongWith(new IntakeCommand(intakePivot, intakeWheels, thePivot)).deadlineWith(shooterFlywheel.runVelocity(() -> DynamicConstants.ShooterFlywheel.idleVelocity)),
+            (new DriveAtPath(drivetrainSubsystem, RA1, ll, false).andThen(new DriveAtPath(drivetrainSubsystem, R1B, ll, false))).alongWith(new IntakeCommand(intakePivot, intakeWheels, thePivot))
+            .deadlineWith(shooterFlywheel.runVelocity(() -> DynamicConstants.ShooterFlywheel.idleVelocity)).withTimeout(6),
             new IntegratedShooterCommand(intakeWheels, shooterFlywheel, thePivot, drivetrainSubsystem).withTimeout(3),
-            new DriveAtPath(drivetrainSubsystem, R12, ll, true).alongWith(new IntakeCommand(intakePivot, intakeWheels, thePivot)).deadlineWith(shooterFlywheel.runVelocity(() -> DynamicConstants.ShooterFlywheel.idleVelocity)),
+            new DriveAtPath(drivetrainSubsystem, RB2, ll, false).alongWith(new IntakeCommand(intakePivot, intakeWheels, thePivot)).deadlineWith(shooterFlywheel.runVelocity(() -> DynamicConstants.ShooterFlywheel.idleVelocity))
+            .withTimeout(3),
             new IntegratedShooterCommand(intakeWheels, shooterFlywheel, thePivot, drivetrainSubsystem).withTimeout(3),
-            new DriveAtPath(drivetrainSubsystem, R23, ll, true).alongWith(new IntakeCommand(intakePivot, intakeWheels, thePivot)).deadlineWith(shooterFlywheel.runVelocity(() -> DynamicConstants.ShooterFlywheel.idleVelocity)),
+            new DriveAtPath(drivetrainSubsystem, R23, ll, false).alongWith(new IntakeCommand(intakePivot, intakeWheels, thePivot)).deadlineWith(shooterFlywheel.runVelocity(() -> DynamicConstants.ShooterFlywheel.idleVelocity))
+            .withTimeout(3),
             new IntegratedShooterCommand(intakeWheels, shooterFlywheel, thePivot, drivetrainSubsystem).withTimeout(3)
         );
     }

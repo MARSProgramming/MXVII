@@ -5,7 +5,6 @@ import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.PositionDutyCycle;
-import com.ctre.phoenix6.controls.VelocityDutyCycle;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
@@ -43,9 +42,6 @@ public class Climber extends SubsystemBase {
         leftconfig.kI = StaticConstants.Climber.leftkI;
         leftconfig.kD = StaticConstants.Climber.leftkD;
 
-        left.setPosition(0);
-        right.setPosition(0);
-
         left.setInverted(true);
         right.getConfigurator().apply(rightconfig);
         left.getConfigurator().apply(leftconfig);
@@ -64,6 +60,9 @@ public class Climber extends SubsystemBase {
         
         leftLimitSwitch = new DigitalInput(StaticConstants.Climber.leftLimitSwitchID);
         rightLimitSwitch = new DigitalInput(StaticConstants.Climber.rightLimitSwitchID);
+
+        left.setPosition(0);
+        right.setPosition(0);
     }
 
     public void setRightPosition(double position){

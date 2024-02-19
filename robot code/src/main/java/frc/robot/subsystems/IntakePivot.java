@@ -34,8 +34,8 @@ public class IntakePivot extends SubsystemBase {
         .withReverseSoftLimitEnable(true)
         .withReverseSoftLimitThreshold(StaticConstants.IntakePivot.reverseLimit / positionCoefficient));
         pivotMotor.getConfigurator().apply(new VoltageConfigs()
-        .withPeakForwardVoltage(6)
-        .withPeakReverseVoltage(-6));
+        .withPeakForwardVoltage(10)
+        .withPeakReverseVoltage(-10));
         pivotMotor.getConfigurator().apply(new CurrentLimitsConfigs().withSupplyCurrentLimitEnable(true)
         .withSupplyCurrentLimit(StaticConstants.IntakePivot.supplyCurrentLimit).withStatorCurrentLimitEnable(true).withStatorCurrentLimit(StaticConstants.IntakePivot.statorCurrentLimit));
         pivotMotor.setNeutralMode(NeutralModeValue.Coast);
@@ -90,10 +90,11 @@ public class IntakePivot extends SubsystemBase {
 
     public Command zeroIntake() {
         return runOnce(() -> {
-            pivotMotor.getConfigurator().apply(new SoftwareLimitSwitchConfigs().withReverseSoftLimitEnable(false));
+            pivotMotor.getConfigurator().apply(new SoftwareLimitSwitchConfigs().withReverseSoftLimitEnable(false).withReverseSoftLimitThreshold(-10000));
             resetProfiledPIDController();
+            System.out.println("reset");
         }).andThen(runEnd(() -> {
-            pivotMotor.setVoltage(-2.5);
+            pivotMotor.setVoltage(-7);
         }, () -> {
             pivotMotor.set(0);
             pivotMotor.getConfigurator().apply(new SoftwareLimitSwitchConfigs().withReverseSoftLimitEnable(true));

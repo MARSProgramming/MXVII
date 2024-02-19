@@ -82,7 +82,7 @@ public class IntegratedShooterCommand extends Command {
         if(movePivot){
             mThePivot.setPosition(pivotAngle);
         }
-        shoot = mDrivetrainSubsystem.getSnapController().getPositionError() < 5 && mShooterFlywheel.atSpeed(() -> flywheelSpeed) && mThePivot.atSetpoint() && mThePivot.belowVelocityThreshold();
+        shoot = mDrivetrainSubsystem.getSnapController().getPositionError() < 0.05 && mShooterFlywheel.atSpeed(() -> flywheelSpeed) && mThePivot.atSetpoint() && mThePivot.belowVelocityThreshold();
         SmartDashboard.putBoolean("Flywheel At Goal", mShooterFlywheel.atSpeed(() -> flywheelSpeed));
         SmartDashboard.putBoolean("Pivot At Goal", mThePivot.atSetpoint());
         SmartDashboard.putBoolean("Drive Angle At Goal", mDrivetrainSubsystem.getSnapController().getPositionError() < 5);
@@ -149,6 +149,6 @@ public class IntegratedShooterCommand extends Command {
         distToPivotAngle.put(5.0, 0.102);
         
         //TODO: set fudge factor as dynamic constant
-        return new double[]{distToRPM.get(dist), Math.atan2(newGoal.getY()-pos.getY(), (newGoal.getX() - 0.2 - pos.getX())), Math.max(distToPivotAngle.get(dist) - 0.014, 0)};
+        return new double[]{distToRPM.get(dist), Math.atan2(newGoal.getY()-pos.getY(), (newGoal.getX() - 0.2 - pos.getX())), Math.max(distToPivotAngle.get(dist) - 0.011, 0)};
     }
 }

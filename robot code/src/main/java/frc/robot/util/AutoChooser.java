@@ -24,6 +24,8 @@ import frc.robot.auto.RB02;
 import frc.robot.auto.RC0;
 import frc.robot.auto.RC03;
 import frc.robot.auto.RD0;
+import frc.robot.auto.RD08;
+import frc.robot.auto.RD087;
 import frc.robot.auto.RDL;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.IntakePivot;
@@ -55,6 +57,8 @@ public class AutoChooser {
         autoChooser.addOption("RC03", new RC03(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll));
         autoChooser.addOption("RD0", new RD0(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll));
         autoChooser.addOption("RDL", new RDL(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll));
+        autoChooser.addOption("RD08", new RD08(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll));
+        autoChooser.addOption("RD087", new RD087(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll));
 
         preMatch.add("Auto Play", autoChooser).withSize(2, 1).withPosition(4, 5);
     }
@@ -63,8 +67,8 @@ public class AutoChooser {
         return autoChooser.getSelected();
     }
 
-    public static PathPlannerTrajectory openTrajectoryFile(String name, DrivetrainSubsystem drivetrainSubsystem, DoubleSupplier rotation){
-        PathPlannerTrajectory t = PathPlannerPath.fromPathFile(name).getTrajectory(drivetrainSubsystem.getChassisSpeeds(), Rotation2d.fromRadians(rotation.getAsDouble()));
+    public static PathPlannerTrajectory openTrajectoryFile(String name, DrivetrainSubsystem drivetrainSubsystem, double rotation){
+        PathPlannerTrajectory t = PathPlannerPath.fromPathFile(name).getTrajectory(drivetrainSubsystem.getChassisSpeeds(), Rotation2d.fromRadians(rotation));
         return t;
     }
     public PathPlannerTrajectory openTrajectoryFileForAlliance(String name, DriverStation.Alliance alliance){

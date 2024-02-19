@@ -30,26 +30,26 @@ public final class StaticConstants {
         public static final int BACK_RIGHT_MODULE_STEER_MOTOR = 7; 
         public static final int BACK_RIGHT_MODULE_STEER_ENCODER = 27; 
 
-        public static final double kPSnap = 0.6;
+        public static final double kPSnap = 0.7;
         public static final double kISnap = 0.0;
         public static final double kDSnap = 0.0;
 
-        public static final double kPAlignPiece = 2;
+        public static final double kPAlignPiece = 4;
         public static final double kIAlignPiece = 0.0;
         public static final double kDAlignPiece = 0.0;
     }
 
     public static class Auto{
-        public static final double holonomicXkP = 2.0;
+        public static final double holonomicXkP = 3.0;
         public static final double holonomicXkI = 0;
         public static final double holonomicXkD = 0;
-        public static final double holonomicYkP = 2.0;
+        public static final double holonomicYkP = 3.0;
         public static final double holonomicYkI = 0;
         public static final double holonomicYkD = 0;
         public static final double holonomicOkP = 2.0;
         public static final double holonomicOkI = 0.0;
         public static final double holonomicOkD = 0.0;
-        public static final double holonomicOMaxVelocity = 2;
+        public static final double holonomicOMaxVelocity = 5;
         public static final double holonomicOMaxAcceleration = 5;
     }
 
@@ -61,8 +61,8 @@ public final class StaticConstants {
         public static double reverseLimit = 0.02;
         public static int reverseLimitSwitchID = 0;
 
-        public static double supplyCurrentLimit = 60;
-        public static double statorCurrentLimit = 60;
+        public static double supplyCurrentLimit = 30;
+        public static double statorCurrentLimit = 40;
     }
     public static class IntakeWheels{
         public static int ID = 12;
@@ -99,10 +99,10 @@ public final class StaticConstants {
         public static int rightLimitSwitchID = 1;
 
         public static double leftForwardLimit = 5.6;
-        public static double leftReverseLimit = -4;
+        public static double leftReverseLimit = -40;
 
         public static double rightForwardLimit = 5.6;
-        public static double rightReverseLimit = -4;
+        public static double rightReverseLimit = -40;
         
         public static double rightkP = 0.03;
         public static double rightkI = 0.0;

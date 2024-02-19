@@ -18,9 +18,10 @@ public class RD0 extends SequentialCommandGroup{
     public RD0(DrivetrainSubsystem drivetrainSubsystem, IntakeWheels intakeWheels, IntakePivot intakePivot, ShooterFlywheel shooterFlywheel, ThePivot thePivot, Limelight ll){
         addRequirements(thePivot, shooterFlywheel, intakePivot, intakeWheels, drivetrainSubsystem);
 
-        PathPlannerTrajectory RDL = AutoChooser.openTrajectoryFile("RDL", drivetrainSubsystem, () -> drivetrainSubsystem.getPigeonAngle());
+        PathPlannerTrajectory RDL = AutoChooser.openTrajectoryFile("RDL", drivetrainSubsystem, drivetrainSubsystem.getPigeonAngle());
         addCommands(
             new ResetPose(drivetrainSubsystem, ll, RDL.getInitialTargetHolonomicPose()),
+            drivetrainSubsystem.zeroGyroscope(0),
             new IntegratedShooterCommand(intakeWheels, shooterFlywheel, thePivot, drivetrainSubsystem).withTimeout(3),
             new DriveAtPath(drivetrainSubsystem, RDL, ll, false)
         );
