@@ -9,6 +9,7 @@ import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.DrivetrainSubsystem;
@@ -29,7 +30,7 @@ public class IntegratedShooterCommand extends Command {
     private final DoubleSupplier m_translationYSupplier;
 
     //TODO: change to constants
-    private Translation2d goalPos = new Translation2d(16.58, 5.548);
+    private Translation2d goalPos;
     private double[] results;
     private Timer mTimer = new Timer();
     private DriverStation.Alliance alliance = DriverStation.Alliance.Blue;
@@ -60,13 +61,15 @@ public class IntegratedShooterCommand extends Command {
         movePivot = false;
         mTimer.stop();
         mTimer.reset();
-        results = calculateShootingParameters(mDrivetrainSubsystem.getPose(), goalPos, mDrivetrainSubsystem.getChassisSpeeds());
+        if(alliance.equals(Alliance.Red)) goalPos = new Translation2d(16.58, 5.548);
+        else goalPos = new Translation2d(0, 5.548);
+        results = calculateShootingParameters(mDrivetrainSubsystem.getPose(), goalPos, mDrivetrainSubsystem.getChassisSpeeds(), this.alliance);
     }
     @Override
     public void execute(){
         //use to shoot while moving
         if(mDrivetrainSubsystem.getTranslationalSpeed() > 0.05){
-            results = calculateShootingParameters(mDrivetrainSubsystem.getPose(), goalPos, mDrivetrainSubsystem.getChassisSpeeds());
+            results = calculateShootingParameters(mDrivetrainSubsystem.getPose(), goalPos, mDrivetrainSubsystem.getChassisSpeeds(), this.alliance);
         }
         if(DriverStation.getAlliance().isPresent() && !DriverStation.getAlliance().get().equals(alliance)){
             alliance = DriverStation.getAlliance().get();
@@ -116,7 +119,7 @@ public class IntegratedShooterCommand extends Command {
     public boolean isFinished(){
         return !mIntakeWheels.hasPiece() && mTimer.get() > 0.2;
     }
-    public static double[] calculateShootingParameters(Pose2d pos, Translation2d goalPos, ChassisSpeeds vel){
+    public static double[] calculateShootingParameters(Pose2d pos, Translation2d goalPos, ChassisSpeeds vel, Alliance alliance){
         double dist = goalPos.getDistance(pos.getTranslation());
 
         InterpolatingDoubleTreeMap distToTime = new InterpolatingDoubleTreeMap();
@@ -148,7 +151,8 @@ public class IntegratedShooterCommand extends Command {
         distToPivotAngle.put(4.3, 0.1);
         distToPivotAngle.put(5.0, 0.102);
         
+        double angleOffset = alliance.equals(Alliance.Red) ? -0.2 : 0.2;
         //TODO: set fudge factor as dynamic constant
-        return new double[]{distToRPM.get(dist), Math.atan2(newGoal.getY()-pos.getY(), (newGoal.getX() - 0.2 - pos.getX())), Math.max(distToPivotAngle.get(dist) - 0.011, 0)};
+        return new double[]{distToRPM.get(dist), Math.atan2(newGoal.getY()-pos.getY(), (newGoal.getX() + angleOffset - pos.getX())), Math.max(distToPivotAngle.get(dist) - 0.009, 0)};
     }
 }

@@ -1,7 +1,5 @@
 package frc.robot.util;
 
-import java.util.function.DoubleSupplier;
-
 import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.path.PathPlannerTrajectory;
@@ -12,6 +10,10 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.auto.BA0;
+import frc.robot.auto.BA01;
+import frc.robot.auto.BA012;
+import frc.robot.auto.BA0123;
 import frc.robot.auto.DoNothing;
 import frc.robot.auto.RA0;
 import frc.robot.auto.RA01;
@@ -59,6 +61,13 @@ public class AutoChooser {
         autoChooser.addOption("RDL", new RDL(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll));
         autoChooser.addOption("RD08", new RD08(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll));
         autoChooser.addOption("RD087", new RD087(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll));
+
+        autoChooser.addOption("BA0", new BA0(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll));
+        autoChooser.addOption("BA01", new BA01(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll));
+        autoChooser.addOption("BA012", new BA012(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll));
+        autoChooser.addOption("BA0123", new BA0123(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll));
+        // autoChooser.addOption("BA014", new BA014(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll));
+        // autoChooser.addOption("BA0145", new BA0145(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll));
 
         preMatch.add("Auto Play", autoChooser).withSize(2, 1).withPosition(4, 5);
     }

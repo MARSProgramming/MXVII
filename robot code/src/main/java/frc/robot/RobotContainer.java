@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AlignToPiece;
+import frc.robot.commands.AlignToTag;
 import frc.robot.commands.AmpSetpoint;
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.commands.GoToZero;
@@ -16,6 +17,7 @@ import frc.robot.commands.InitializeClimbSetpoint;
 import frc.robot.commands.InitializeTrapSetpoint;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.IntegratedShooterCommand;
+import frc.robot.commands.RobotCentricDrive;
 import frc.robot.commands.Test.DisableLimitsCommand;
 import frc.robot.commands.Test.ResetPositions;
 import frc.robot.commands.Test.SwitchNeutralModeCommand;
@@ -107,9 +109,9 @@ public class RobotContainer {
         mPilot.povRight().whileTrue(mIntakePivot.runVoltage(1));
         mPilot.povUp().whileTrue(mThePivot.runVoltage(-1));
         mPilot.povDown().whileTrue(mThePivot.runVoltage(1));
-        mPilot.b().whileTrue(new AmpSetpoint(mIntakePivot, mIntakeWheels, mThePivot));
+        mPilot.b().whileTrue(new RobotCentricDrive(mDrivetrainSubsystem, () -> modifyAxis(mPilot.getLeftY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND));
         mPilot.a().whileTrue(new GoToZero(mIntakePivot, mThePivot));
-        mPilot.x().whileTrue(mThePivot.setPositionCommand(() -> 0.1, true));
+        mPilot.x().whileTrue(new AlignToTag(mDrivetrainSubsystem, mLimelight));
        // mPilot.leftBumper().whileTrue(mShooterFlywheel.runVelocity(() -> 3000.0));
        
         mPilot.rightTrigger().whileTrue(

@@ -29,9 +29,9 @@ public class RD087 extends SequentialCommandGroup{
             new ResetPose(drivetrainSubsystem, ll, RD8.getInitialTargetHolonomicPose()),
             drivetrainSubsystem.zeroGyroscope(57),
             new IntegratedShooterCommand(intakeWheels, shooterFlywheel, thePivot, drivetrainSubsystem).withTimeout(3),
-            new DriveAtPath(drivetrainSubsystem, RD8, ll, false).andThen(new DriveAtPath(drivetrainSubsystem, R8F, ll, false).deadlineWith(shooterFlywheel.runVelocity(() -> DynamicConstants.ShooterFlywheel.idleVelocity))).deadlineWith(new WaitCommand(1.5).andThen(new IntakeCommand(intakePivot, intakeWheels, thePivot))),
+            new DriveAtPath(drivetrainSubsystem, RD8, ll, false).deadlineWith(new WaitCommand(1.5).andThen(new IntakeCommand(intakePivot, intakeWheels, thePivot))).andThen(new DriveAtPath(drivetrainSubsystem, R8F, ll, false).deadlineWith(shooterFlywheel.runVelocity(() -> DynamicConstants.ShooterFlywheel.idleVelocity), intakePivot.zeroIntake())),
             new IntegratedShooterCommand(intakeWheels, shooterFlywheel, thePivot, drivetrainSubsystem).withTimeout(3),
-            new DriveAtPath(drivetrainSubsystem, RF7, ll, false).andThen(new DriveAtPath(drivetrainSubsystem, R7F, ll, false).deadlineWith(shooterFlywheel.runVelocity(() -> DynamicConstants.ShooterFlywheel.idleVelocity))).deadlineWith(new WaitCommand(1.5).andThen(new IntakeCommand(intakePivot, intakeWheels, thePivot))),
+            new DriveAtPath(drivetrainSubsystem, RF7, ll, false).deadlineWith(new WaitCommand(1.5).andThen(new IntakeCommand(intakePivot, intakeWheels, thePivot))).andThen(new DriveAtPath(drivetrainSubsystem, R7F, ll, false).deadlineWith(shooterFlywheel.runVelocity(() -> DynamicConstants.ShooterFlywheel.idleVelocity), intakePivot.zeroIntake())),
             new IntegratedShooterCommand(intakeWheels, shooterFlywheel, thePivot, drivetrainSubsystem).withTimeout(3)
         );
     }

@@ -65,6 +65,12 @@ public class Limelight extends SubsystemBase{
     public boolean pieceLLhasTarget(){
         return pieceLLTimer.get() > 0.25;
     }
+    public double getTrapTagX(){
+        if(NetworkTableInstance.getDefault().getTable("limelight-trap").getEntry("tv").getDouble(0) != 1.0){
+            return 0.0;
+        }
+        return NetworkTableInstance.getDefault().getTable("limelight-trap").getEntry("targetpose_cameraspace").getDoubleArray(new double[7])[0];
+    }
     public DoubleSupplier getHeadingFromShooterLL(double defaultvalue){
         botpose = NetworkTableInstance.getDefault().getTable("limelight-shooter").getEntry("botpose").getDoubleArray(new double[7]);
         return () -> (NetworkTableInstance.getDefault().getTable("limelight-shooter").getEntry("tv").getDouble(0) != 1.0 && Math.abs(botpose[5] - defaultvalue) < 10 ? defaultvalue : botpose[5]);

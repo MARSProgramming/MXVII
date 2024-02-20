@@ -37,6 +37,8 @@ public final class StaticConstants {
         public static final double kPAlignPiece = 4;
         public static final double kIAlignPiece = 0.0;
         public static final double kDAlignPiece = 0.0;
+
+        public static final double kPTagAlign = 3;
     }
 
     public static class Auto{
