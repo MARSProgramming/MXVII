@@ -14,16 +14,16 @@ import frc.robot.subsystems.ShooterFlywheel;
 import frc.robot.subsystems.ThePivot;
 import frc.robot.util.AutoChooser;
 
-public class RC0 extends SequentialCommandGroup{
-    public RC0(DrivetrainSubsystem drivetrainSubsystem, IntakeWheels intakeWheels, IntakePivot intakePivot, ShooterFlywheel shooterFlywheel, ThePivot thePivot, Limelight ll){
+public class BC0 extends SequentialCommandGroup{
+    public BC0(DrivetrainSubsystem drivetrainSubsystem, IntakeWheels intakeWheels, IntakePivot intakePivot, ShooterFlywheel shooterFlywheel, ThePivot thePivot, Limelight ll){
         addRequirements(thePivot, shooterFlywheel, intakePivot, intakeWheels, drivetrainSubsystem);
 
-        PathPlannerTrajectory RC3 = AutoChooser.openTrajectoryFile("RC3", drivetrainSubsystem, drivetrainSubsystem.getPigeonAngle());
+        PathPlannerTrajectory BC3 = AutoChooser.openTrajectoryFile("BC3", drivetrainSubsystem, drivetrainSubsystem.getPigeonAngle());
         addCommands(
-            new ResetPose(drivetrainSubsystem, ll, RC3.getInitialTargetHolonomicPose()),
-            drivetrainSubsystem.zeroGyroscope(0),
+            new ResetPose(drivetrainSubsystem, ll, BC3.getInitialTargetHolonomicPose()),
+            drivetrainSubsystem.zeroGyroscope(180),
             new IntegratedShooterCommand(intakeWheels, shooterFlywheel, thePivot, drivetrainSubsystem).withTimeout(3),
-            new DriveAtPath(drivetrainSubsystem, RC3, ll, false)
+            new DriveAtPath(drivetrainSubsystem, BC3, ll, false)
         );
     }
 }

@@ -1,9 +1,10 @@
 package frc.robot.util;
 
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.XboxController;
 
-public class Rumble {
+public class Rumble extends SubsystemBase{
     private static Rumble mInstance;
     private static XboxController controller1;
     private static XboxController controller2;
@@ -17,7 +18,10 @@ public class Rumble {
         controller2 = new XboxController(c2);
     }
     public void rumbleController1(double rumbleValue){
-        controller1.setRumble(RumbleType.kBothRumble, rumbleValue);
+        runEnd(
+            () -> {controller1.setRumble(RumbleType.kBothRumble, rumbleValue);},
+            () -> {controller1.setRumble(RumbleType.kBothRumble, 0);}
+            ).withTimeout(0.5).schedule();
     }
     public void rumbleController2(double rumbleValue){
         controller2.setRumble(RumbleType.kBothRumble, rumbleValue);

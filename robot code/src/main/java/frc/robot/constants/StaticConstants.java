@@ -38,7 +38,8 @@ public final class StaticConstants {
         public static final double kIAlignPiece = 0.0;
         public static final double kDAlignPiece = 0.0;
 
-        public static final double kPTagAlign = 3;
+        public static final double kPTagAlignX = 2.5;
+        public static final double kPTagAlignRot = -0.05;
     }
 
     public static class Auto{
@@ -63,8 +64,8 @@ public final class StaticConstants {
         public static double reverseLimit = 0.02;
         public static int reverseLimitSwitchID = 0;
 
-        public static double supplyCurrentLimit = 30;
-        public static double statorCurrentLimit = 40;
+        public static double supplyCurrentLimit = 20;
+        public static double statorCurrentLimit = 60;
     }
     public static class IntakeWheels{
         public static int ID = 12;
@@ -72,7 +73,7 @@ public final class StaticConstants {
         public static int rightIrID = 1;
 
         public static double supplyCurrentLimit = 20;
-        public static double statorCurrentLimit = 40;
+        public static double statorCurrentLimit = 20;
     }
     public static class ShooterFlywheel{
         public static int masterID = 13;

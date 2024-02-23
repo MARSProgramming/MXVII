@@ -43,7 +43,7 @@ public class IntakePivot extends SubsystemBase {
         softLimitEnabled = true;
         pivotMotor.setInverted(true);
         pivotMotor.setPosition(0);
-        profiledPIDController = new ProfiledPIDController(2, 0, 0, new TrapezoidProfile.Constraints(1000,1000));
+        profiledPIDController = new ProfiledPIDController(2, 0, 0, new TrapezoidProfile.Constraints(100,60));
         armFeedforward = new ArmFeedforward(0, 0.4, 0, 0);
         profiledPIDController.setTolerance(0.03 / positionCoefficient);
 
@@ -93,7 +93,12 @@ public class IntakePivot extends SubsystemBase {
             pivotMotor.getConfigurator().apply(new SoftwareLimitSwitchConfigs().withReverseSoftLimitEnable(false).withReverseSoftLimitThreshold(-10000));
             resetProfiledPIDController();
         }).andThen(runEnd(() -> {
-            pivotMotor.setVoltage(-7);
+            if(getPosition() > DynamicConstants.Intake.pivotUprightPosition - 0.05){
+                pivotMotor.setVoltage(-8);
+            }
+            else{
+                pivotMotor.setVoltage(getPosition() * -6);
+            }
         }, () -> {
             pivotMotor.set(0);
             pivotMotor.getConfigurator().apply(new SoftwareLimitSwitchConfigs().withReverseSoftLimitEnable(true));

@@ -21,6 +21,7 @@ public class RB0 extends SequentialCommandGroup{
         PathPlannerTrajectory RB2 = AutoChooser.openTrajectoryFile("RB2", drivetrainSubsystem, drivetrainSubsystem.getPigeonAngle());
         addCommands(
             new ResetPose(drivetrainSubsystem, ll, RB2.getInitialTargetHolonomicPose()),
+            drivetrainSubsystem.zeroGyroscope(0),
             new IntegratedShooterCommand(intakeWheels, shooterFlywheel, thePivot, drivetrainSubsystem).withTimeout(3),
             new DriveAtPath(drivetrainSubsystem, RB2, ll, false)
         );

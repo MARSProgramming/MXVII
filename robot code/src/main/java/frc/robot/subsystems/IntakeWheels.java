@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.DynamicConstants;
 import frc.robot.constants.StaticConstants;
+import frc.robot.util.Rumble;
 
 public class IntakeWheels extends SubsystemBase {
     private TalonFX intakeMotor;
@@ -86,6 +87,7 @@ public class IntakeWheels extends SubsystemBase {
         },
         () -> {
             intakeMotor.setVoltage(0);
+            Rumble.getInstance().rumbleController1(1);
         }).until(() -> (getIrReading() > DynamicConstants.Intake.irSensorThreshold));
         
     }

@@ -31,11 +31,11 @@ public class RA0145 extends SequentialCommandGroup{
             new IntegratedShooterCommand(intakeWheels, shooterFlywheel, thePivot, drivetrainSubsystem).withTimeout(3),
             new DriveAtPath(drivetrainSubsystem, RA1, ll, false).alongWith(new IntakeCommand(intakePivot, intakeWheels, thePivot)),
             new IntegratedShooterCommand(intakeWheels, shooterFlywheel, thePivot, drivetrainSubsystem).withTimeout(3),
-            new DriveAtPath(drivetrainSubsystem, R14, ll, true).alongWith(new WaitCommand(1), new IntakeCommand(intakePivot, intakeWheels, thePivot)),
-            new DriveAtPath(drivetrainSubsystem, R4G, ll, false),
+            new DriveAtPath(drivetrainSubsystem, R14, ll, false).deadlineWith(new WaitCommand(1), new IntakeCommand(intakePivot, intakeWheels, thePivot)).withTimeout(4),
+            new DriveAtPath(drivetrainSubsystem, R4G, ll, false).deadlineWith(intakePivot.setPositionCommand(() -> 0, true)),
             new IntegratedShooterCommand(intakeWheels, shooterFlywheel, thePivot, drivetrainSubsystem).withTimeout(3),
-            new DriveAtPath(drivetrainSubsystem, RG5, ll, true).alongWith(new WaitCommand(1), new IntakeCommand(intakePivot, intakeWheels, thePivot)),
-            new DriveAtPath(drivetrainSubsystem, R5G, ll, false),
+            new DriveAtPath(drivetrainSubsystem, RG5, ll, false).deadlineWith(new WaitCommand(1), new IntakeCommand(intakePivot, intakeWheels, thePivot)).withTimeout(4),
+            new DriveAtPath(drivetrainSubsystem, R5G, ll, false).deadlineWith(intakePivot.setPositionCommand(() -> 0, true)),
             new IntegratedShooterCommand(intakeWheels, shooterFlywheel, thePivot, drivetrainSubsystem).withTimeout(3)
         );
     }

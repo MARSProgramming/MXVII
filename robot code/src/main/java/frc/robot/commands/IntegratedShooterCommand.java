@@ -30,7 +30,8 @@ public class IntegratedShooterCommand extends Command {
     private final DoubleSupplier m_translationYSupplier;
 
     //TODO: change to constants
-    private Translation2d goalPos;
+    private Translation2d redGoalPos = new Translation2d(16.58, 5.548);
+    private Translation2d blueGoalPos = new Translation2d(0, 5.548);
     private double[] results;
     private Timer mTimer = new Timer();
     private DriverStation.Alliance alliance = DriverStation.Alliance.Blue;
@@ -61,18 +62,16 @@ public class IntegratedShooterCommand extends Command {
         movePivot = false;
         mTimer.stop();
         mTimer.reset();
-        if(alliance.equals(Alliance.Red)) goalPos = new Translation2d(16.58, 5.548);
-        else goalPos = new Translation2d(0, 5.548);
-        results = calculateShootingParameters(mDrivetrainSubsystem.getPose(), goalPos, mDrivetrainSubsystem.getChassisSpeeds(), this.alliance);
+        if(DriverStation.getAlliance().isPresent() && !DriverStation.getAlliance().get().equals(alliance)){
+            alliance = DriverStation.getAlliance().get();
+        }
+        results = calculateShootingParameters(mDrivetrainSubsystem.getPose(), alliance.equals(Alliance.Red) ? redGoalPos : blueGoalPos, mDrivetrainSubsystem.getChassisSpeeds(), this.alliance);
     }
     @Override
     public void execute(){
         //use to shoot while moving
         if(mDrivetrainSubsystem.getTranslationalSpeed() > 0.05){
-            results = calculateShootingParameters(mDrivetrainSubsystem.getPose(), goalPos, mDrivetrainSubsystem.getChassisSpeeds(), this.alliance);
-        }
-        if(DriverStation.getAlliance().isPresent() && !DriverStation.getAlliance().get().equals(alliance)){
-            alliance = DriverStation.getAlliance().get();
+            results = calculateShootingParameters(mDrivetrainSubsystem.getPose(), alliance.equals(Alliance.Red) ? redGoalPos : blueGoalPos, mDrivetrainSubsystem.getChassisSpeeds(), this.alliance);
         }
 
         double flywheelSpeed = results[0];
@@ -85,7 +84,7 @@ public class IntegratedShooterCommand extends Command {
         if(movePivot){
             mThePivot.setPosition(pivotAngle);
         }
-        shoot = mDrivetrainSubsystem.getSnapController().getPositionError() < 0.05 && mShooterFlywheel.atSpeed(() -> flywheelSpeed) && mThePivot.atSetpoint() && mThePivot.belowVelocityThreshold();
+        shoot = mDrivetrainSubsystem.getSnapController().getPositionError() < 0.04 && mShooterFlywheel.atSpeed(() -> flywheelSpeed) && mThePivot.atSetpoint() && mThePivot.belowVelocityThreshold();
         SmartDashboard.putBoolean("Flywheel At Goal", mShooterFlywheel.atSpeed(() -> flywheelSpeed));
         SmartDashboard.putBoolean("Pivot At Goal", mThePivot.atSetpoint());
         SmartDashboard.putBoolean("Drive Angle At Goal", mDrivetrainSubsystem.getSnapController().getPositionError() < 5);
@@ -105,9 +104,6 @@ public class IntegratedShooterCommand extends Command {
 
         driveSpeeds.omegaRadiansPerSecond = Math.abs(angularVelocity) > 0.4 ? angularVelocity : 0;
         mDrivetrainSubsystem.drive(driveSpeeds);
-
-        double dist = goalPos.getDistance(mDrivetrainSubsystem.getPose().getTranslation());
-        SmartDashboard.putNumber("Distance to Goal", dist);
     }
     @Override
     public void end(boolean interrupted){
@@ -146,13 +142,14 @@ public class IntegratedShooterCommand extends Command {
         distToPivotAngle.put(2.64, 0.075);
         distToPivotAngle.put(2.9, 0.08);
         distToPivotAngle.put(3.32, 0.086);
-        distToPivotAngle.put(3.7, 0.093);
-        distToPivotAngle.put(4.0, 0.098);
+        distToPivotAngle.put(3.7, 0.091);
+        distToPivotAngle.put(4.0, 0.096);
         distToPivotAngle.put(4.3, 0.1);
         distToPivotAngle.put(5.0, 0.102);
         
-        double angleOffset = alliance.equals(Alliance.Red) ? -0.2 : 0.2;
+        double angleOffset = alliance.equals(Alliance.Red) ? -0.12 : 0.12;
+        SmartDashboard.putNumber("Dist To Goal", dist);
         //TODO: set fudge factor as dynamic constant
-        return new double[]{distToRPM.get(dist), Math.atan2(newGoal.getY()-pos.getY(), (newGoal.getX() + angleOffset - pos.getX())), Math.max(distToPivotAngle.get(dist) - 0.009, 0)};
+        return new double[]{distToRPM.get(dist), Math.atan2(newGoal.getY()-pos.getY(), (newGoal.getX() + angleOffset - pos.getX())), Math.max(distToPivotAngle.get(dist) - 0.008, 0)};
     }
 }

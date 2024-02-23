@@ -29,8 +29,8 @@ public class AlignToTag extends Command{
         m_drivetrainSubsystem.drive(
                 new ChassisSpeeds(
                         0,
-                        mLimelight.getTrapTagX() * StaticConstants.Drive.kPTagAlign,
-                        0
+                        mLimelight.getTrapTagX() * StaticConstants.Drive.kPTagAlignX,
+                        mLimelight.getTrapTagRot() * StaticConstants.Drive.kPTagAlignRot
                 )
         );
     }

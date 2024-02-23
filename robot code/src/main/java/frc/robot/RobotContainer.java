@@ -112,7 +112,7 @@ public class RobotContainer {
         mPilot.b().whileTrue(new RobotCentricDrive(mDrivetrainSubsystem, () -> modifyAxis(mPilot.getLeftY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND));
         mPilot.a().whileTrue(new GoToZero(mIntakePivot, mThePivot));
         mPilot.x().whileTrue(new AlignToTag(mDrivetrainSubsystem, mLimelight));
-       // mPilot.leftBumper().whileTrue(mShooterFlywheel.runVelocity(() -> 3000.0));
+        mPilot.leftBumper().toggleOnTrue(mShooterFlywheel.runVelocity(() -> DynamicConstants.ShooterFlywheel.idleVelocity));
        
         mPilot.rightTrigger().whileTrue(
             new IntegratedShooterCommand(
@@ -129,12 +129,14 @@ public class RobotContainer {
         // copilot
         mCopilot.leftTrigger().whileTrue(new AmpSetpoint(mIntakePivot, mIntakeWheels, mThePivot));
         mCopilot.leftBumper().whileTrue(new GoToZero(mIntakePivot, mThePivot));
-        mCopilot.rightBumper().whileTrue(mIntakeWheels.runVoltage(-1));
+        mCopilot.rightBumper().whileTrue(mIntakeWheels.runVoltage(-2));
         mCopilot.b().whileTrue(mClimber.climbToLimit());
-        mCopilot.x().whileTrue(mClimber.setPositionCommand(() -> DynamicConstants.Climber.uprightPosition).alongWith(mIntakePivot.switchNeutralMode()));
+        mCopilot.x().whileTrue(mClimber.setPositionCommand(() -> DynamicConstants.Climber.uprightPosition).alongWith(mIntakePivot.switchNeutralMode(), mIntakeWheels.runVoltage(3)));
         mCopilot.a().toggleOnTrue(new InitializeClimbSetpoint(mIntakePivot, mThePivot));
         mCopilot.y().toggleOnTrue(new InitializeTrapSetpoint(mIntakePivot, mThePivot));
 
+        mCopilot.start().whileTrue(mClimber.runOneSideVoltageOverrideLimit(-2, true));
+        mCopilot.back().whileTrue(mClimber.runOneSideVoltageOverrideLimit(-2, false));
         mCopilot.povUp().whileTrue(mClimber.runVoltage(1));
         mCopilot.povDown().whileTrue(mClimber.runVoltage(-1));
         mCopilot.povRight().whileTrue(mIntakePivot.runVoltage(-0.5));

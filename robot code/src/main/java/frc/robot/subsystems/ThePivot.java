@@ -32,7 +32,7 @@ public class ThePivot extends SubsystemBase {
     private DutyCycleEncoder absoluteEncoder = new DutyCycleEncoder(StaticConstants.ThePivot.encoderID);
 
     //TODO: set as a rio constant
-    private double encoderZero = 0.8946;
+    private double encoderZero = 0.8896;
     
     public ThePivot(){
         motor = new TalonFX(StaticConstants.ThePivot.ID);
@@ -57,7 +57,7 @@ public class ThePivot extends SubsystemBase {
         //TODO: set them in constants
         profiledPIDController = new ProfiledPIDController(2.0, 3, 0, lowerConstraints);
         armFeedforward = new ArmFeedforward(0, 0.45, 0, 0);
-        profiledPIDController.setTolerance(0.001 / positionCoefficient);
+        profiledPIDController.setTolerance(0.002 / positionCoefficient);
         // profiledPIDController.setIntegratorRange(-10, 10);
         // profiledPIDController.setIZone(20);
 
@@ -69,8 +69,8 @@ public class ThePivot extends SubsystemBase {
     public double getEncoderPosition(){
         double pos = 1 - absoluteEncoder.getAbsolutePosition() - encoderZero;
         if(pos < 0) pos++;
-        return Math.abs(pos - getPosition()) < 0.05 ? pos : getPosition();
-        //return pos;
+        //return Math.abs(pos - getPosition()) < 0.05 ? pos : getPosition();
+        return pos;
     }
     public Command runVoltage(double voltage) {
         return runEnd(() -> {
@@ -162,7 +162,7 @@ public class ThePivot extends SubsystemBase {
     }
     @Override
     public void periodic(){
-        if(getEncoderPosition() < 0.003 && DriverStation.isDisabled()){ 
+        if(getEncoderPosition() < 0.01 && DriverStation.isDisabled()){ 
             motor.setPosition(0);
         }
     }

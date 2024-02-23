@@ -100,8 +100,8 @@ public class Climber extends SubsystemBase {
 
     public Command climbToLimit() {
         return runEnd(() -> {
-            left.setVoltage(-2);
-            right.setVoltage(-2);
+            setLeftVoltage(-4, false);
+            setRightVoltage(-4, false);
         }, () -> {
             left.set(0);
             right.set(0);
@@ -109,18 +109,13 @@ public class Climber extends SubsystemBase {
     }
 
     public void periodic() {
-        if(getLeftLimitSwitch()){
-            left.setPosition(StaticConstants.Climber.leftReverseLimit / positionCoefficient * 1.05);
-        }
-        if(getRightLimitSwitch()){
-            right.setPosition(StaticConstants.Climber.rightReverseLimit / positionCoefficient * 1.05);
-        }
+        
     }
     
     public Command runVoltage(double voltage) {
         return runEnd(() -> {
-            left.setVoltage(voltage);
-            right.setVoltage(voltage);
+            setLeftVoltage(voltage, false);
+            setRightVoltage(voltage, false);
         },
         () -> {
             left.setVoltage(0);
@@ -129,12 +124,22 @@ public class Climber extends SubsystemBase {
     }
     public Command runOneSideVoltage(double voltage, boolean leftSide){
         return runEnd(() -> {
-            if(leftSide) left.setVoltage(voltage);
-            else right.setVoltage(voltage);
+            if(leftSide) setLeftVoltage(voltage, false);
+            else setRightVoltage(voltage, false);
         },
         () -> {
-            if(leftSide) left.setVoltage(0);
-            else right.setVoltage(0);
+            if(leftSide) setLeftVoltage(0, false);
+            else setRightVoltage(0, false);
+        });
+    }
+    public Command runOneSideVoltageOverrideLimit(double voltage, boolean leftSide){
+        return runEnd(() -> {
+            if(leftSide) setLeftVoltage(voltage, true);
+            else setRightVoltage(voltage, true);
+        },
+        () -> {
+            if(leftSide) left.set(0);
+            else right.set(0);
         });
     }
     public double getLeftVoltage(){
@@ -158,7 +163,16 @@ public class Climber extends SubsystemBase {
     public boolean getRightLimitSwitch(){
         return !rightLimitSwitch.get();
     }
-
+    public void setLeftVoltage(double v, boolean limitOverride){
+        if(!getLeftLimitSwitch() || limitOverride || v > 0){
+            left.setVoltage(v);
+        }
+    }
+    public void setRightVoltage(double v, boolean limitOverride){
+        if(!getRightLimitSwitch() || limitOverride || v > 0){
+            right.setVoltage(v);
+        }
+    }
     public Command switchSoftLimit() {
         return runOnce(() -> {
         if (softLimitEnabled == true) {

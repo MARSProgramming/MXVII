@@ -27,10 +27,10 @@ public class RA014 extends SequentialCommandGroup{
             new ResetPose(drivetrainSubsystem, ll, RA1.getInitialTargetHolonomicPose()),
             drivetrainSubsystem.zeroGyroscope(-63.0),
             new IntegratedShooterCommand(intakeWheels, shooterFlywheel, thePivot, drivetrainSubsystem).withTimeout(3),
-            new DriveAtPath(drivetrainSubsystem, RA1, ll, false).alongWith(new IntakeCommand(intakePivot, intakeWheels, thePivot)),
+            new DriveAtPath(drivetrainSubsystem, RA1, ll, false).alongWith(new IntakeCommand(intakePivot, intakeWheels, thePivot)).withTimeout(3),
             new IntegratedShooterCommand(intakeWheels, shooterFlywheel, thePivot, drivetrainSubsystem).withTimeout(3),
-            new DriveAtPath(drivetrainSubsystem, R14, ll, true).alongWith(new WaitCommand(1), new IntakeCommand(intakePivot, intakeWheels, thePivot)),
-            new DriveAtPath(drivetrainSubsystem, R4G, ll, false),
+            new DriveAtPath(drivetrainSubsystem, R14, ll, true).deadlineWith(new WaitCommand(0.5), new IntakeCommand(intakePivot, intakeWheels, thePivot)).withTimeout(4),
+            new DriveAtPath(drivetrainSubsystem, R4G, ll, false).deadlineWith(intakePivot.setPositionCommand(() -> 0, true)),
             new IntegratedShooterCommand(intakeWheels, shooterFlywheel, thePivot, drivetrainSubsystem).withTimeout(3)
         );
     }
