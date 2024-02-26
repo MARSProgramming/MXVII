@@ -28,7 +28,7 @@ public class ThePivot extends SubsystemBase {
     private ProfiledPIDController profiledPIDController;
     private ArmFeedforward armFeedforward;
     private TrapezoidProfile.Constraints lowerConstraints = new TrapezoidProfile.Constraints(50, 30);
-    private TrapezoidProfile.Constraints raiseConstraints = new TrapezoidProfile.Constraints(50, 300);
+    private TrapezoidProfile.Constraints raiseConstraints = new TrapezoidProfile.Constraints(100, 300);
     private DutyCycleEncoder absoluteEncoder = new DutyCycleEncoder(StaticConstants.ThePivot.encoderID);
 
     //TODO: set as a rio constant
@@ -42,8 +42,8 @@ public class ThePivot extends SubsystemBase {
         .withReverseSoftLimitEnable(true)
         .withReverseSoftLimitThreshold(StaticConstants.ThePivot.reverseLimit / positionCoefficient));
         motor.getConfigurator().apply(new VoltageConfigs()
-        .withPeakForwardVoltage(9)
-        .withPeakReverseVoltage(-2));
+        .withPeakForwardVoltage(10)
+        .withPeakReverseVoltage(-3));
         brakeEnabled = true;
         softLimitEnabled = true;
         motor.setNeutralMode(NeutralModeValue.Brake);
@@ -55,7 +55,7 @@ public class ThePivot extends SubsystemBase {
         .withSupplyCurrentLimit(StaticConstants.ThePivot.statorCurrentLimit));
 
         //TODO: set them in constants
-        profiledPIDController = new ProfiledPIDController(2.0, 3, 0, lowerConstraints);
+        profiledPIDController = new ProfiledPIDController(1.5, 3, 0, lowerConstraints);
         armFeedforward = new ArmFeedforward(0, 0.45, 0, 0);
         profiledPIDController.setTolerance(0.002 / positionCoefficient);
         // profiledPIDController.setIntegratorRange(-10, 10);
@@ -84,8 +84,8 @@ public class ThePivot extends SubsystemBase {
         TrapezoidProfile.Constraints constraints = position < getPosition() ? lowerConstraints : raiseConstraints;
         TrapezoidProfile.State state = new TrapezoidProfile.State(position / positionCoefficient, 0);
         double output = profiledPIDController.calculate(motor.getPosition().getValueAsDouble(), state, constraints)
-        - armFeedforward.calculate(
-            Math.PI * 2 * (motor.getPosition().getValueAsDouble() * positionCoefficient - DynamicConstants.ThePivot.uprightPosition - 0.25),
+        + armFeedforward.calculate(
+            Math.PI * 2 * (motor.getPosition().getValueAsDouble() * positionCoefficient - DynamicConstants.ThePivot.uprightPosition + 0.25),
             Math.PI * 2 * (motor.getVelocity().getValueAsDouble() * positionCoefficient),
             Math.PI * 2 * (motor.getAcceleration().getValueAsDouble() * positionCoefficient))
         // - Math.cos(

@@ -113,7 +113,7 @@ public class IntegratedShooterCommand extends Command {
     }
     @Override
     public boolean isFinished(){
-        return !mIntakeWheels.hasPiece() && mTimer.get() > 0.2;
+        return !mIntakeWheels.hasPiece() && mTimer.get() > 0.4;
     }
     public static double[] calculateShootingParameters(Pose2d pos, Translation2d goalPos, ChassisSpeeds vel, Alliance alliance){
         double dist = goalPos.getDistance(pos.getTranslation());
@@ -150,6 +150,6 @@ public class IntegratedShooterCommand extends Command {
         double angleOffset = alliance.equals(Alliance.Red) ? -0.12 : 0.12;
         SmartDashboard.putNumber("Dist To Goal", dist);
         //TODO: set fudge factor as dynamic constant
-        return new double[]{distToRPM.get(dist), Math.atan2(newGoal.getY()-pos.getY(), (newGoal.getX() + angleOffset - pos.getX())), Math.max(distToPivotAngle.get(dist) - 0.008, 0)};
+        return new double[]{distToRPM.get(dist), Math.atan2(newGoal.getY()-pos.getY(), (newGoal.getX() + angleOffset - pos.getX())), Math.max(distToPivotAngle.get(dist) - 0.0055, 0)};
     }
 }

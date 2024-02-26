@@ -25,9 +25,6 @@ public class LED extends SubsystemBase {
   AddressableLED m_led = new AddressableLED(0);
   AddressableLEDBuffer m_ledBuffer;
 
-  private static final int[] REDS = { 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255 };
-  private static final int[] GREENS = { 0, 45, 90, 135, 180, 225, 270, 315, 0, 45, 90, 135, 180, 225, 270, 315, 0, 45, 90, 135 };
-  private static final int[] BLUES = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
   private static final Random RANDOM = new Random();
 
   public LED() {
@@ -195,20 +192,7 @@ public class LED extends SubsystemBase {
    else if (state == LEDState.FLASHING_YELLOW){
     yellow_flash();
    }
-   else if (state == LEDState.FLAMES){
-    flames();
-   }
    m_led.setData(m_ledBuffer);
-  }
-  int index = 0;
-  private void flames(){
-    if(index % 50 == 0){
-      for (int i = 0; i < 20; i++) {
-        int flicker = RANDOM.nextInt(30) + 225;
-        m_ledBuffer.setRGB(i, flicker * GREENS[i] / 255, flicker * REDS[i] / 255, flicker * BLUES[i] / 255);
-      }
-    }
-    index++;
   }
 
   double m_rainbowFirstPixelHue = 0;

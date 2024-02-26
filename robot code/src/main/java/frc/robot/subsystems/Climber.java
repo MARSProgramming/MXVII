@@ -100,8 +100,8 @@ public class Climber extends SubsystemBase {
 
     public Command climbToLimit() {
         return runEnd(() -> {
-            setLeftVoltage(-4, false);
-            setRightVoltage(-4, false);
+            setLeftVoltage(-8, false);
+            setRightVoltage(-8, false);
         }, () -> {
             left.set(0);
             right.set(0);

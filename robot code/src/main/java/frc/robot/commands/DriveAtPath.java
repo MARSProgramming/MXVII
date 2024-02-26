@@ -7,7 +7,10 @@ import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -24,6 +27,8 @@ public class DriveAtPath extends Command {
     private ProfiledPIDController snapPID;
     private DriverStation.Alliance alliance = DriverStation.Alliance.Blue;
     private boolean alignToPiece = false;
+
+    private StructPublisher<Pose2d> publisher = NetworkTableInstance.getDefault().getStructTopic("Desired Pose", Pose2d.struct).publish();
 
     public DriveAtPath(DrivetrainSubsystem subsystem, PathPlannerTrajectory traj, Limelight ll, boolean alignToPiece) {
         mTrajectory = traj;
@@ -60,9 +65,8 @@ public class DriveAtPath extends Command {
         }
         mDrivetrainSubsystem.drive(speeds);
         SmartDashboard.putNumber("desiredX", state.positionMeters.getX());
-        SmartDashboard.putNumber("autoXError", mDrivetrainSubsystem.getPose().getX() - state.positionMeters.getX());
         SmartDashboard.putNumber("desiredY", state.positionMeters.getY());
-        SmartDashboard.putNumber("autoYError", mDrivetrainSubsystem.getPose().getY() - state.positionMeters.getY());
+        publisher.set(state.getTargetHolonomicPose());
         SmartDashboard.putNumber("desiredrot", state.targetHolonomicRotation.getDegrees());
     }
 
@@ -76,6 +80,6 @@ public class DriveAtPath extends Command {
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return mDrivetrainSubsystem.getPose().getTranslation().getDistance(mTrajectory.getEndState().positionMeters) < 0.06;
+        return mDrivetrainSubsystem.getPose().getTranslation().getDistance(mTrajectory.getEndState().positionMeters) < 0.05 && mTimer.get() > mTrajectory.getTotalTimeSeconds() - 0.5;
     }
 }

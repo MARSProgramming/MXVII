@@ -43,13 +43,13 @@ public final class StaticConstants {
     }
 
     public static class Auto{
-        public static final double holonomicXkP = 3.0;
+        public static final double holonomicXkP = 5;
         public static final double holonomicXkI = 0;
         public static final double holonomicXkD = 0;
-        public static final double holonomicYkP = 3.0;
+        public static final double holonomicYkP = 5;
         public static final double holonomicYkI = 0;
         public static final double holonomicYkD = 0;
-        public static final double holonomicOkP = 2.0;
+        public static final double holonomicOkP = 3.0;
         public static final double holonomicOkI = 0.0;
         public static final double holonomicOkD = 0.0;
         public static final double holonomicOMaxVelocity = 5;
@@ -65,7 +65,7 @@ public final class StaticConstants {
         public static int reverseLimitSwitchID = 0;
 
         public static double supplyCurrentLimit = 20;
-        public static double statorCurrentLimit = 60;
+        public static double statorCurrentLimit = 80;
     }
     public static class IntakeWheels{
         public static int ID = 12;
@@ -86,7 +86,7 @@ public final class StaticConstants {
         public static int ID = 33;
 
         //Limits are in rotations from zero
-        public static double forwardLimit = 0.25;
+        public static double forwardLimit = 0.23;
         public static double reverseLimit = 0.0;
 
         public static int encoderID = 3;

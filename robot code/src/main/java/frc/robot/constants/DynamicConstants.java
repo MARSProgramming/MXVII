@@ -33,7 +33,7 @@ public final class DynamicConstants {
         public static double pivotAmpPosition = 0.3;
         public static double pivotUprightPosition = 0.16;
         public static double pivotStowPosition = 0.01;
-        public static double pivotTrapPosition = 0.3; 
+        public static double pivotTrapPosition = 0.35;
     }
 
     public static class ShooterFlywheel{

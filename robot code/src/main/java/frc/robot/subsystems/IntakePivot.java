@@ -34,8 +34,8 @@ public class IntakePivot extends SubsystemBase {
         .withReverseSoftLimitEnable(true)
         .withReverseSoftLimitThreshold(StaticConstants.IntakePivot.reverseLimit / positionCoefficient));
         pivotMotor.getConfigurator().apply(new VoltageConfigs()
-        .withPeakForwardVoltage(8)
-        .withPeakReverseVoltage(-8));
+        .withPeakForwardVoltage(10)
+        .withPeakReverseVoltage(-10));
         pivotMotor.getConfigurator().apply(new CurrentLimitsConfigs().withSupplyCurrentLimitEnable(true)
         .withSupplyCurrentLimit(StaticConstants.IntakePivot.supplyCurrentLimit).withStatorCurrentLimitEnable(true).withStatorCurrentLimit(StaticConstants.IntakePivot.statorCurrentLimit));
         pivotMotor.setNeutralMode(NeutralModeValue.Coast);
@@ -65,8 +65,8 @@ public class IntakePivot extends SubsystemBase {
     }
     public void setPosition(double position){
         double output = profiledPIDController.calculate(pivotMotor.getPosition().getValueAsDouble(), position / positionCoefficient)
-        - armFeedforward.calculate(
-            Math.PI * 2 * (pivotMotor.getPosition().getValueAsDouble() * positionCoefficient - DynamicConstants.Intake.pivotUprightPosition - 0.25),
+        + armFeedforward.calculate(
+            Math.PI * 2 * (pivotMotor.getPosition().getValueAsDouble() * positionCoefficient - DynamicConstants.Intake.pivotUprightPosition + 0.25),
             Math.PI * 2 * (pivotMotor.getVelocity().getValueAsDouble() * positionCoefficient),
             Math.PI * 2 * (pivotMotor.getAcceleration().getValueAsDouble() * positionCoefficient));
         pivotMotor.setVoltage(output);
@@ -94,10 +94,10 @@ public class IntakePivot extends SubsystemBase {
             resetProfiledPIDController();
         }).andThen(runEnd(() -> {
             if(getPosition() > DynamicConstants.Intake.pivotUprightPosition - 0.05){
-                pivotMotor.setVoltage(-8);
+                pivotMotor.setVoltage(-4);
             }
             else{
-                pivotMotor.setVoltage(getPosition() * -6);
+                pivotMotor.setVoltage(getPosition() * -2);
             }
         }, () -> {
             pivotMotor.set(0);
@@ -161,7 +161,7 @@ public class IntakePivot extends SubsystemBase {
 
     @Override
     public void periodic(){
-        if(getLimitSwitch()){
+        if(getLimitSwitch() && pivotMotor.getPosition().getValueAsDouble() != 0){
             pivotMotor.setPosition(0);
         }
     }

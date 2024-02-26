@@ -28,6 +28,8 @@ import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -110,6 +112,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
                 getSwerveModulePositions(), new Pose2d());*/
     }
 
+    private StructPublisher<Pose2d> publisher = NetworkTableInstance.getDefault().getStructTopic("Current Pose", Pose2d.struct).publish();
+
     //swerve
     @Override
     public void periodic() {
@@ -129,6 +133,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
         
         SmartDashboard.putNumber("Snap Controller Goal", mSnapController.getGoal().position);
         SmartDashboard.putNumber("Snap Controller Pos", getPigeonAngle());
+        publisher.set(getPose());
     }
 
     public SwerveModulePosition[] getSwerveModulePositions() {
@@ -244,7 +249,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
         Mk4ModuleConfiguration config = new Mk4ModuleConfiguration();
         config.setCanivoreName(StaticConstants.Drive.kDriveCANivore);
-        config.setDriveCurrentLimit(40);
+        config.setDriveCurrentLimit(20);
+        config.setSteerCurrentLimit(20);
 
         m_frontLeftModule = Mk4iSwerveModuleHelper.createFalcon500(
                 tab.getLayout("Front Left Module", BuiltInLayouts.kList)
