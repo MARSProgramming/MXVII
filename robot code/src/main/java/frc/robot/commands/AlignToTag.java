@@ -34,4 +34,9 @@ public class AlignToTag extends Command{
                 )
         );
     }
+
+    // @Override
+    // public boolean isFinished(){
+    //     return mLimelight.hasTrapTag() && (Math.abs(mLimelight.getTrapTagX()) < 0.04 && Math.abs(mLimelight.getTrapTagRot()) < 10);
+    // }
 }

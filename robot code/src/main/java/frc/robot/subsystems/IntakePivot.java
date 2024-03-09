@@ -31,7 +31,7 @@ public class IntakePivot extends SubsystemBase {
         pivotMotor.getConfigurator().apply(new SoftwareLimitSwitchConfigs()
         .withForwardSoftLimitEnable(true)
         .withForwardSoftLimitThreshold(StaticConstants.IntakePivot.forwardLimit / positionCoefficient)
-        .withReverseSoftLimitEnable(true)
+        .withReverseSoftLimitEnable(false)
         .withReverseSoftLimitThreshold(StaticConstants.IntakePivot.reverseLimit / positionCoefficient));
         pivotMotor.getConfigurator().apply(new VoltageConfigs()
         .withPeakForwardVoltage(10)
@@ -97,12 +97,12 @@ public class IntakePivot extends SubsystemBase {
                 pivotMotor.setVoltage(-4);
             }
             else{
-                pivotMotor.setVoltage(getPosition() * -2);
+                pivotMotor.setVoltage(Math.abs(getPosition()) * -2);
             }
         }, () -> {
             pivotMotor.set(0);
-            pivotMotor.getConfigurator().apply(new SoftwareLimitSwitchConfigs().withReverseSoftLimitEnable(true));
-        }).until(() -> getLimitSwitch() || (getPosition() - DynamicConstants.Intake.pivotUprightPosition < -0.1)));
+            //pivotMotor.getConfigurator().apply(new SoftwareLimitSwitchConfigs().withReverseSoftLimitEnable(true));
+        }).until(() -> getLimitSwitch()));
     }
 
     public boolean getLimitSwitch(){

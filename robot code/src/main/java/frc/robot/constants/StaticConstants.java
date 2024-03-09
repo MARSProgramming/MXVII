@@ -38,7 +38,7 @@ public final class StaticConstants {
         public static final double kIAlignPiece = 0.0;
         public static final double kDAlignPiece = 0.0;
 
-        public static final double kPTagAlignX = 2.5;
+        public static final double kPTagAlignX = 2;
         public static final double kPTagAlignRot = -0.05;
     }
 
@@ -73,25 +73,25 @@ public final class StaticConstants {
         public static int rightIrID = 1;
 
         public static double supplyCurrentLimit = 20;
-        public static double statorCurrentLimit = 20;
+        public static double statorCurrentLimit = 40;
     }
     public static class ShooterFlywheel{
         public static int masterID = 13;
         public static int followID = 23;
 
         public static double supplyCurrentLimit = 20;
-        public static double statorCurrentLimit = 40;
+        public static double statorCurrentLimit = 60;
     }
     public static class ThePivot{
         public static int ID = 33;
 
         //Limits are in rotations from zero
-        public static double forwardLimit = 0.23;
+        public static double forwardLimit = 0.251;
         public static double reverseLimit = 0.0;
 
         public static int encoderID = 3;
         public static double supplyCurrentLimit = 20;
-        public static double statorCurrentLimit = 40;
+        public static double statorCurrentLimit = 60;
     }
 
     public static class Climber{

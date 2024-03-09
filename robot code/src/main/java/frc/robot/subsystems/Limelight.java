@@ -20,7 +20,9 @@ public class Limelight extends SubsystemBase{
     }
 
     public boolean hasAprilTagTarget(){
-        return NetworkTableInstance.getDefault().getTable("limelight-shooter").getEntry("tv").getDouble(0) == 1.0 || NetworkTableInstance.getDefault().getTable("limelight-trap").getEntry("tv").getDouble(0) == 1.0;
+        double dist = NetworkTableInstance.getDefault().getTable("limelight-trap").getEntry("targetpose_cameraspace").getDoubleArray(new double[7])[2];
+
+        return NetworkTableInstance.getDefault().getTable("limelight-shooter").getEntry("tv").getDouble(0) == 1.0 || (NetworkTableInstance.getDefault().getTable("limelight-trap").getEntry("tv").getDouble(0) == 1.0 && dist < 2.5);
     }
 
     public void resetPose(){
@@ -64,6 +66,13 @@ public class Limelight extends SubsystemBase{
 
     public boolean pieceLLhasTarget(){
         return pieceLLTimer.get() > 0.25;
+    }
+    public boolean hasTrapTag(){
+        //TODO: make it not dumb
+        if(NetworkTableInstance.getDefault().getTable("limelight-trap").getEntry("tv").getDouble(0) == 1.0){
+            return true;
+        }
+        return false;
     }
     public double getTrapTagX(){
         if(NetworkTableInstance.getDefault().getTable("limelight-trap").getEntry("tv").getDouble(0) != 1.0){

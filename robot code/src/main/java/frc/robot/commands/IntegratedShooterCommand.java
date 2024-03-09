@@ -84,10 +84,10 @@ public class IntegratedShooterCommand extends Command {
         if(movePivot){
             mThePivot.setPosition(pivotAngle);
         }
-        shoot = mDrivetrainSubsystem.getSnapController().getPositionError() < 0.04 && mShooterFlywheel.atSpeed(() -> flywheelSpeed) && mThePivot.atSetpoint() && mThePivot.belowVelocityThreshold();
+        shoot = mDrivetrainSubsystem.getSnapController().getPositionError() < 0.08 && mShooterFlywheel.atSpeed(() -> flywheelSpeed) && mThePivot.atSetpoint() && mThePivot.belowVelocityThreshold();
         SmartDashboard.putBoolean("Flywheel At Goal", mShooterFlywheel.atSpeed(() -> flywheelSpeed));
         SmartDashboard.putBoolean("Pivot At Goal", mThePivot.atSetpoint());
-        SmartDashboard.putBoolean("Drive Angle At Goal", mDrivetrainSubsystem.getSnapController().getPositionError() < 5);
+        SmartDashboard.putBoolean("Drive Angle At Goal", mDrivetrainSubsystem.getSnapController().getPositionError() < 0.08);
         SmartDashboard.putNumber("Angle to Target", swerveAngle);
         if(shoot){
             mIntakeWheels.setDutyCycle(-0.9);

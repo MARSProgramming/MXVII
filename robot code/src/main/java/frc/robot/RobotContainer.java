@@ -105,13 +105,15 @@ public class RobotContainer {
         
         mPilot.leftTrigger().whileTrue(new IntakeCommand(mIntakePivot, mIntakeWheels, mThePivot));
         mPilot.rightBumper().whileTrue(mIntakeWheels.runVoltage(-4));
+        mPilot.rightBumper().whileTrue(mShooterFlywheel.runVoltage(4));
+        mPilot.back().whileTrue(mShooterFlywheel.runVoltage(-4).alongWith(mIntakeWheels.runVoltage(6)));
         mPilot.povLeft().whileTrue(mIntakePivot.runVoltage(-1));
         mPilot.povRight().whileTrue(mIntakePivot.runVoltage(1));
         mPilot.povUp().whileTrue(mThePivot.runVoltage(-1));
         mPilot.povDown().whileTrue(mThePivot.runVoltage(1));
         mPilot.b().whileTrue(new RobotCentricDrive(mDrivetrainSubsystem, () -> modifyAxis(mPilot.getLeftY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND));
         mPilot.a().whileTrue(new GoToZero(mIntakePivot, mThePivot));
-        mPilot.x().whileTrue(new AlignToTag(mDrivetrainSubsystem, mLimelight));
+        mPilot.x().whileTrue(new AlignToTag(mDrivetrainSubsystem, mLimelight).andThen(m_Led.setPurple()));
         mPilot.leftBumper().toggleOnTrue(mShooterFlywheel.runVelocity(() -> DynamicConstants.ShooterFlywheel.idleVelocity));
        
         mPilot.rightTrigger().whileTrue(
@@ -129,7 +131,7 @@ public class RobotContainer {
         // copilot
         mCopilot.leftTrigger().whileTrue(new AmpSetpoint(mIntakePivot, mIntakeWheels, mThePivot));
         mCopilot.leftBumper().whileTrue(new GoToZero(mIntakePivot, mThePivot));
-        mCopilot.rightBumper().whileTrue(mIntakeWheels.runVoltage(-2));
+        mCopilot.rightBumper().whileTrue(mIntakeWheels.runVoltage(DynamicConstants.Intake.trapOuttakeVoltage));
         mCopilot.b().whileTrue(mClimber.climbToLimit());
         mCopilot.x().whileTrue(mClimber.setPositionCommand(() -> DynamicConstants.Climber.uprightPosition).alongWith(mIntakePivot.switchNeutralMode(), mIntakeWheels.runVoltage(3)));
         mCopilot.a().toggleOnTrue(new InitializeClimbSetpoint(mIntakePivot, mThePivot));

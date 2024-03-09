@@ -24,6 +24,7 @@ public final class DynamicConstants {
         //voltage of certain movements
         public static double intakeVoltage = 8;
         public static double outtakeVoltage = -9;
+        public static double trapOuttakeVoltage = -3;
 
         //voltage threshold for note detection
         public static double irSensorThreshold = 1.75;
@@ -46,7 +47,7 @@ public final class DynamicConstants {
         public static double ampPosition = 0.22;
         public static double zeroPosition = 0;
         public static double testPosition = 0.1;
-        public static double climbPosition = 0.23; 
+        public static double climbPosition = 0.235; 
 
         // setpoints for trap
         public static double trapPosition = 0.23;
