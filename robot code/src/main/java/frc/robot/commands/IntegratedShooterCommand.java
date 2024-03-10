@@ -150,6 +150,7 @@ public class IntegratedShooterCommand extends Command {
         double angleOffset = alliance.equals(Alliance.Red) ? -0.12 : 0.12;
         SmartDashboard.putNumber("Dist To Goal", dist);
         //TODO: set fudge factor as dynamic constant
-        return new double[]{distToRPM.get(dist), Math.atan2(newGoal.getY()-pos.getY(), (newGoal.getX() + angleOffset - pos.getX())), Math.max(distToPivotAngle.get(dist) - 0.0055, 0)};
+        //return new double[]{distToRPM.get(dist), Math.atan2(newGoal.getY()-pos.getY(), (newGoal.getX() + angleOffset - pos.getX())), Math.max(distToPivotAngle.get(dist) - 0.0055, 0)};
+        return new double[]{distToRPM.get(dist), Math.atan2(newGoal.getY()-pos.getY(), (newGoal.getX() + angleOffset - pos.getX())), Math.max(distToPivotAngle.get(dist) - 0.015, 0)};
     }
 }

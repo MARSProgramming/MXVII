@@ -32,9 +32,10 @@ public final class DynamicConstants {
         //Setpoints in rotations from zero
         public static double pivotIntakePosition = 0.3;
         public static double pivotAmpPosition = 0.3;
-        public static double pivotUprightPosition = 0.16;
+        public static double pivotUprightPosition = 0.09;
         public static double pivotStowPosition = 0.01;
         public static double pivotTrapPosition = 0.35;
+        public static double pivotIntakeAmpPosition = 0.1;
     }
 
     public static class ShooterFlywheel{

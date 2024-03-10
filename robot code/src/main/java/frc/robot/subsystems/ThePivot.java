@@ -28,7 +28,7 @@ public class ThePivot extends SubsystemBase {
     private ProfiledPIDController profiledPIDController;
     private ArmFeedforward armFeedforward;
     private TrapezoidProfile.Constraints lowerConstraints = new TrapezoidProfile.Constraints(50, 30);
-    private TrapezoidProfile.Constraints raiseConstraints = new TrapezoidProfile.Constraints(100, 300);
+    private TrapezoidProfile.Constraints raiseConstraints = new TrapezoidProfile.Constraints(300, 300);
     private DutyCycleEncoder absoluteEncoder = new DutyCycleEncoder(StaticConstants.ThePivot.encoderID);
 
     //TODO: set as a rio constant
@@ -55,11 +55,12 @@ public class ThePivot extends SubsystemBase {
         .withSupplyCurrentLimit(StaticConstants.ThePivot.statorCurrentLimit));
 
         //TODO: set them in constants
-        profiledPIDController = new ProfiledPIDController(1.5, 3, 0, lowerConstraints);
+        profiledPIDController = new ProfiledPIDController(2, 4, 0, lowerConstraints);
         armFeedforward = new ArmFeedforward(0, 0.45, 0, 0);
-        profiledPIDController.setTolerance(0.002 / positionCoefficient);
-        // profiledPIDController.setIntegratorRange(-10, 10);
-        // profiledPIDController.setIZone(20);
+        //profiledPIDController.setTolerance(0.001 / positionCoefficient);
+        profiledPIDController.setTolerance(0.004);
+        profiledPIDController.setIntegratorRange(-3, 3);
+        profiledPIDController.setIZone(0.01);   
 
         SmartDashboard.putData(profiledPIDController);
     }
@@ -80,24 +81,33 @@ public class ThePivot extends SubsystemBase {
         });
     }
     public void setPosition(double position){
-        Supplier<?> intakePositionObj = SubsystemIO.getInstance().getValue("Intake Pivot: Position");
-        TrapezoidProfile.Constraints constraints = position < getPosition() ? lowerConstraints : raiseConstraints;
-        TrapezoidProfile.State state = new TrapezoidProfile.State(position / positionCoefficient, 0);
-        double output = profiledPIDController.calculate(motor.getPosition().getValueAsDouble(), state, constraints)
-        + armFeedforward.calculate(
-            Math.PI * 2 * (motor.getPosition().getValueAsDouble() * positionCoefficient - DynamicConstants.ThePivot.uprightPosition + 0.25),
-            Math.PI * 2 * (motor.getVelocity().getValueAsDouble() * positionCoefficient),
-            Math.PI * 2 * (motor.getAcceleration().getValueAsDouble() * positionCoefficient))
+        // Supplier<?> intakePositionObj = SubsystemIO.getInstance().getValue("Intake Pivot: Position");
+        // TrapezoidProfile.Constraints constraints = position < getPosition() ? lowerConstraints : raiseConstraints;
+        // TrapezoidProfile.State state = new TrapezoidProfile.State(position / positionCoefficient, 0);
+        // double output = profiledPIDController.calculate(motor.getPosition().getValueAsDouble(), state, constraints)
+        // + armFeedforward.calculate(
+        //     Math.PI * 2 * (motor.getPosition().getValueAsDouble() * positionCoefficient - DynamicConstants.ThePivot.uprightPosition + 0.25),
+        //     Math.PI * 2 * (motor.getVelocity().getValueAsDouble() * positionCoefficient),
+        //     Math.PI * 2 * (motor.getAcceleration().getValueAsDouble() * positionCoefficient))
         // - Math.cos(
         //     Math.PI * 2 * (
         //             (intakePositionObj != null && intakePositionObj.get() instanceof Double ? (Double) intakePositionObj.get() : 0.0)
         //             - DynamicConstants.Intake.pivotUprightPosition
         //         )
         //     ) * DynamicConstants.ThePivot.secondSegmentFeedforwardConstant
+        Supplier<?> intakePositionObj = SubsystemIO.getInstance().getValue("Intake Pivot: Position");
+        TrapezoidProfile.Constraints constraints = position < getPosition() ? lowerConstraints : raiseConstraints;
+        TrapezoidProfile.State state = new TrapezoidProfile.State(position, 0);
+        double output = profiledPIDController.calculate(getEncoderPosition(), state, constraints)
+        + armFeedforward.calculate(
+            Math.PI * 2 * (motor.getPosition().getValueAsDouble() * positionCoefficient - DynamicConstants.ThePivot.uprightPosition + 0.25),
+            Math.PI * 2 * (motor.getVelocity().getValueAsDouble() * positionCoefficient),
+            Math.PI * 2 * (motor.getAcceleration().getValueAsDouble() * positionCoefficient))
         ;
         motor.setVoltage(output);
-        SmartDashboard.putNumber("ThePivot goal", profiledPIDController.getSetpoint().position * positionCoefficient);
-        SmartDashboard.putNumber("ThePivot Position Error", profiledPIDController.getPositionError() * positionCoefficient);
+        SmartDashboard.putNumber("ThePivot goal", profiledPIDController.getSetpoint().position);
+        //SmartDashboard.putNumber("ThePivot goal", profiledPIDController.getSetpoint().position * positionCoefficient);
+        SmartDashboard.putNumber("ThePivot Position Error", profiledPIDController.getPositionError());
     }
     public double getPosition(){
         return motor.getPosition().getValueAsDouble() * positionCoefficient;
@@ -109,7 +119,7 @@ public class ThePivot extends SubsystemBase {
         return profiledPIDController.atGoal();
     }
     public boolean belowVelocityThreshold(){
-        return motor.getVelocity().getValueAsDouble() < DynamicConstants.ThePivot.shootVelocityThreshold;
+        return Math.abs(motor.getVelocity().getValueAsDouble()) < DynamicConstants.ThePivot.shootVelocityThreshold;
     }
     public Command setPositionCommand(DoubleSupplier position, boolean dontEnd){
         return runOnce(() -> {resetProfiledPIDController();}).andThen(runEnd(() -> {
@@ -120,7 +130,8 @@ public class ThePivot extends SubsystemBase {
         }).until(() -> profiledPIDController.atGoal() && !dontEnd));
     }
     public void resetProfiledPIDController(){
-        profiledPIDController.reset(motor.getPosition().getValueAsDouble(), motor.getVelocity().getValueAsDouble());
+        //profiledPIDController.reset(motor.getPosition().getValueAsDouble(), motor.getVelocity().getValueAsDouble());
+        profiledPIDController.reset(getEncoderPosition(), 0);
     }
 
 
