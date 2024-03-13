@@ -12,6 +12,7 @@ import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.DynamicConstants;
@@ -25,6 +26,7 @@ public class IntakePivot extends SubsystemBase {
     private boolean brakeEnabled;
     private boolean softLimitEnabled;
     private DigitalInput reverseLimitSwitch;
+    private boolean resetPos = false;
     public IntakePivot() {
         pivotMotor = new TalonFX(StaticConstants.IntakePivot.ID);
         pivotMotor.getConfigurator().apply(new TalonFXConfiguration());
@@ -43,9 +45,9 @@ public class IntakePivot extends SubsystemBase {
         softLimitEnabled = true;
         pivotMotor.setInverted(true);
         pivotMotor.setPosition(0);
-        profiledPIDController = new ProfiledPIDController(2, 0, 0, new TrapezoidProfile.Constraints(100,60));
-        armFeedforward = new ArmFeedforward(0, 0.4, 0, 0);
-        profiledPIDController.setTolerance(0.03 / positionCoefficient);
+        profiledPIDController = new ProfiledPIDController(3, 0, 0, new TrapezoidProfile.Constraints(100,60));
+        armFeedforward = new ArmFeedforward(0, 0.7, 0, 0);
+        profiledPIDController.setTolerance(0.02 / positionCoefficient);
 
         reverseLimitSwitch = new DigitalInput(StaticConstants.IntakePivot.reverseLimitSwitchID);
     }
@@ -62,6 +64,9 @@ public class IntakePivot extends SubsystemBase {
     }
     public void setDutyCycle(double d){
         pivotMotor.set(d);
+    }
+    public void setVoltage(double d){
+        pivotMotor.setVoltage(d);
     }
     public void setPosition(double position){
         double output = profiledPIDController.calculate(pivotMotor.getPosition().getValueAsDouble(), position / positionCoefficient)
@@ -92,8 +97,10 @@ public class IntakePivot extends SubsystemBase {
         return runOnce(() -> {
             pivotMotor.getConfigurator().apply(new SoftwareLimitSwitchConfigs().withReverseSoftLimitEnable(false).withReverseSoftLimitThreshold(-10000));
             resetProfiledPIDController();
+            resetPos = true;
+            i = 0;
         }).andThen(runEnd(() -> {
-            if(getPosition() > DynamicConstants.Intake.pivotUprightPosition - 0.05){
+            if(getPosition() > DynamicConstants.Intake.pivotUprightPosition){
                 pivotMotor.setVoltage(-4);
             }
             else{
@@ -159,10 +166,15 @@ public class IntakePivot extends SubsystemBase {
         });
     }
 
+    int i = 0;
     @Override
     public void periodic(){
         if(getLimitSwitch() && pivotMotor.getPosition().getValueAsDouble() != 0){
             pivotMotor.setPosition(0);
+            if(i > 20){
+                resetPos = false;
+            }
+            i++;
         }
     }
 }

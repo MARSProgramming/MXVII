@@ -42,7 +42,7 @@ public class ThePivot extends SubsystemBase {
         .withReverseSoftLimitEnable(true)
         .withReverseSoftLimitThreshold(StaticConstants.ThePivot.reverseLimit / positionCoefficient));
         motor.getConfigurator().apply(new VoltageConfigs()
-        .withPeakForwardVoltage(10)
+        .withPeakForwardVoltage(12)
         .withPeakReverseVoltage(-3));
         brakeEnabled = true;
         softLimitEnabled = true;
@@ -55,11 +55,11 @@ public class ThePivot extends SubsystemBase {
         .withSupplyCurrentLimit(StaticConstants.ThePivot.statorCurrentLimit));
 
         //TODO: set them in constants
-        profiledPIDController = new ProfiledPIDController(1.5, 3, 0, lowerConstraints);
+        profiledPIDController = new ProfiledPIDController(2, 4, 0, lowerConstraints);
         armFeedforward = new ArmFeedforward(0, 0.45, 0, 0);
-        profiledPIDController.setTolerance(0.002 / positionCoefficient);
-        // profiledPIDController.setIntegratorRange(-10, 10);
-        // profiledPIDController.setIZone(20);
+        profiledPIDController.setTolerance(0.003 / positionCoefficient);
+        //profiledPIDController.setIntegratorRange(-10, 10);
+        profiledPIDController.setIZone(0.01 / positionCoefficient);
 
         SmartDashboard.putData(profiledPIDController);
     }
@@ -109,7 +109,7 @@ public class ThePivot extends SubsystemBase {
         return profiledPIDController.atGoal();
     }
     public boolean belowVelocityThreshold(){
-        return motor.getVelocity().getValueAsDouble() < DynamicConstants.ThePivot.shootVelocityThreshold;
+        return Math.abs(motor.getVelocity().getValueAsDouble()) < DynamicConstants.ThePivot.shootVelocityThreshold;
     }
     public Command setPositionCommand(DoubleSupplier position, boolean dontEnd){
         return runOnce(() -> {resetProfiledPIDController();}).andThen(runEnd(() -> {

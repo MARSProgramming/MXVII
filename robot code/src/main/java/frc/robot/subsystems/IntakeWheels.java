@@ -68,6 +68,9 @@ public class IntakeWheels extends SubsystemBase {
     public void intake(){
         intakeMotor.setVoltage(DynamicConstants.Intake.intakeVoltage);
     }
+    public void setVoltage(double d){
+        intakeMotor.setVoltage(d);
+    }
 
     public Command outtake() {
         return runEnd(() -> {
