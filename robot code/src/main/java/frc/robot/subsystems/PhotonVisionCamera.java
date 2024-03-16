@@ -34,9 +34,11 @@ public class PhotonVisionCamera extends SubsystemBase{
 
     public void resetPose(){
         Optional<EstimatedRobotPose> pose = getEstimatedGlobalPose(dt.getPose());
-        if(pose.isPresent()){
-            dt.addVisionMeasurementTimestamp(pose.get().estimatedPose.toPose2d(), pose.get().timestampSeconds);
-            lastPose = pose.get();
+        if(cam.getLatestResult().getBestTarget() != null){
+            if(pose.isPresent() && cam.getLatestResult().getBestTarget() != null && cam.getLatestResult().getBestTarget().getBestCameraToTarget() != null && cam.getLatestResult().getBestTarget().getBestCameraToTarget().getTranslation().getX() < 4){
+                dt.addVisionMeasurementTimestamp(pose.get().estimatedPose.toPose2d(), pose.get().timestampSeconds);
+                lastPose = pose.get();
+            }
         }
     }
 
@@ -44,9 +46,9 @@ public class PhotonVisionCamera extends SubsystemBase{
     public void periodic(){
         resetPose();
     }
-    public double getRobotHeading(double defaultvalue){
+    public double getRobotHeading(){
         double heading = lastPose.estimatedPose.getRotation().toRotation2d().getDegrees();
-        return Math.abs(heading - defaultvalue) < 5 ? heading : defaultvalue;
+        return heading;
     }
     public Optional<EstimatedRobotPose> getEstimatedGlobalPose(Pose2d prevEstimatedRobotPose) {
         photonPoseEstimator.setReferencePose(prevEstimatedRobotPose);

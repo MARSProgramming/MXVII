@@ -1,5 +1,7 @@
 package frc.robot.util;
 
+import org.photonvision.PhotonVersion;
+
 import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.path.PathPlannerTrajectory;
@@ -30,6 +32,8 @@ import frc.robot.auto.RA01;
 import frc.robot.auto.RA012;
 import frc.robot.auto.RA0123;
 import frc.robot.auto.RA0123NP;
+import frc.robot.auto.RA014;
+import frc.robot.auto.RA0145;
 import frc.robot.auto.RB0;
 import frc.robot.auto.RB0123NP;
 import frc.robot.auto.RB02;
@@ -43,6 +47,7 @@ import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.IntakePivot;
 import frc.robot.subsystems.IntakeWheels;
 import frc.robot.subsystems.Limelight;
+import frc.robot.subsystems.PhotonVisionCamera;
 import frc.robot.subsystems.ShooterFlywheel;
 import frc.robot.subsystems.ThePivot;
 
@@ -51,7 +56,7 @@ public class AutoChooser {
     private SendableChooser<Command> autoChooser = new SendableChooser<>();
     private DrivetrainSubsystem drivetrainSubsystem;
 
-    public AutoChooser(DrivetrainSubsystem mDrivetrainSubsystem, IntakeWheels intakeWheels, IntakePivot intakePivot, ShooterFlywheel shooterFlywheel, ThePivot thePivot, Limelight ll){
+    public AutoChooser(DrivetrainSubsystem mDrivetrainSubsystem, IntakeWheels intakeWheels, IntakePivot intakePivot, ShooterFlywheel shooterFlywheel, ThePivot thePivot, Limelight ll, PhotonVisionCamera shooterCamera){
         preMatch = Shuffleboard.getTab("Match");
         drivetrainSubsystem = mDrivetrainSubsystem;
 
@@ -63,8 +68,8 @@ public class AutoChooser {
         autoChooser.addOption("RA0123", new RA0123(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll));
         autoChooser.addOption("RA0123NP", new RA0123NP(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll));
         autoChooser.addOption("RB0123NP", new RB0123NP(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll));
-        //TODO: autoChooser.addOption("RA014", new RA014(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll));
-        //autoChooser.addOption("RA0145", new RA0145(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll));
+        autoChooser.addOption("RA014", new RA014(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll, shooterCamera));
+        autoChooser.addOption("RA0145", new RA0145(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll));
         autoChooser.addOption("RB0", new RB0(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll));
         autoChooser.addOption("RB02", new RB02(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll));
         autoChooser.addOption("RC0", new RC0(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll));

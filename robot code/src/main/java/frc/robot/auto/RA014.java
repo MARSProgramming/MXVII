@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.DriveAtPath;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.IntegratedShooterCommand;
+import frc.robot.commands.ResetHeadingOnTag;
 import frc.robot.commands.ResetPose;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.IntakePivot;
@@ -26,7 +27,7 @@ public class RA014 extends SequentialCommandGroup{
         PathPlannerTrajectory R4G = AutoChooser.openTrajectoryFile("R4G", drivetrainSubsystem, drivetrainSubsystem.getPigeonAngle());
         addCommands(
             new ResetPose(drivetrainSubsystem, ll, RA1.getInitialTargetHolonomicPose()),
-            drivetrainSubsystem.zeroGyroscope(shooterCam.getRobotHeading(-63.0)),
+            new ResetHeadingOnTag(drivetrainSubsystem, shooterCam, -63.0),
             new IntegratedShooterCommand(intakeWheels, shooterFlywheel, thePivot, drivetrainSubsystem).withTimeout(3),
             new DriveAtPath(drivetrainSubsystem, RA1, ll, false).alongWith(new IntakeCommand(intakePivot, intakeWheels, thePivot)).withTimeout(3),
             new IntegratedShooterCommand(intakeWheels, shooterFlywheel, thePivot, drivetrainSubsystem).withTimeout(3),

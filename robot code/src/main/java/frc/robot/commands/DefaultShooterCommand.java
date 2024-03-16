@@ -31,7 +31,7 @@ public class DefaultShooterCommand extends Command{
             alliance = DriverStation.getAlliance().get();
         }
         double x = mDrivetrainSubsystem.getPose().getX();
-        if((alliance.equals(DriverStation.Alliance.Blue) && x < StaticConstants.Field.fieldLength/2.0) || (alliance.equals(DriverStation.Alliance.Red) && x > StaticConstants.Field.fieldLength/2.0) && x > 0.1 && !climbing && mIntakeWheels.hasPiece()){
+        if(((alliance.equals(DriverStation.Alliance.Blue) && x < StaticConstants.Field.fieldLength/2.0) || (alliance.equals(DriverStation.Alliance.Red) && x > StaticConstants.Field.fieldLength/2.0)) && x > 0.1 && !climbing && mIntakeWheels.hasPiece()){
             mShooterFlywheel.setVelocity(DynamicConstants.ShooterFlywheel.idleVelocity);
         }
         else{

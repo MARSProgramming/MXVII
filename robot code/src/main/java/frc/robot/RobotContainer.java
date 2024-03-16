@@ -54,7 +54,7 @@ public class RobotContainer {
     private final Limelight mLimelight = new Limelight(mDrivetrainSubsystem);
     private final PhotonVisionCamera mPhotonVisionCamera = new PhotonVisionCamera(mDrivetrainSubsystem);
     private final SubsystemIO subsystemIO = new SubsystemIO(mDrivetrainSubsystem, mIntakeWheels, mIntakePivot, mShooterFlywheel, mThePivot, mClimber);
-    private final AutoChooser autoChooser = new AutoChooser(mDrivetrainSubsystem, mIntakeWheels, mIntakePivot, mShooterFlywheel, mThePivot, mLimelight);
+    private final AutoChooser autoChooser = new AutoChooser(mDrivetrainSubsystem, mIntakeWheels, mIntakePivot, mShooterFlywheel, mThePivot, mLimelight, mPhotonVisionCamera);
     private final LED m_Led = new LED();
 
     public LED getLED(){

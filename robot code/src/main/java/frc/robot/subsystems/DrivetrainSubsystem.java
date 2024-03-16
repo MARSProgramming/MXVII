@@ -216,7 +216,11 @@ public class DrivetrainSubsystem extends SubsystemBase {
         return runOnce(() -> {
             m_pigeon.setYaw(d);
             mSnapController.reset(Math.toRadians(d));
+            System.out.println(d);
         });
+    }
+    public void setPigeonAngle(double d) {
+        m_pigeon.setYaw(d);
     }
     public double getRoll() {
         return m_pigeon.getRoll().getValueAsDouble();
@@ -255,7 +259,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
         Mk4ModuleConfiguration config = new Mk4ModuleConfiguration();
         config.setCanivoreName(StaticConstants.Drive.kDriveCANivore);
-        config.setDriveCurrentLimit(20);
+        config.setDriveCurrentLimit(40);
         config.setSteerCurrentLimit(20);
 
         m_frontLeftModule = Mk4iSwerveModuleHelper.createFalcon500(
