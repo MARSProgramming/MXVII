@@ -1,10 +1,21 @@
 package frc.robot.subsystems;
 
+import java.util.Optional;
 import java.util.function.DoubleSupplier;
 
+import org.photonvision.EstimatedRobotPose;
+import org.photonvision.PhotonCamera;
+import org.photonvision.PhotonPoseEstimator;
+import org.photonvision.PhotonPoseEstimator.PoseStrategy;
+
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
@@ -15,8 +26,16 @@ public class Limelight extends SubsystemBase{
     double[] botpose;
     private DrivetrainSubsystem dt;
     private Timer pieceLLTimer = new Timer(); 
+    private PhotonCamera cam = new PhotonCamera("shooter");
+    private PhotonPoseEstimator photonPoseEstimator;
+    AprilTagFieldLayout aprilTagFieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
     public Limelight(DrivetrainSubsystem drive){
         dt = drive;
+
+        Transform3d robotToCam = new Transform3d(new Translation3d(0.5334, 0.0, 0.5), new Rotation3d(0,0,0)); //Cam mounted facing forward, half a meter forward of center, half a meter up from center.
+
+        // Construct PhotonPoseEstimator
+        photonPoseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, cam, robotToCam);
     }
 
     public boolean hasAprilTagTarget(){
@@ -53,6 +72,9 @@ public class Limelight extends SubsystemBase{
         // if(hasPieceTarget && DriverStation.isAutonomousEnabled() && dist < 2 && dt.getPose().getTranslation().getDistance(new Translation2d(x, y)) < 0.5){
         //     dt.addVisionMeasurement(new Pose2d(x, y, Rotation2d.fromRadians(dt.getPigeonAngle())), botpose[6]/1000);
         // }
+
+        //photonvision camera
+        
     }
 
     @Override
@@ -101,5 +123,10 @@ public class Limelight extends SubsystemBase{
             return NetworkTableInstance.getDefault().getTable("limelight-piece").getEntry("tx").getDouble(0);
         }
         return 0;
+    }
+    
+    public Optional<EstimatedRobotPose> getEstimatedGlobalPose(Pose2d prevEstimatedRobotPose) {
+        photonPoseEstimator.setReferencePose(prevEstimatedRobotPose);
+        return photonPoseEstimator.update();
     }
 }

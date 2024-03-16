@@ -28,7 +28,7 @@ public class ThePivot extends SubsystemBase {
     private ProfiledPIDController profiledPIDController;
     private ArmFeedforward armFeedforward;
     private TrapezoidProfile.Constraints lowerConstraints = new TrapezoidProfile.Constraints(50, 30);
-    private TrapezoidProfile.Constraints raiseConstraints = new TrapezoidProfile.Constraints(100, 300);
+    private TrapezoidProfile.Constraints raiseConstraints = new TrapezoidProfile.Constraints(300, 300);
     private DutyCycleEncoder absoluteEncoder = new DutyCycleEncoder(StaticConstants.ThePivot.encoderID);
 
     //TODO: set as a rio constant

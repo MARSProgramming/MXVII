@@ -18,9 +18,9 @@ public class IntakeAmp extends Command{
 
     @Override
     public void execute(){
-        mIntakePivot.setVoltage(1.2);
+        mIntakePivot.setVoltage(DynamicConstants.Intake.intakeAmpPivotVoltage);
         if(mIntakePivot.getPosition() > DynamicConstants.Intake.pivotIntakeAmpPosition){
-            mIntakeWheels.setVoltage(-5);
+            mIntakeWheels.setVoltage(DynamicConstants.Intake.intakeAmpOuttakeVoltage);
         }
     }
     @Override

@@ -76,23 +76,27 @@ public class IntegratedShooterCommand extends Command {
         //use to shoot while moving
         if(mDrivetrainSubsystem.getTranslationalSpeed() > 0.05){
             results = calculateShootingParameters(mDrivetrainSubsystem.getPose(), alliance.equals(Alliance.Red) ? redGoalPos : blueGoalPos, mDrivetrainSubsystem.getChassisSpeeds(), this.alliance);
+            mDrivetrainSubsystem.setSnapTolerance(0.2);
+        }
+        else{
+            mDrivetrainSubsystem.setSnapTolerance(0.08);
         }
 
         double flywheelSpeed = results[0];
         double swerveAngle = results[1];
         double pivotAngle = results[2];
         mShooterFlywheel.setVelocity(flywheelSpeed);
-        if(mShooterFlywheel.atSpeed(() -> flywheelSpeed)){
+        if(mShooterFlywheel.atSpeed(() -> flywheelSpeed) && Math.abs(mDrivetrainSubsystem.getSnapController().getGoal().position - mDrivetrainSubsystem.getPigeonAngle()) < 0.3){
             movePivot = true;
         }
         if(movePivot){
             mThePivot.setPosition(pivotAngle);
         }
-        shoot = mDrivetrainSubsystem.getSnapController().getPositionError() < 0.08 && mShooterFlywheel.atSpeed(() -> flywheelSpeed) && mThePivot.atSetpoint() && mThePivot.belowVelocityThreshold();
+        shoot = mDrivetrainSubsystem.getSnapController().atGoal() && mShooterFlywheel.atSpeed(() -> flywheelSpeed) && mThePivot.atSetpoint() && mThePivot.belowVelocityThreshold();
         SmartDashboard.putBoolean("Flywheel At Goal", mShooterFlywheel.atSpeed(() -> flywheelSpeed));
         SmartDashboard.putBoolean("Pivot At Goal", mThePivot.atSetpoint());
-        SmartDashboard.putBoolean("Drive Angle At Goal", mDrivetrainSubsystem.getSnapController().getPositionError() < 0.08);
-        SmartDashboard.putNumber("Angle to Target", swerveAngle);
+        SmartDashboard.putBoolean("Drive Angle At Goal", mDrivetrainSubsystem.getSnapController().atGoal());
+        SmartDashboard.putNumber("Snap Error", mDrivetrainSubsystem.getSnapController().getPositionError());
         if(shoot){
             mIntakeWheels.setDutyCycle(-1);
             mTimer.start();
@@ -138,6 +142,9 @@ public class IntegratedShooterCommand extends Command {
         distToRPM.put(3.0, 3750.0);
         distToRPM.put(3.5, 3750.0);
         distToRPM.put(4.0, 4500.0);
+        distToRPM.put(4.5, 4500.0);
+        distToRPM.put(5.0, 5500.0);
+        distToRPM.put(7.0, 5500.0);
 
         InterpolatingDoubleTreeMap distToPivotAngle = new InterpolatingDoubleTreeMap();
         distToPivotAngle.put(1.5, 0.0);
@@ -146,10 +153,12 @@ public class IntegratedShooterCommand extends Command {
         distToPivotAngle.put(2.64, 0.075);
         distToPivotAngle.put(2.9, 0.08);
         distToPivotAngle.put(3.32, 0.086);
-        distToPivotAngle.put(3.7, 0.094);
+        distToPivotAngle.put(3.7, 0.097);
         distToPivotAngle.put(4.0, 0.1);
-        distToPivotAngle.put(4.3, 0.102);
-        distToPivotAngle.put(5.0, 0.104);
+        distToPivotAngle.put(4.3, 0.104);
+        distToPivotAngle.put(4.5, 0.106);
+        distToPivotAngle.put(5.0, 0.12);
+        distToRPM.put(5.5, 0.125);
         
         double angleOffset = alliance.equals(Alliance.Red) ? -0.12 : 0.12;
         SmartDashboard.putNumber("Dist To Goal", dist);

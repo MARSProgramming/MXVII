@@ -12,12 +12,13 @@ import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.IntakePivot;
 import frc.robot.subsystems.IntakeWheels;
 import frc.robot.subsystems.Limelight;
+import frc.robot.subsystems.PhotonVisionCamera;
 import frc.robot.subsystems.ShooterFlywheel;
 import frc.robot.subsystems.ThePivot;
 import frc.robot.util.AutoChooser;
 
 public class RA014 extends SequentialCommandGroup{
-    public RA014(DrivetrainSubsystem drivetrainSubsystem, IntakeWheels intakeWheels, IntakePivot intakePivot, ShooterFlywheel shooterFlywheel, ThePivot thePivot, Limelight ll){
+    public RA014(DrivetrainSubsystem drivetrainSubsystem, IntakeWheels intakeWheels, IntakePivot intakePivot, ShooterFlywheel shooterFlywheel, ThePivot thePivot, Limelight ll, PhotonVisionCamera shooterCam){
         addRequirements(thePivot, shooterFlywheel, intakePivot, intakeWheels, drivetrainSubsystem);
 
         PathPlannerTrajectory RA1 = AutoChooser.openTrajectoryFile("RA1", drivetrainSubsystem, drivetrainSubsystem.getPigeonAngle());
@@ -25,7 +26,7 @@ public class RA014 extends SequentialCommandGroup{
         PathPlannerTrajectory R4G = AutoChooser.openTrajectoryFile("R4G", drivetrainSubsystem, drivetrainSubsystem.getPigeonAngle());
         addCommands(
             new ResetPose(drivetrainSubsystem, ll, RA1.getInitialTargetHolonomicPose()),
-            drivetrainSubsystem.zeroGyroscope(-63.0),
+            drivetrainSubsystem.zeroGyroscope(shooterCam.getRobotHeading(-63.0)),
             new IntegratedShooterCommand(intakeWheels, shooterFlywheel, thePivot, drivetrainSubsystem).withTimeout(3),
             new DriveAtPath(drivetrainSubsystem, RA1, ll, false).alongWith(new IntakeCommand(intakePivot, intakeWheels, thePivot)).withTimeout(3),
             new IntegratedShooterCommand(intakeWheels, shooterFlywheel, thePivot, drivetrainSubsystem).withTimeout(3),

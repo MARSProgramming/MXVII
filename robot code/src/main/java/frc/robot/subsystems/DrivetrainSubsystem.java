@@ -174,6 +174,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
     public ProfiledPIDController getSnapController() {
         return mSnapController;
     }
+    public void setSnapTolerance(double d) {
+        mSnapController.setTolerance(d);
+    }
 
     //align to piece controller
     private ProfiledPIDController mPieceAlignController;
@@ -224,6 +227,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     public void addVisionMeasurement(Pose2d pose, double latencySeconds) {
         mPoseEstimator.addVisionMeasurement(pose, Timer.getFPGATimestamp() - latencySeconds);
+    }
+    public void addVisionMeasurementTimestamp(Pose2d pose, double timestamp) {
+        mPoseEstimator.addVisionMeasurement(pose, timestamp);
     }
     public void setVisionMeasurementStdDevs(Matrix<N3, N1> mat) {
         mPoseEstimator.setVisionMeasurementStdDevs(mat);
