@@ -52,12 +52,12 @@ public class Limelight extends SubsystemBase{
 
         boolean hasShooterTarget = NetworkTableInstance.getDefault().getTable("limelight-shooter").getEntry("tv").getDouble(0) == 1.0;
         double dist = NetworkTableInstance.getDefault().getTable("limelight-shooter").getEntry("targetpose_cameraspace").getDoubleArray(new double[7])[2];
-        if(dist < 3 && hasShooterTarget && (DriverStation.isTeleopEnabled() || DriverStation.isDisabled())){
-            dt.addVisionMeasurement(new Pose2d(x, y, Rotation2d.fromRadians(dt.getPigeonAngle())), botpose[6]/1000);
-        }
-        if(hasShooterTarget && DriverStation.isAutonomousEnabled() && dist < 3 && dt.getPose().getTranslation().getDistance(new Translation2d(x, y)) < 0.5){
-            dt.addVisionMeasurement(new Pose2d(x, y, Rotation2d.fromRadians(dt.getPigeonAngle())), botpose[6]/1000);
-        }
+        // if(dist < 3 && hasShooterTarget && (DriverStation.isTeleopEnabled() || DriverStation.isDisabled())){
+        //     dt.addVisionMeasurement(new Pose2d(x, y, Rotation2d.fromRadians(dt.getPigeonAngle())), botpose[6]/1000);
+        // }
+        // if(hasShooterTarget && DriverStation.isAutonomousEnabled() && dist < 3 && dt.getPose().getTranslation().getDistance(new Translation2d(x, y)) < 0.5){
+        //     dt.addVisionMeasurement(new Pose2d(x, y, Rotation2d.fromRadians(dt.getPigeonAngle())), botpose[6]/1000);
+        // }
 
         botpose = NetworkTableInstance.getDefault().getTable("limelight-trap").getEntry("botpose").getDoubleArray(new double[7]);
         
@@ -66,9 +66,9 @@ public class Limelight extends SubsystemBase{
 
         boolean hasPieceTarget = NetworkTableInstance.getDefault().getTable("limelight-trap").getEntry("tv").getDouble(0) == 1.0;
         dist = NetworkTableInstance.getDefault().getTable("limelight-trap").getEntry("targetpose_cameraspace").getDoubleArray(new double[7])[2];
-        if(dist < 2.5 && hasPieceTarget && (DriverStation.isDisabled())){
-            dt.addVisionMeasurement(new Pose2d(x, y, Rotation2d.fromRadians(dt.getPigeonAngle())), botpose[6]/1000);
-        }
+        // if(dist < 2.5 && hasPieceTarget && (DriverStation.isDisabled())){
+        //     dt.addVisionMeasurement(new Pose2d(x, y, Rotation2d.fromRadians(dt.getPigeonAngle())), botpose[6]/1000);
+        // }
         // if(hasPieceTarget && DriverStation.isAutonomousEnabled() && dist < 2 && dt.getPose().getTranslation().getDistance(new Translation2d(x, y)) < 0.5){
         //     dt.addVisionMeasurement(new Pose2d(x, y, Rotation2d.fromRadians(dt.getPigeonAngle())), botpose[6]/1000);
         // }

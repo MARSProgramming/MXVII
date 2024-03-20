@@ -11,19 +11,18 @@ public class ResetHeadingOnTag extends Command{
     public ResetHeadingOnTag(DrivetrainSubsystem dt, PhotonVisionCamera camera, double defaultValue){
         mDrivetrainSubsystem = dt;
         mShooterCamera = camera;
-        mDefaultValue = defaultValue;
+        mDefaultValue = (defaultValue+360) % 360.0;
         addRequirements(dt, camera);
     }
 
     @Override
     public void execute(){
         double heading = mShooterCamera.getRobotHeading();
-        System.out.println(heading);
-        mDrivetrainSubsystem.setPigeonAngle(Math.abs(heading - mDefaultValue) < 5 ? heading : mDefaultValue);
+        mDrivetrainSubsystem.setPigeonAngle(Math.abs(heading - mDefaultValue) < 10 ? heading : mDefaultValue);
     }
 
     @Override
     public boolean isFinished(){
-        return Math.abs(Math.toDegrees(mDrivetrainSubsystem.getPigeonAngle()) - mDefaultValue) < 5;
+        return Math.abs(Math.toDegrees(mDrivetrainSubsystem.getPigeonAngle()) - mDefaultValue) < 10;
     }
 }

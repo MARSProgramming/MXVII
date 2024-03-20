@@ -34,6 +34,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -110,9 +111,11 @@ public class DrivetrainSubsystem extends SubsystemBase {
                 VecBuilder.fill(0.01, 0.01, Units.degreesToRadians(0.5)));
         /*mPoseEstimator = new SwerveDrivePoseEstimator(m_kinematics, Rotation2d.fromRadians(getPigeonAngle()),
                 getSwerveModulePositions(), new Pose2d());*/
+        SmartDashboard.putData("Field", m_field);
     }
 
     private StructPublisher<Pose2d> publisher = NetworkTableInstance.getDefault().getStructTopic("Current Pose", Pose2d.struct).publish();
+    private Field2d m_field = new Field2d();
 
     //swerve
     @Override
@@ -133,18 +136,20 @@ public class DrivetrainSubsystem extends SubsystemBase {
         
         SmartDashboard.putNumber("Snap Controller Goal", mSnapController.getGoal().position);
         SmartDashboard.putNumber("Snap Controller Pos", getPigeonAngle());
-        publisher.set(getPose());
+        publisher.set(mPoseEstimator.getEstimatedPosition());
+        m_field.setRobotPose(getPose());
     }
 
     public SwerveModulePosition[] getSwerveModulePositions() {
+        double fudgeFactor = 1.085;
         return new SwerveModulePosition[] {
-                new SwerveModulePosition(m_frontLeftModule.getPosition(),
+                new SwerveModulePosition(m_frontLeftModule.getPosition() * fudgeFactor,
                         new Rotation2d(m_frontLeftModule.getSteerAngle())),
-                new SwerveModulePosition(m_frontRightModule.getPosition(),
+                new SwerveModulePosition(m_frontRightModule.getPosition() * fudgeFactor,
                         new Rotation2d(m_frontRightModule.getSteerAngle())),
-                new SwerveModulePosition(m_backLeftModule.getPosition(),
+                new SwerveModulePosition(m_backLeftModule.getPosition() * fudgeFactor,
                         new Rotation2d(m_backLeftModule.getSteerAngle())),
-                new SwerveModulePosition(m_backRightModule.getPosition(),
+                new SwerveModulePosition(m_backRightModule.getPosition() * fudgeFactor,
                         new Rotation2d(m_backRightModule.getSteerAngle()))
         };
     }
@@ -216,7 +221,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
         return runOnce(() -> {
             m_pigeon.setYaw(d);
             mSnapController.reset(Math.toRadians(d));
-            System.out.println(d);
         });
     }
     public void setPigeonAngle(double d) {

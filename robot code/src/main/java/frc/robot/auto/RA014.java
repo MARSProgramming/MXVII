@@ -27,7 +27,7 @@ public class RA014 extends SequentialCommandGroup{
         PathPlannerTrajectory R4G = AutoChooser.openTrajectoryFile("R4G", drivetrainSubsystem, drivetrainSubsystem.getPigeonAngle());
         addCommands(
             new ResetPose(drivetrainSubsystem, ll, RA1.getInitialTargetHolonomicPose()),
-            new ResetHeadingOnTag(drivetrainSubsystem, shooterCam, -63.0),
+            new ResetHeadingOnTag(drivetrainSubsystem, shooterCam, -60.0),
             new IntegratedShooterCommand(intakeWheels, shooterFlywheel, thePivot, drivetrainSubsystem).withTimeout(3),
             new DriveAtPath(drivetrainSubsystem, RA1, ll, false).alongWith(new IntakeCommand(intakePivot, intakeWheels, thePivot)).withTimeout(3),
             new IntegratedShooterCommand(intakeWheels, shooterFlywheel, thePivot, drivetrainSubsystem).withTimeout(3),

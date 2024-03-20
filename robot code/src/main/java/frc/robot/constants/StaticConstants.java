@@ -6,8 +6,8 @@ public final class StaticConstants {
         public static final double fieldWidth = 8.2;
     }
     public static class Drive{
-        public static final double DRIVETRAIN_TRACKWIDTH_METERS = 0.57;
-        public static final double DRIVETRAIN_WHEELBASE_METERS = 0.57;
+        public static final double DRIVETRAIN_TRACKWIDTH_METERS = 0.575;
+        public static final double DRIVETRAIN_WHEELBASE_METERS = 0.575;
         public static final double MAX_SPEED_MULTIPLIER = 1.0; 
 
         public static final int DRIVETRAIN_PIGEON_ID = 31; 
