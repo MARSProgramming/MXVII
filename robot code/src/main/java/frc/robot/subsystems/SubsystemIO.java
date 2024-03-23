@@ -35,10 +35,36 @@ public class SubsystemIO extends SubsystemBase{
         mThePivot = thePivot;*/
 
         Map<String, String> pilotControls = new HashMap<>();
+        pilotControls.put("Start", "Close Shuttle");
+        pilotControls.put("Back Button", "Runs Intake Wheels");
         pilotControls.put("Right Trigger", "Shoot");
-        pilotControls.put("X", "Amp");
+        pilotControls.put("Left Trigger", "Intake");
+        pilotControls.put("Right Bumper", "Score Amp");
+        pilotControls.put("Left Bumper", "Intake From Source");
+        pilotControls.put("X", "Allign To Tag");
+        pilotControls.put("Y", "Zero Yaw");
+        pilotControls.put("A", "Far Shuttle");
+        pilotControls.put("B", "Drive Robot Centric");
+        pilotControls.put("D-pad Up", "The Pivot Down");
+        pilotControls.put("D-pad Down", "The Pivot Up");
+        pilotControls.put("D-pad Left", "IntakePivot Retract");
+        pilotControls.put("D-pad Right", "IntakePivot Extend");
         Map<String, String> copilotControls = new HashMap<>();
-        copilotControls.put("Left Trigger", "test");
+        copilotControls.put("Left Trigger", "Amp Setpoint");
+        copilotControls.put("Right Trigger", "Shoot Manual");
+        copilotControls.put("Left Bumper", "Go to Zero");
+        copilotControls.put("Right Bumper", "Outake Trap");
+        copilotControls.put("X", "Deploy Climber arms");
+        copilotControls.put("Y", "Trap Setpoint");
+        copilotControls.put("A", "Climb Setpoint");
+        copilotControls.put("B", "Lower Climbing Arms");
+        copilotControls.put("Start", "Left Climber Arm Override Limit");
+        copilotControls.put("Back Button", "Right Climber Arm Override Limit");
+        copilotControls.put("D-pad Up", "Climbers Up");
+        copilotControls.put("D-pad Down", "Climbers Down");
+        copilotControls.put("D-pad Left", "Intake Extend");
+        copilotControls.put("D-pad Right", "Intake Retract");
+        
 
         displayedValues.put("Intake Wheels: IR sensor", () -> intakeWheels.getIrReading());
         displayedValues.put("Intake Wheels: Has Piece", () -> intakeWheels.hasPiece());
