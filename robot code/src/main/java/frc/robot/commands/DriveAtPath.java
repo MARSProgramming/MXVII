@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.Limelight;
+import frc.robot.subsystems.PhotonVision;
 
 public class DriveAtPath extends Command {
     private final DrivetrainSubsystem mDrivetrainSubsystem;
@@ -28,15 +29,17 @@ public class DriveAtPath extends Command {
     private ProfiledPIDController snapPID;
     private DriverStation.Alliance alliance = DriverStation.Alliance.Blue;
     private boolean alignToPiece = false;
+    private PhotonVision mPhotonVision;
 
     private StructPublisher<Pose2d> publisher = NetworkTableInstance.getDefault().getStructTopic("Desired Pose", Pose2d.struct).publish();
     private Field2d m_field = new Field2d();
 
-    public DriveAtPath(DrivetrainSubsystem subsystem, PathPlannerTrajectory traj, Limelight ll, boolean alignToPiece) {
+    public DriveAtPath(DrivetrainSubsystem subsystem, PathPlannerTrajectory traj, Limelight ll, boolean alignToPiece, PhotonVision pv) {
         mTrajectory = traj;
         mDrivetrainSubsystem = subsystem;
         mController = subsystem.getDrivePathController();
         mLimelight = ll;
+        mPhotonVision = pv;
         snapPID = subsystem.getSnapController();
         this.alignToPiece = alignToPiece;
         SmartDashboard.putData("Desired Pose", m_field);
@@ -63,8 +66,8 @@ public class DriveAtPath extends Command {
         }
 
         ChassisSpeeds speeds = mController.calculate(mDrivetrainSubsystem.getPose(), state.getTargetHolonomicPose(), state.velocityMps, state.targetHolonomicRotation);
-        if(alignToPiece && mLimelight.pieceLLhasTarget()){
-            speeds.omegaRadiansPerSecond = snapPID.calculate(mLimelight.getPiecePosition()/180*Math.PI, 0);  
+        if(alignToPiece && mPhotonVision.getPieceYaw() != 0.0){
+            speeds.omegaRadiansPerSecond = snapPID.calculate(mPhotonVision.getPieceYaw()/180*Math.PI, 0);  
         }
         mDrivetrainSubsystem.drive(speeds);
         SmartDashboard.putNumber("desiredX", state.positionMeters.getX());

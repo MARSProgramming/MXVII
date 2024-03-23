@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.AlignToPiece;
 import frc.robot.commands.AlignToTag;
 import frc.robot.commands.AmpSetpoint;
 import frc.robot.commands.DefaultDriveCommand;
@@ -30,7 +31,7 @@ import frc.robot.subsystems.IntakePivot;
 import frc.robot.subsystems.IntakeWheels;
 import frc.robot.subsystems.LED;
 import frc.robot.subsystems.Limelight;
-import frc.robot.subsystems.PhotonVisionCamera;
+import frc.robot.subsystems.PhotonVision;
 import frc.robot.subsystems.ShooterFlywheel;
 import frc.robot.subsystems.SubsystemIO;
 import frc.robot.subsystems.ThePivot;
@@ -52,7 +53,7 @@ public class RobotContainer {
     private final ThePivot mThePivot = new ThePivot();
     private final Climber mClimber = new Climber();
     private final Limelight mLimelight = new Limelight(mDrivetrainSubsystem);
-    private final PhotonVisionCamera mPhotonVisionCamera = new PhotonVisionCamera(mDrivetrainSubsystem);
+    private final PhotonVision mPhotonVisionCamera = new PhotonVision(mDrivetrainSubsystem);
     private final SubsystemIO subsystemIO = new SubsystemIO(mDrivetrainSubsystem, mIntakeWheels, mIntakePivot, mShooterFlywheel, mThePivot, mClimber);
     private final AutoChooser autoChooser = new AutoChooser(mDrivetrainSubsystem, mIntakeWheels, mIntakePivot, mShooterFlywheel, mThePivot, mLimelight, mPhotonVisionCamera);
     private final LED m_Led = new LED();
@@ -94,16 +95,16 @@ public class RobotContainer {
      */
 
     private void configureLEDTriggers(){
-      new Trigger(() -> mIntakeWheels.hasPiece()).whileTrue(m_Led.setOrangeFlashing().withTimeout(3).andThen(m_Led.setOrange()));
+      new Trigger(() -> mIntakeWheels.hasPiece()).whileTrue(m_Led.setOrangeFlashing().withTimeout(1).andThen(m_Led.setOrange()));
       mPilot.rightTrigger().whileTrue(m_Led.setYellowFlashing());
       m_Led.setDefaultCommand(m_Led.setRed());
     }
     private void configureBindings() {
         mPilot.y().whileTrue(mDrivetrainSubsystem.zeroGyroscope(0));
-        // mPilot.leftTrigger().whileTrue(new AlignToPiece(mDrivetrainSubsystem, mLimelight,
-        //     () -> -modifyAxis(mPilot.getLeftY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-        //     () -> -modifyAxis(mPilot.getLeftX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-        //     () -> -modifyAxis(mPilot.getRightX()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND));
+        mPilot.leftTrigger().whileTrue(new AlignToPiece(mDrivetrainSubsystem, mLimelight,
+            () -> -modifyAxis(mPilot.getLeftY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+            () -> -modifyAxis(mPilot.getLeftX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+            () -> -modifyAxis(mPilot.getRightX()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND, mPhotonVisionCamera));
         //mPilot.rightTrigger().whileTrue(mShooterFlywheel.runVelocity(() -> 6000.0));
         //mPilot.leftTrigger().whileTrue(mIntakePivot.setPositionCommand(() -> DynamicConstants.Intake.pivotIntakePosition, false));
         

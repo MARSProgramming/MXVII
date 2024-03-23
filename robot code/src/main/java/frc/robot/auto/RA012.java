@@ -11,12 +11,13 @@ import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.IntakePivot;
 import frc.robot.subsystems.IntakeWheels;
 import frc.robot.subsystems.Limelight;
+import frc.robot.subsystems.PhotonVision;
 import frc.robot.subsystems.ShooterFlywheel;
 import frc.robot.subsystems.ThePivot;
 import frc.robot.util.AutoChooser;
 
 public class RA012 extends SequentialCommandGroup{
-    public RA012(DrivetrainSubsystem drivetrainSubsystem, IntakeWheels intakeWheels, IntakePivot intakePivot, ShooterFlywheel shooterFlywheel, ThePivot thePivot, Limelight ll){
+    public RA012(DrivetrainSubsystem drivetrainSubsystem, IntakeWheels intakeWheels, IntakePivot intakePivot, ShooterFlywheel shooterFlywheel, ThePivot thePivot, Limelight ll, PhotonVision pv){
         addRequirements(thePivot, shooterFlywheel, intakePivot, intakeWheels, drivetrainSubsystem);
 
         PathPlannerTrajectory RA1 = AutoChooser.openTrajectoryFile("RA1", drivetrainSubsystem, drivetrainSubsystem.getPigeonAngle());
@@ -26,10 +27,10 @@ public class RA012 extends SequentialCommandGroup{
             new ResetPose(drivetrainSubsystem, ll, RA1.getInitialTargetHolonomicPose()),
             drivetrainSubsystem.zeroGyroscope(-63.0).withTimeout(0.1),
             new IntegratedShooterCommand(intakeWheels, shooterFlywheel, thePivot, drivetrainSubsystem).withTimeout(3),
-            new DriveAtPath(drivetrainSubsystem, RA1, ll, false).andThen(new DriveAtPath(drivetrainSubsystem, R1B, ll, false)).deadlineWith(new IntakeCommand(intakePivot, intakeWheels, thePivot))
+            new DriveAtPath(drivetrainSubsystem, RA1, ll, false, pv).andThen(new DriveAtPath(drivetrainSubsystem, R1B, ll, false, pv)).deadlineWith(new IntakeCommand(intakePivot, intakeWheels, thePivot))
             .withTimeout(6),
             new IntegratedShooterCommand(intakeWheels, shooterFlywheel, thePivot, drivetrainSubsystem).withTimeout(3),
-            new DriveAtPath(drivetrainSubsystem, RB2, ll, false).alongWith(new IntakeCommand(intakePivot, intakeWheels, thePivot)),
+            new DriveAtPath(drivetrainSubsystem, RB2, ll, false, pv).alongWith(new IntakeCommand(intakePivot, intakeWheels, thePivot)),
             new IntegratedShooterCommand(intakeWheels, shooterFlywheel, thePivot, drivetrainSubsystem).withTimeout(3)
         );
     }
