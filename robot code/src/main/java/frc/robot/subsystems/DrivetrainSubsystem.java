@@ -141,7 +141,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     }
 
     public SwerveModulePosition[] getSwerveModulePositions() {
-        double fudgeFactor = 1.085;
+        double fudgeFactor = 1;
         return new SwerveModulePosition[] {
                 new SwerveModulePosition(m_frontLeftModule.getPosition() * fudgeFactor,
                         new Rotation2d(m_frontLeftModule.getSteerAngle())),

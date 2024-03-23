@@ -1,7 +1,5 @@
 package frc.robot.util;
 
-import org.photonvision.PhotonVersion;
-
 import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.path.PathPlannerTrajectory;
@@ -36,6 +34,7 @@ import frc.robot.auto.RA014;
 import frc.robot.auto.RA0145;
 import frc.robot.auto.RB0;
 import frc.robot.auto.RB0123NP;
+import frc.robot.auto.RB0124;
 import frc.robot.auto.RB02;
 import frc.robot.auto.RC0;
 import frc.robot.auto.RC03;
@@ -68,6 +67,7 @@ public class AutoChooser {
         autoChooser.addOption("RA0123", new RA0123(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll, pv));
         autoChooser.addOption("RA0123NP", new RA0123NP(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll, pv));
         autoChooser.addOption("RB0123NP", new RB0123NP(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll, pv));
+        autoChooser.addOption("RB0124", new RB0124(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll, pv));
         autoChooser.addOption("RA014", new RA014(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll, pv));
         autoChooser.addOption("RA0145", new RA0145(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll, pv));
         autoChooser.addOption("RB0", new RB0(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll, pv));

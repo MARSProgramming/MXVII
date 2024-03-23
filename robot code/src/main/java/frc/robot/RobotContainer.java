@@ -120,7 +120,7 @@ public class RobotContainer {
         mPilot.b().whileTrue(new RobotCentricDrive(mDrivetrainSubsystem, () -> modifyAxis(mPilot.getLeftY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND));
         mPilot.a().whileTrue(mShooterFlywheel.runVelocity(() -> 3300).alongWith(new WaitCommand(1).andThen(mIntakeWheels.outtake())));
         mPilot.x().whileTrue(new AlignToTag(mDrivetrainSubsystem, mLimelight).andThen(m_Led.setPurple()));
-        mPilot.rightBumper().whileTrue(new IntakeAmp(mIntakePivot, mIntakeWheels));
+        mPilot.rightBumper().whileTrue(new IntakeAmp(mIntakePivot, mIntakeWheels).andThen(mIntakePivot.zeroIntake()));
         mPilot.rightBumper().whileTrue(mShooterFlywheel.runVoltage(0));
 
        
@@ -141,7 +141,7 @@ public class RobotContainer {
         mCopilot.leftBumper().whileTrue(new GoToZero(mIntakePivot, mThePivot));
         mCopilot.rightBumper().whileTrue(mIntakeWheels.runVoltage(DynamicConstants.Intake.trapOuttakeVoltage));
         mCopilot.rightTrigger().whileTrue(mShooterFlywheel.runVelocity(() -> 4000).alongWith(new WaitCommand(1).andThen(mIntakeWheels.outtake())));
-        mCopilot.b().whileTrue(mClimber.climbToLimit());
+        mCopilot.b().whileTrue(mClimber.climbToLimit().andThen(new InitializeTrapSetpoint(mIntakePivot, mThePivot).alongWith(new WaitCommand(1).andThen(mIntakeWheels.runVoltage(DynamicConstants.Intake.trapOuttakeVoltage)))));
         mCopilot.x().whileTrue(mClimber.setPositionCommand(() -> DynamicConstants.Climber.uprightPosition).alongWith(mIntakePivot.switchNeutralMode(), mIntakeWheels.runVoltage(3)));
         mCopilot.a().toggleOnTrue(new InitializeClimbSetpoint(mIntakePivot, mThePivot));
         mCopilot.y().toggleOnTrue(new InitializeTrapSetpoint(mIntakePivot, mThePivot));

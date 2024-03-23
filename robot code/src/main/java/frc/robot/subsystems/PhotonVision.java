@@ -39,7 +39,7 @@ public class PhotonVision extends SubsystemBase{
         if(shooterCam.getLatestResult().hasTargets()){
             if(pose.isPresent() && trackedTarget != null
             && trackedTarget.getBestCameraToTarget() != null
-            && ((trackedTarget.getBestCameraToTarget().getTranslation().getX() < 2.5 && (DriverStation.isDisabled() || DriverStation.isAutonomous())) 
+            && ((trackedTarget.getBestCameraToTarget().getTranslation().getX() < 4.5 && (DriverStation.isDisabled() || DriverStation.isAutonomous())) 
             || (trackedTarget.getBestCameraToTarget().getTranslation().getX() < 6 && DriverStation.isTeleop())
             )){
                 dt.addVisionMeasurementTimestamp(pose.get().estimatedPose.toPose2d(), pose.get().timestampSeconds);

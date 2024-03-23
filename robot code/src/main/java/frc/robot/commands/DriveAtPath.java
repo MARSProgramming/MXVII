@@ -26,7 +26,7 @@ public class DriveAtPath extends Command {
     private HolonomicDriveController mController;
     private Limelight mLimelight;
     private Timer mTimer = new Timer();
-    private ProfiledPIDController snapPID;
+    private ProfiledPIDController piecePID;
     private DriverStation.Alliance alliance = DriverStation.Alliance.Blue;
     private boolean alignToPiece = false;
     private PhotonVision mPhotonVision;
@@ -40,7 +40,7 @@ public class DriveAtPath extends Command {
         mController = subsystem.getDrivePathController();
         mLimelight = ll;
         mPhotonVision = pv;
-        snapPID = subsystem.getSnapController();
+        piecePID = subsystem.getAlignPieceController();
         this.alignToPiece = alignToPiece;
         SmartDashboard.putData("Desired Pose", m_field);
 
@@ -67,13 +67,13 @@ public class DriveAtPath extends Command {
 
         ChassisSpeeds speeds = mController.calculate(mDrivetrainSubsystem.getPose(), state.getTargetHolonomicPose(), state.velocityMps, state.targetHolonomicRotation);
         if(alignToPiece && mPhotonVision.getPieceYaw() != 0.0){
-            speeds.omegaRadiansPerSecond = snapPID.calculate(mPhotonVision.getPieceYaw()/180*Math.PI, 0);  
+            speeds.omegaRadiansPerSecond = piecePID.calculate(mPhotonVision.getPieceYaw()/180*Math.PI, 0);  
         }
         mDrivetrainSubsystem.drive(speeds);
         SmartDashboard.putNumber("desiredX", state.positionMeters.getX());
         SmartDashboard.putNumber("desiredY", state.positionMeters.getY());
         publisher.set(state.getTargetHolonomicPose());
-        SmartDashboard.putNumber("desiredrot", state.targetHolonomicRotation.getDegrees());
+        SmartDashboard.putNumber("desiredrot", state.targetHolonomicRotation.getRadians());
         m_field.setRobotPose(state.getTargetHolonomicPose());
     }
 

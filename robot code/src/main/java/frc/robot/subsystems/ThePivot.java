@@ -32,7 +32,7 @@ public class ThePivot extends SubsystemBase {
     private DutyCycleEncoder absoluteEncoder = new DutyCycleEncoder(StaticConstants.ThePivot.encoderID);
 
     //TODO: set as a rio constant
-    private double encoderZero = 0.7237;
+    private double encoderZero = 0.721;
     
     public ThePivot(){
         motor = new TalonFX(StaticConstants.ThePivot.ID);

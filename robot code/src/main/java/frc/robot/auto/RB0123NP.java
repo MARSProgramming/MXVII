@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.DriveAtPath;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.IntegratedShooterCommand;
+import frc.robot.commands.ResetHeadingOnTag;
 import frc.robot.commands.ResetPose;
 import frc.robot.constants.DynamicConstants;
 import frc.robot.subsystems.DrivetrainSubsystem;
@@ -27,7 +28,7 @@ public class RB0123NP extends SequentialCommandGroup{
         PathPlannerTrajectory RB3R = AutoChooser.openTrajectoryFile("RB3R", drivetrainSubsystem, drivetrainSubsystem.getPigeonAngle());
         addCommands(
             new ResetPose(drivetrainSubsystem, ll, RB1R.getInitialTargetHolonomicPose()),
-            drivetrainSubsystem.zeroGyroscope(0),
+            new ResetHeadingOnTag(drivetrainSubsystem, pv, 0.0),
             new IntegratedShooterCommand(intakeWheels, shooterFlywheel, thePivot, drivetrainSubsystem).withTimeout(2),
             new DriveAtPath(drivetrainSubsystem, RB1R, ll, false, pv).deadlineWith(new IntakeCommand(intakePivot, intakeWheels, thePivot).withTimeout(2).andThen(intakePivot.setPositionCommand(() -> 0, false).alongWith(shooterFlywheel.runVelocity(() -> 3000), intakeWheels.runVoltage(3).unless(() -> intakeWheels.hasPiece())))),
             new IntegratedShooterCommand(intakeWheels, shooterFlywheel, thePivot, drivetrainSubsystem).withTimeout(2).unless(() -> !intakeWheels.hasPiece()),
