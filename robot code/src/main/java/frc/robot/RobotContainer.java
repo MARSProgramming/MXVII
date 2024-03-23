@@ -94,8 +94,8 @@ public class RobotContainer {
      */
 
     private void configureLEDTriggers(){
-      new Trigger(() -> mIntakeWheels.hasPiece()).whileTrue(m_Led.setOrange());
-      mPilot.rightTrigger().whileTrue(m_Led.setOrangeFlashing());
+      new Trigger(() -> mIntakeWheels.hasPiece()).whileTrue(m_Led.setOrangeFlashing().withTimeout(3).andThen(m_Led.setOrange()));
+      mPilot.rightTrigger().whileTrue(m_Led.setYellowFlashing());
       m_Led.setDefaultCommand(m_Led.setRed());
     }
     private void configureBindings() {
