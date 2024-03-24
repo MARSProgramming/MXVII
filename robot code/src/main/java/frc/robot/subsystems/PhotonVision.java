@@ -6,6 +6,7 @@ import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
+import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
@@ -15,6 +16,7 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class PhotonVision extends SubsystemBase{
@@ -39,7 +41,7 @@ public class PhotonVision extends SubsystemBase{
         if(shooterCam.getLatestResult().hasTargets()){
             if(pose.isPresent() && trackedTarget != null
             && trackedTarget.getBestCameraToTarget() != null
-            && ((trackedTarget.getBestCameraToTarget().getTranslation().getX() < 4.5 && (DriverStation.isDisabled() || DriverStation.isAutonomous())) 
+            && ((trackedTarget.getBestCameraToTarget().getTranslation().getX() < 3.5 && (DriverStation.isDisabled() || DriverStation.isAutonomous())) 
             || (trackedTarget.getBestCameraToTarget().getTranslation().getX() < 6 && DriverStation.isTeleop())
             )){
                 dt.addVisionMeasurementTimestamp(pose.get().estimatedPose.toPose2d(), pose.get().timestampSeconds);
@@ -49,7 +51,8 @@ public class PhotonVision extends SubsystemBase{
     }
 
     public double getPieceYaw(){
-        return pieceCam.getLatestResult().hasTargets() ? pieceCam.getLatestResult().getBestTarget().getYaw() : 0;
+        PhotonPipelineResult latestResult = pieceCam.getLatestResult();
+        return latestResult.hasTargets() && latestResult.getBestTarget() != null ? latestResult.getBestTarget().getYaw() : 0;
     }
 
     @Override

@@ -108,7 +108,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
         mPoseEstimator = new SwerveDrivePoseEstimator(m_kinematics, Rotation2d.fromRadians(getPigeonAngle()),
                 getSwerveModulePositions(), new Pose2d(),
                 VecBuilder.fill(0.01, 0.01, Units.degreesToRadians(0.5)),
-                VecBuilder.fill(0.01, 0.01, Units.degreesToRadians(0.5)));
+                VecBuilder.fill(0.04, 0.04, Units.degreesToRadians(3)));
         /*mPoseEstimator = new SwerveDrivePoseEstimator(m_kinematics, Rotation2d.fromRadians(getPigeonAngle()),
                 getSwerveModulePositions(), new Pose2d());*/
         SmartDashboard.putData("Field", m_field);
@@ -142,6 +142,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     public SwerveModulePosition[] getSwerveModulePositions() {
         double fudgeFactor = 1;
+        //System.out.println(m_frontLeftModule.getSteerAngle() + "  " + m_frontRightModule.getSteerAngle() + "  " + m_backLeftModule.getSteerAngle() + "  " + m_backRightModule.getSteerAngle());
         return new SwerveModulePosition[] {
                 new SwerveModulePosition(m_frontLeftModule.getPosition() * fudgeFactor,
                         new Rotation2d(m_frontLeftModule.getSteerAngle())),
@@ -237,7 +238,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
         mPoseEstimator.addVisionMeasurement(pose, Timer.getFPGATimestamp() - latencySeconds);
     }
     public void addVisionMeasurementTimestamp(Pose2d pose, double timestamp) {
-        mPoseEstimator.addVisionMeasurement(pose, timestamp);
+        mPoseEstimator.addVisionMeasurement(new Pose2d(pose.getTranslation(), new Rotation2d(getPigeonAngle())), timestamp);
     }
     public void setVisionMeasurementStdDevs(Matrix<N3, N1> mat) {
         mPoseEstimator.setVisionMeasurementStdDevs(mat);
