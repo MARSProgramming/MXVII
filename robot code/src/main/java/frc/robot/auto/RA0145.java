@@ -33,11 +33,11 @@ public class RA0145 extends SequentialCommandGroup{
             new IntegratedShooterCommand(intakeWheels, shooterFlywheel, thePivot, drivetrainSubsystem).withTimeout(3),
             new DriveAtPath(drivetrainSubsystem, RA1, ll, false, pv).deadlineWith(new IntakeCommand(intakePivot, intakeWheels, thePivot)),
             intakePivot.zeroIntake().andThen(new IntegratedShooterCommand(intakeWheels, shooterFlywheel, thePivot, drivetrainSubsystem).withTimeout(3).unless(() -> !intakeWheels.hasPiece())),
-            new DriveAtPath(drivetrainSubsystem, R14, ll, true, pv).deadlineWith(new WaitCommand(1), new IntakeCommand(intakePivot, intakeWheels, thePivot)).withTimeout(15),
-            new DriveAtPath(drivetrainSubsystem, R4G, ll, false, pv).deadlineWith(intakePivot.setPositionCommand(() -> 0, true)).until(() -> drivetrainSubsystem.getPose().getX() < 2).withTimeout(21.8),
+            new DriveAtPath(drivetrainSubsystem, R14, ll, true, pv).deadlineWith(new WaitCommand(1), new IntakeCommand(intakePivot, intakeWheels, thePivot)).withTimeout(5),
+            new DriveAtPath(drivetrainSubsystem, R4G, ll, false, pv).deadlineWith(intakePivot.setPositionCommand(() -> 0, true)).until(() -> drivetrainSubsystem.getPose().getX() > 13.5 && intakeWheels.hasPiece()),
             new IntegratedShooterCommand(intakeWheels, shooterFlywheel, thePivot, drivetrainSubsystem).withTimeout(3),
-            new DriveAtPath(drivetrainSubsystem, RG5, ll, true, pv).deadlineWith(new WaitCommand(1), new IntakeCommand(intakePivot, intakeWheels, thePivot)).withTimeout(15),
-            new DriveAtPath(drivetrainSubsystem, R5G, ll, false, pv).deadlineWith(intakePivot.setPositionCommand(() -> 0, true)).until(() -> drivetrainSubsystem.getPose().getX() < 2).withTimeout(22.6),
+            new DriveAtPath(drivetrainSubsystem, RG5, ll, true, pv).deadlineWith(new WaitCommand(1), new IntakeCommand(intakePivot, intakeWheels, thePivot)).withTimeout(5),
+            new DriveAtPath(drivetrainSubsystem, R5G, ll, false, pv).deadlineWith(intakePivot.setPositionCommand(() -> 0, true)).until(() -> drivetrainSubsystem.getPose().getX() > 13.5 && intakeWheels.hasPiece()),
             new IntegratedShooterCommand(intakeWheels, shooterFlywheel, thePivot, drivetrainSubsystem).withTimeout(3)
         );
     }

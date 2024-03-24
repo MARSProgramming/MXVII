@@ -57,7 +57,7 @@ public class ThePivot extends SubsystemBase {
         //TODO: set them in constants
         profiledPIDController = new ProfiledPIDController(2, 4, 0, lowerConstraints);
         armFeedforward = new ArmFeedforward(0, 0.45, 0, 0);
-        profiledPIDController.setTolerance(0.003 / positionCoefficient);
+        profiledPIDController.setTolerance(0.005 / positionCoefficient);
         //profiledPIDController.setIntegratorRange(-10, 10);
         profiledPIDController.setIZone(0.01 / positionCoefficient);
 
@@ -109,7 +109,7 @@ public class ThePivot extends SubsystemBase {
         return profiledPIDController.atGoal();
     }
     public boolean belowVelocityThreshold(){
-        return Math.abs(motor.getVelocity().getValueAsDouble()) < DynamicConstants.ThePivot.shootVelocityThreshold;
+        return motor.getVelocity().getValueAsDouble() < DynamicConstants.ThePivot.shootVelocityThreshold;
     }
     public Command setPositionCommand(DoubleSupplier position, boolean dontEnd){
         return runOnce(() -> {resetProfiledPIDController();}).andThen(runEnd(() -> {

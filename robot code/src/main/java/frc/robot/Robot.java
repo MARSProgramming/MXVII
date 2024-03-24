@@ -41,7 +41,7 @@ public class Robot extends TimedRobot {
         DataLogManager.start();
         DriverStation.startDataLog(DataLogManager.getLog());
         
-        RobotController.setBrownoutVoltage(6.3);
+        RobotController.setBrownoutVoltage(6.75);
     }
 
     /**

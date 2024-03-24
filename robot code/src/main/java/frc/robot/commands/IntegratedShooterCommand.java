@@ -151,13 +151,13 @@ public class IntegratedShooterCommand extends Command {
         distToPivotAngle.put(2.0, 0.055);
         distToPivotAngle.put(2.43, 0.066);
         distToPivotAngle.put(2.64, 0.075);
-        distToPivotAngle.put(2.9, 0.08);
-        distToPivotAngle.put(3.32, 0.086);
+        distToPivotAngle.put(2.9, 0.079);
+        distToPivotAngle.put(3.32, 0.084);
         distToPivotAngle.put(3.7, 0.097);
         distToPivotAngle.put(4.0, 0.1);
-        distToPivotAngle.put(4.3, 0.104);
-        distToPivotAngle.put(4.5, 0.106);
-        distToPivotAngle.put(5.0, 0.12);
+        distToPivotAngle.put(4.3, 0.11);
+        distToPivotAngle.put(4.5, 0.115);
+        distToPivotAngle.put(5.0, 0.122);
         distToRPM.put(5.5, 0.125);
         
         double angleOffset = alliance.equals(Alliance.Red) ? -0.12 : 0.12;

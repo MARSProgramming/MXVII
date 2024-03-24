@@ -1,13 +1,14 @@
 
 package frc.robot.commands;
 
+import java.util.function.BooleanSupplier;
+
 import com.pathplanner.lib.path.PathPlannerTrajectory;
 
 import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructPublisher;
@@ -30,11 +31,16 @@ public class DriveAtPath extends Command {
     private DriverStation.Alliance alliance = DriverStation.Alliance.Blue;
     private boolean alignToPiece = false;
     private PhotonVision mPhotonVision;
+    private BooleanSupplier mHasPiece;
 
     private StructPublisher<Pose2d> publisher = NetworkTableInstance.getDefault().getStructTopic("Desired Pose", Pose2d.struct).publish();
     private Field2d m_field = new Field2d();
 
     public DriveAtPath(DrivetrainSubsystem subsystem, PathPlannerTrajectory traj, Limelight ll, boolean alignToPiece, PhotonVision pv) {
+        this(subsystem, traj, ll, alignToPiece, pv, () -> false);
+    }
+
+    public DriveAtPath(DrivetrainSubsystem subsystem, PathPlannerTrajectory traj, Limelight ll, boolean alignToPiece, PhotonVision pv, BooleanSupplier hasPiece) {
         mTrajectory = traj;
         mDrivetrainSubsystem = subsystem;
         mController = subsystem.getDrivePathController();
@@ -43,6 +49,8 @@ public class DriveAtPath extends Command {
         piecePID = subsystem.getAlignPieceController();
         this.alignToPiece = alignToPiece;
         SmartDashboard.putData("Desired Pose", m_field);
+        mHasPiece = hasPiece;
+
 
         addRequirements(subsystem);
     }
@@ -66,7 +74,7 @@ public class DriveAtPath extends Command {
         }
 
         ChassisSpeeds speeds = mController.calculate(mDrivetrainSubsystem.getPose(), state.getTargetHolonomicPose(), state.velocityMps, state.targetHolonomicRotation);
-        if(alignToPiece && mPhotonVision.getPieceYaw() != 0.0 && mTimer.get() > mTrajectory.getTotalTimeSeconds()/2.0){
+        if(alignToPiece && mPhotonVision.getPieceYaw() != 0.0 && mTimer.get() > mTrajectory.getTotalTimeSeconds()/2.5 && !mHasPiece.getAsBoolean()){
             speeds.omegaRadiansPerSecond = piecePID.calculate(mPhotonVision.getPieceYaw()/180*Math.PI, 0);  
         }
         mDrivetrainSubsystem.drive(speeds);

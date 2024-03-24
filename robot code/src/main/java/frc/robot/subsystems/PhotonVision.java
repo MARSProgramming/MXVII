@@ -37,8 +37,9 @@ public class PhotonVision extends SubsystemBase{
 
     public void resetPose(){
         Optional<EstimatedRobotPose> pose = getEstimatedGlobalPose(dt.getPose());
-        PhotonTrackedTarget trackedTarget = shooterCam.getLatestResult().getBestTarget();
-        if(shooterCam.getLatestResult().hasTargets()){
+        PhotonPipelineResult latestResult = shooterCam.getLatestResult();
+        if(latestResult.hasTargets()){
+            PhotonTrackedTarget trackedTarget = latestResult.getBestTarget();
             if(pose.isPresent() && trackedTarget != null
             && trackedTarget.getBestCameraToTarget() != null
             && ((trackedTarget.getBestCameraToTarget().getTranslation().getX() < 3.5 && (DriverStation.isDisabled() || DriverStation.isAutonomous())) 
@@ -62,9 +63,13 @@ public class PhotonVision extends SubsystemBase{
         //System.out.println(pieceCam.getLatestResult().hasTargets() ? pieceCam.getLatestResult().getBestTarget().getYaw() : 0);
     }
     public double getRobotHeading(){
-        double heading = lastPose.estimatedPose.getRotation().toRotation2d().getDegrees();
-        PhotonTrackedTarget trackedTarget = shooterCam.getLatestResult().getBestTarget();
-        if(shooterCam.getLatestResult().hasTargets()){
+        double heading = 0;
+        if(lastPose != null){
+            heading = lastPose.estimatedPose.getRotation().toRotation2d().getDegrees();
+        }
+        PhotonPipelineResult plresult = shooterCam.getLatestResult();
+        if(plresult.getBestTarget() != null && plresult.hasTargets()){
+            PhotonTrackedTarget trackedTarget = plresult.getBestTarget();
             if(trackedTarget != null && trackedTarget.getBestCameraToTarget() != null && aprilTagFieldLayout.getTagPose(trackedTarget.getFiducialId()).isPresent()){
                 heading = (aprilTagFieldLayout.getTagPose(trackedTarget.getFiducialId()).get().getRotation().toRotation2d().getDegrees() - (trackedTarget.getBestCameraToTarget().getRotation().toRotation2d().getDegrees()));
             }

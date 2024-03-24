@@ -22,6 +22,7 @@ public class BA0145 extends SequentialCommandGroup{
     public BA0145(DrivetrainSubsystem drivetrainSubsystem, IntakeWheels intakeWheels, IntakePivot intakePivot, ShooterFlywheel shooterFlywheel, ThePivot thePivot, Limelight ll, PhotonVision pv){
         addRequirements(thePivot, shooterFlywheel, intakePivot, intakeWheels, drivetrainSubsystem);
 
+        //TODO: not fast enough
         PathPlannerTrajectory BA1 = AutoChooser.openTrajectoryFile("BA1", drivetrainSubsystem, drivetrainSubsystem.getPigeonAngle());
         PathPlannerTrajectory B14 = AutoChooser.openTrajectoryFile("B14", drivetrainSubsystem, drivetrainSubsystem.getPigeonAngle());
         PathPlannerTrajectory B4G = AutoChooser.openTrajectoryFile("B4G", drivetrainSubsystem, drivetrainSubsystem.getPigeonAngle());
@@ -33,11 +34,11 @@ public class BA0145 extends SequentialCommandGroup{
             new IntegratedShooterCommand(intakeWheels, shooterFlywheel, thePivot, drivetrainSubsystem).withTimeout(3),
             new DriveAtPath(drivetrainSubsystem, BA1, ll, false, pv).deadlineWith(new IntakeCommand(intakePivot, intakeWheels, thePivot)),
             intakePivot.zeroIntake().andThen(new IntegratedShooterCommand(intakeWheels, shooterFlywheel, thePivot, drivetrainSubsystem).withTimeout(3).unless(() -> !intakeWheels.hasPiece())),
-            new DriveAtPath(drivetrainSubsystem, B14, ll, false, pv).deadlineWith(new WaitCommand(1), new IntakeCommand(intakePivot, intakeWheels, thePivot)).withTimeout(4),
-            new DriveAtPath(drivetrainSubsystem, B4G, ll, false, pv).deadlineWith(intakePivot.setPositionCommand(() -> 0, true)),
+            new DriveAtPath(drivetrainSubsystem, B14, ll, true, pv).deadlineWith(new WaitCommand(1), new IntakeCommand(intakePivot, intakeWheels, thePivot)).withTimeout(5),
+            new DriveAtPath(drivetrainSubsystem, B4G, ll, false, pv).deadlineWith(intakePivot.setPositionCommand(() -> 0, true)).until(() -> drivetrainSubsystem.getPose().getX() < 3 && intakeWheels.hasPiece()),
             new IntegratedShooterCommand(intakeWheels, shooterFlywheel, thePivot, drivetrainSubsystem).withTimeout(3),
-            new DriveAtPath(drivetrainSubsystem, BG5, ll, false, pv).deadlineWith(new WaitCommand(1), new IntakeCommand(intakePivot, intakeWheels, thePivot)).withTimeout(4),
-            new DriveAtPath(drivetrainSubsystem, B5G, ll, false, pv).deadlineWith(intakePivot.setPositionCommand(() -> 0, true)),
+            new DriveAtPath(drivetrainSubsystem, BG5, ll, true, pv).deadlineWith(new WaitCommand(1), new IntakeCommand(intakePivot, intakeWheels, thePivot)).withTimeout(5),
+            new DriveAtPath(drivetrainSubsystem, B5G, ll, false, pv).deadlineWith(intakePivot.setPositionCommand(() -> 0, true)).until(() -> drivetrainSubsystem.getPose().getX() < 3 && intakeWheels.hasPiece()),
             new IntegratedShooterCommand(intakeWheels, shooterFlywheel, thePivot, drivetrainSubsystem).withTimeout(3)
         );
     }

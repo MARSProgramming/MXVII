@@ -101,10 +101,10 @@ public class IntakePivot extends SubsystemBase {
             i = 0;
         }).andThen(runEnd(() -> {
             if(getPosition() > DynamicConstants.Intake.pivotUprightPosition){
-                pivotMotor.setVoltage(-4);
+                pivotMotor.setVoltage(-5);
             }
             else{
-                pivotMotor.setVoltage(Math.abs(getPosition()) * -2);
+                pivotMotor.setVoltage(Math.abs(getPosition()) * -20);
             }
         }, () -> {
             pivotMotor.set(0);
