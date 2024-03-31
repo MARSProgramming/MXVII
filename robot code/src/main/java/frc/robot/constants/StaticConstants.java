@@ -61,7 +61,7 @@ public final class StaticConstants {
 
         //Limits are in rotations from zero
         public static double forwardLimit = 0.55;
-        public static double reverseLimit = 0.02;
+        public static double reverseLimit = -100;
         public static int reverseLimitSwitchID = 0;
 
         public static double supplyCurrentLimit = 20;
@@ -73,7 +73,7 @@ public final class StaticConstants {
         public static int rightIrID = 1;
 
         public static double supplyCurrentLimit = 20;
-        public static double statorCurrentLimit = 40;
+        public static double statorCurrentLimit = 60;
     }
     public static class ShooterFlywheel{
         public static int masterID = 13;

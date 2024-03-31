@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.constants.DynamicConstants;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.IntakeWheels;
 import frc.robot.subsystems.ShooterFlywheel;
@@ -86,7 +87,7 @@ public class IntegratedShooterCommand extends Command {
         double swerveAngle = results[1];
         double pivotAngle = results[2];
         mShooterFlywheel.setVelocity(flywheelSpeed);
-        if(mShooterFlywheel.atSpeed(() -> flywheelSpeed) && Math.abs(mDrivetrainSubsystem.getSnapController().getGoal().position - mDrivetrainSubsystem.getPigeonAngle()) < 0.3){
+        if(mShooterFlywheel.atSpeed(() -> flywheelSpeed) && Math.abs(mDrivetrainSubsystem.getSnapController().getGoal().position - mDrivetrainSubsystem.getPigeonAngle()) < 0.5){
             movePivot = true;
         }
         if(movePivot){
@@ -144,7 +145,10 @@ public class IntegratedShooterCommand extends Command {
         distToRPM.put(4.0, 4500.0);
         distToRPM.put(4.5, 4500.0);
         distToRPM.put(5.0, 5500.0);
-        distToRPM.put(7.0, 5500.0);
+        distToRPM.put(5.5, 5500.0);
+        distToRPM.put(5.501, 3300.0);
+        
+        distToRPM.put(10.0, 3800.0);
 
         InterpolatingDoubleTreeMap distToPivotAngle = new InterpolatingDoubleTreeMap();
         distToPivotAngle.put(1.5, 0.0);
@@ -158,11 +162,13 @@ public class IntegratedShooterCommand extends Command {
         distToPivotAngle.put(4.3, 0.11);
         distToPivotAngle.put(4.5, 0.115);
         distToPivotAngle.put(5.0, 0.122);
-        distToRPM.put(5.5, 0.125);
+        distToPivotAngle.put(5.5, 0.125);
+        distToPivotAngle.put(5.501, 0.0);
+        distToPivotAngle.put(20.0, 0.0);
         
-        double angleOffset = alliance.equals(Alliance.Red) ? -0.12 : 0.12;
+        double angleXOffset = alliance.equals(Alliance.Red) ? -0.12 : 0.12;
+        double angleYOffset = dist > 5.5 ? 2 : 0;
         SmartDashboard.putNumber("Dist To Goal", dist);
-        //TODO: set fudge factor as dynamic constant
-        return new double[]{distToRPM.get(dist), Math.atan2(newGoal.getY()-pos.getY(), (newGoal.getX() + angleOffset - pos.getX())), Math.max(distToPivotAngle.get(dist) - 0.01, 0)};
+        return new double[]{distToRPM.get(dist), Math.atan2(newGoal.getY()-pos.getY() + angleYOffset, (newGoal.getX() + angleXOffset - pos.getX())), Math.max(distToPivotAngle.get(dist) - DynamicConstants.ThePivot.shootOffset, 0)};
     }
 }

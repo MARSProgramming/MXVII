@@ -95,13 +95,13 @@ public class IntakePivot extends SubsystemBase {
 
     public Command zeroIntake() {
         return runOnce(() -> {
-            pivotMotor.getConfigurator().apply(new SoftwareLimitSwitchConfigs().withReverseSoftLimitEnable(false).withReverseSoftLimitThreshold(-10000));
+            //pivotMotor.getConfigurator().apply(new SoftwareLimitSwitchConfigs().withReverseSoftLimitEnable(false).withReverseSoftLimitThreshold(-10000));
             resetProfiledPIDController();
             resetPos = true;
             i = 0;
         }).andThen(runEnd(() -> {
             if(getPosition() > DynamicConstants.Intake.pivotUprightPosition){
-                pivotMotor.setVoltage(-5);
+                pivotMotor.setVoltage(-6);
             }
             else{
                 pivotMotor.setVoltage(Math.abs(getPosition()) * -20);

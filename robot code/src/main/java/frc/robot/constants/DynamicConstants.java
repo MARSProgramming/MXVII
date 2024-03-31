@@ -25,7 +25,7 @@ public final class DynamicConstants {
         public static double intakeVoltage = 8;
         public static double outtakeVoltage = -9;
         public static double trapOuttakeVoltage = -9;
-        public static double intakeAmpPivotVoltage = 1;
+        public static double intakeAmpPivotVoltage = 1.2;
         public static double intakeAmpOuttakeVoltage = -5;
 
         //voltage threshold for note detection
@@ -35,8 +35,8 @@ public final class DynamicConstants {
         public static double pivotIntakePosition = 0.3;
         public static double pivotAmpPosition = 0.3;
         public static double pivotUprightPosition = 0.09;
-        public static double pivotStowPosition = 0.01;
-        public static double pivotTrapPosition = 0.35;
+        public static double pivotStowPosition = 0;
+        public static double pivotTrapPosition = 0.37;
         public static double pivotIntakeAmpPosition = 0.065;
     }
 
@@ -51,6 +51,8 @@ public final class DynamicConstants {
         public static double zeroPosition = 0;
         public static double testPosition = 0.1;
         public static double climbPosition = 0.251; 
+
+        public static double shootOffset = 0.0235;
 
         // setpoints for trap
         public static double trapPosition = 0.251;
