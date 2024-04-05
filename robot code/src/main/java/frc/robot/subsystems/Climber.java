@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 import java.util.function.DoubleSupplier;
 
+import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
@@ -57,6 +58,12 @@ public class Climber extends SubsystemBase {
         .withForwardSoftLimitThreshold(StaticConstants.Climber.rightForwardLimit / positionCoefficient)
         .withReverseSoftLimitEnable(true)
         .withReverseSoftLimitThreshold(StaticConstants.Climber.rightReverseLimit / positionCoefficient));
+
+        left.getConfigurator().apply(new CurrentLimitsConfigs().withSupplyCurrentLimitEnable(true)
+        .withSupplyCurrentLimit(20).withStatorCurrentLimitEnable(true).withStatorCurrentLimit(60));
+
+        right.getConfigurator().apply(new CurrentLimitsConfigs().withSupplyCurrentLimitEnable(true)
+        .withSupplyCurrentLimit(20).withStatorCurrentLimitEnable(true).withStatorCurrentLimit(60));
         
         leftLimitSwitch = new DigitalInput(StaticConstants.Climber.leftLimitSwitchID);
         rightLimitSwitch = new DigitalInput(StaticConstants.Climber.rightLimitSwitchID);
@@ -100,8 +107,8 @@ public class Climber extends SubsystemBase {
 
     public Command climbToLimit() {
         return runEnd(() -> {
-            setLeftVoltage(-8, false);
-            setRightVoltage(-8, false);
+            setLeftVoltage(-5, false);
+            setRightVoltage(-5, false);
         }, () -> {
             left.set(0);
             right.set(0);

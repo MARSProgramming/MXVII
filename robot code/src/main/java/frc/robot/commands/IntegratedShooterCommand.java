@@ -79,6 +79,9 @@ public class IntegratedShooterCommand extends Command {
             results = calculateShootingParameters(mDrivetrainSubsystem.getPose(), alliance.equals(Alliance.Red) ? redGoalPos : blueGoalPos, mDrivetrainSubsystem.getChassisSpeeds(), this.alliance);
             mDrivetrainSubsystem.setSnapTolerance(0.2);
         }
+        else if(results[3] == 1.0){
+            mDrivetrainSubsystem.setSnapTolerance(0.3);
+        }
         else{
             mDrivetrainSubsystem.setSnapTolerance(0.08);
         }
@@ -169,6 +172,6 @@ public class IntegratedShooterCommand extends Command {
         double angleXOffset = alliance.equals(Alliance.Red) ? -0.12 : 0.12;
         double angleYOffset = dist > 5.5 ? 2 : 0;
         SmartDashboard.putNumber("Dist To Goal", dist);
-        return new double[]{distToRPM.get(dist), Math.atan2(newGoal.getY()-pos.getY() + angleYOffset, (newGoal.getX() + angleXOffset - pos.getX())), Math.max(distToPivotAngle.get(dist) - DynamicConstants.ThePivot.shootOffset, 0)};
+        return new double[]{distToRPM.get(dist), Math.atan2(newGoal.getY()-pos.getY() + angleYOffset, (newGoal.getX() + angleXOffset - pos.getX())), Math.max(distToPivotAngle.get(dist) - DynamicConstants.ThePivot.shootOffset, 0), dist > 5.5 ? 1.0 : 0.0};
     }
 }

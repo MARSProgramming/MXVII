@@ -29,7 +29,8 @@ public final class DynamicConstants {
         public static double intakeAmpOuttakeVoltage = -5;
 
         //voltage threshold for note detection
-        public static double irSensorThreshold = 1.75;
+        public static double irSensorThresholdIntake = 1.75;
+        public static double irSensorThresholdShoot = 1.75;
 
         //Setpoints in rotations from zero
         public static double pivotIntakePosition = 0.3;

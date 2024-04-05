@@ -40,9 +40,9 @@ public class BB01236 extends SequentialCommandGroup{
             intakeWheels.outtake().alongWith(shooterFlywheel.runVelocity(() -> 4000)).withTimeout(0.3),
             new DriveAtPath(drivetrainSubsystem, BB3R, ll, false, pv).until(() -> drivetrainSubsystem.getPose().getX() < 1.5 && intakeWheels.hasPiece()).deadlineWith(new IntakeCommand(intakePivot, intakeWheels, thePivot).withTimeout(2).andThen(intakePivot.setPositionCommand(() -> 0, false).alongWith(shooterFlywheel.runVelocity(() -> 3500), intakeWheels.runVoltage(3).unless(() -> intakeWheels.hasPiece())))),
             //new IntegratedShooterCommand(intakeWheels, shooterFlywheel, thePivot, drivetrainSubsystem).withTimeout(2).unless(() -> !intakeWheels.hasPiece()),
-            intakeWheels.outtake().alongWith(shooterFlywheel.runVelocity(() -> 4000)).withTimeout(0.3),
-            new DriveAtPath(drivetrainSubsystem, BB6R, ll, true, pv, () -> intakeWheels.hasPiece()).until(() -> drivetrainSubsystem.getPose().getX() < 1.5 && intakeWheels.hasPiece()).deadlineWith(new WaitCommand(1).andThen(new IntakeCommand(intakePivot, intakeWheels, thePivot)).withTimeout(6).andThen(intakePivot.zeroIntake().alongWith(shooterFlywheel.runVelocity(() -> 3500), intakeWheels.runVoltage(3).unless(() -> intakeWheels.hasPiece())))),
-            intakeWheels.outtake().alongWith(shooterFlywheel.runVelocity(() -> 4000)).withTimeout(0.3),
+            intakeWheels.outtake().alongWith(shooterFlywheel.runVelocity(() -> 4000)).withTimeout(0.5),
+            new DriveAtPath(drivetrainSubsystem, BB6R, ll, true, pv, () -> intakeWheels.hasPiece()).until(() -> drivetrainSubsystem.getPose().getX() < 1.5 && intakeWheels.hasPiece()).deadlineWith((new IntakeCommand(intakePivot, intakeWheels, thePivot)).withTimeout(6).andThen(intakePivot.zeroIntake().alongWith(shooterFlywheel.runVelocity(() -> 3500), intakeWheels.runVoltage(3).unless(() -> intakeWheels.hasPiece())))),
+            intakeWheels.outtake().alongWith(shooterFlywheel.runVelocity(() -> 4000)).withTimeout(0.5),
             new DriveAtPath(drivetrainSubsystem, BB8, ll, false, pv)
             //new IntegratedShooterCommand(intakeWheels, shooterFlywheel, thePivot, drivetrainSubsystem).withTimeout(2).unless(() -> !intakeWheels.hasPiece())
         );

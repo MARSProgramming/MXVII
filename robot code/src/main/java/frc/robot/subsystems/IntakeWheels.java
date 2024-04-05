@@ -44,14 +44,22 @@ public class IntakeWheels extends SubsystemBase {
     public double getIrReading(){
        return Math.max(irSensorLeft.getAverageVoltage(), irSensorRight.getAverageVoltage()); 
     }
+    private int i = 0;
     public boolean hasPiece(){
-        return getIrReading() > DynamicConstants.Intake.irSensorThreshold;
+        if(getIrReading() > DynamicConstants.Intake.irSensorThresholdShoot){
+            i++;
+        }
+        else{
+            i = 0;
+        }
+        return i >= 5;
+        //return getIrReading() > DynamicConstants.Intake.irSensorThreshold;
     }
 
     public void periodic() {
         SmartDashboard.putNumber("left sensor reading", irSensorLeft.getAverageVoltage());
         SmartDashboard.putNumber("right sensor reading", irSensorRight.getAverageVoltage());
-        SmartDashboard.putBoolean("ir sensor boolean",  (getIrReading() > DynamicConstants.Intake.irSensorThreshold));
+        SmartDashboard.putBoolean("ir sensor boolean",  (getIrReading() > DynamicConstants.Intake.irSensorThresholdShoot));
     }
     
     public void setDutyCycle(double dc) {
@@ -84,16 +92,40 @@ public class IntakeWheels extends SubsystemBase {
     public double getVoltage(){
         return intakeMotor.getMotorVoltage().getValueAsDouble();
     }
+    private int j = 0;
+    // public boolean intakeDetectedPiece(){
+    //     if(getIrReading() > DynamicConstants.Intake.irSensorThresholdIntake){
+    //         j++;
+    //     }
+    //     else{
+    //         j = 0;
+    //     }
+    //     return j >= 1;
+    // }
     public Command intakeCommand(){
         return runEnd(() -> {
-            intake();
+            if(getIrReading() < DynamicConstants.Intake.irSensorThresholdIntake){
+                intake();
+            }
+            else{
+                intakeMotor.setVoltage(0);
+            }
         },
         () -> {
             intakeMotor.setVoltage(0);
             Rumble.getInstance().rumbleController1(1);
-        }).until(() -> (getIrReading() > DynamicConstants.Intake.irSensorThreshold));
+        });
         
     }
+    // public Command intakeCommand(){
+    //     return runEnd(() -> {
+    //         intake();
+    //     },
+    //     () -> {
+    //         intakeMotor.setVoltage(0);
+    //         Rumble.getInstance().rumbleController1(1);
+    //     }).until(() -> (getIrReading() > DynamicConstants.Intake.irSensorThresholdIntake));
+    // }
 
 
 }
