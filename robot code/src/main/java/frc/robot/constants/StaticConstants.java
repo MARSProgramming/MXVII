@@ -73,7 +73,7 @@ public final class StaticConstants {
         public static int rightIrID = 1;
 
         public static double supplyCurrentLimit = 20;
-        public static double statorCurrentLimit = 60;
+        public static double statorCurrentLimit = 40;
     }
     public static class ShooterFlywheel{
         public static int masterID = 13;

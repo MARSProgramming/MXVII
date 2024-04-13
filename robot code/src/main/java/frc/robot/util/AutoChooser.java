@@ -67,9 +67,9 @@ public class AutoChooser {
         //auto plays
         autoChooser.setDefaultOption("Do Nothing", new DoNothing());
         autoChooser.addOption("RA0", new RA0(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll, pv));
-        autoChooser.addOption("RA01", new RA01(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll, pv));
-        autoChooser.addOption("RA012", new RA012(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll, pv));
-        autoChooser.addOption("RA0123", new RA0123(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll, pv));
+        //autoChooser.addOption("RA01", new RA01(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll, pv));
+        //autoChooser.addOption("RA012", new RA012(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll, pv));
+        //autoChooser.addOption("RA0123", new RA0123(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll, pv));
         autoChooser.addOption("RA0123NP", new RA0123NP(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll, pv));
         autoChooser.addOption("RB0123NP", new RB0123NP(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll, pv));
         autoChooser.addOption("RB0124", new RB0124(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll, pv));
@@ -77,18 +77,18 @@ public class AutoChooser {
         autoChooser.addOption("RA014", new RA014(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll, pv));
         autoChooser.addOption("RA0145", new RA0145(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll, pv));
         autoChooser.addOption("RB0", new RB0(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll, pv));
-        autoChooser.addOption("RB02", new RB02(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll, pv));
+        //autoChooser.addOption("RB02", new RB02(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll, pv));
         autoChooser.addOption("RC0", new RC0(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll, pv));
-        autoChooser.addOption("RC03", new RC03(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll, pv));
+        //autoChooser.addOption("RC03", new RC03(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll, pv));
         autoChooser.addOption("RD0", new RD0(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll, pv));
         autoChooser.addOption("RDL", new RDL(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll, pv));
         autoChooser.addOption("RD08", new RD08(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll, pv));
         autoChooser.addOption("RD087", new RD087(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll, pv));
 
         autoChooser.addOption("BA0", new BA0(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll, pv));
-        autoChooser.addOption("BA01", new BA01(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll, pv));
-        autoChooser.addOption("BA012", new BA012(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll, pv));
-        autoChooser.addOption("BA0123", new BA0123(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll, pv));
+        // autoChooser.addOption("BA01", new BA01(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll, pv));
+        // autoChooser.addOption("BA012", new BA012(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll, pv));
+        // autoChooser.addOption("BA0123", new BA0123(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll, pv));
         autoChooser.addOption("BA0123NP", new BA0123NP(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll, pv));
         autoChooser.addOption("BB0123NP", new BB0123NP(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll, pv));
         autoChooser.addOption("BB0124", new BB0124(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll, pv));
@@ -96,9 +96,9 @@ public class AutoChooser {
         autoChooser.addOption("BA014", new BA014(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll, pv));
         autoChooser.addOption("BA0145", new BA0145(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll, pv));
         autoChooser.addOption("BB0", new BB0(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll, pv));
-        autoChooser.addOption("BB02", new BB02(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll, pv));
+        //autoChooser.addOption("BB02", new BB02(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll, pv));
         autoChooser.addOption("BC0", new BC0(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll, pv));
-        autoChooser.addOption("BC03", new BC03(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll, pv));
+        //autoChooser.addOption("BC03", new BC03(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll, pv));
         autoChooser.addOption("BD0", new BD0(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll, pv));
         autoChooser.addOption("BDL", new BDL(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll, pv));
         autoChooser.addOption("BD08", new BD08(mDrivetrainSubsystem, intakeWheels, intakePivot, shooterFlywheel, thePivot, ll, pv));

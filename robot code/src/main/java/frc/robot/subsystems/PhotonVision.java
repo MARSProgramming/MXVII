@@ -11,6 +11,7 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
@@ -40,11 +41,14 @@ public class PhotonVision extends SubsystemBase{
         PhotonPipelineResult latestResult = shooterCam.getLatestResult();
         if(latestResult.hasTargets()){
             PhotonTrackedTarget trackedTarget = latestResult.getBestTarget();
+            
             if(pose.isPresent() && trackedTarget != null
             && trackedTarget.getBestCameraToTarget() != null
             && ((trackedTarget.getBestCameraToTarget().getTranslation().getX() < 3.5 && (DriverStation.isDisabled() || DriverStation.isAutonomous())) 
             || (trackedTarget.getBestCameraToTarget().getTranslation().getX() < 6 && DriverStation.isTeleop())
             )){
+                double stdev = 0.01 * trackedTarget.getBestCameraToTarget().getTranslation().getX();
+                dt.setVisionMeasurementStdDevs(VecBuilder.fill(stdev, stdev, 0.5));
                 dt.addVisionMeasurementTimestamp(pose.get().estimatedPose.toPose2d(), pose.get().timestampSeconds);
                 lastPose = pose.get();
             }

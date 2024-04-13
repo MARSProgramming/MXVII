@@ -108,7 +108,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
         mPoseEstimator = new SwerveDrivePoseEstimator(m_kinematics, Rotation2d.fromRadians(getPigeonAngle()),
                 getSwerveModulePositions(), new Pose2d(),
                 VecBuilder.fill(0.01, 0.01, Units.degreesToRadians(0.5)),
-                VecBuilder.fill(0.04, 0.04, Units.degreesToRadians(3)));
+                VecBuilder.fill(0.01, 0.01, Units.degreesToRadians(3)));
         /*mPoseEstimator = new SwerveDrivePoseEstimator(m_kinematics, Rotation2d.fromRadians(getPigeonAngle()),
                 getSwerveModulePositions(), new Pose2d());*/
         SmartDashboard.putData("Field", m_field);

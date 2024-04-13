@@ -162,7 +162,7 @@ public class ThePivot extends SubsystemBase {
     }
     @Override
     public void periodic(){
-        if(getEncoderPosition() < 0.01 && DriverStation.isDisabled()){ 
+        if(getEncoderPosition() < 0.005 && Math.abs(motor.getVelocity().getValueAsDouble()) < 0.0001){ 
             motor.setPosition(0);
         }
     }

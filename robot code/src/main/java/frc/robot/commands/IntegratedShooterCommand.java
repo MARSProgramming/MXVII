@@ -161,11 +161,11 @@ public class IntegratedShooterCommand extends Command {
         distToPivotAngle.put(2.9, 0.079);
         distToPivotAngle.put(3.32, 0.084);
         distToPivotAngle.put(3.7, 0.097);
-        distToPivotAngle.put(4.0, 0.1);
-        distToPivotAngle.put(4.3, 0.11);
-        distToPivotAngle.put(4.5, 0.115);
+        distToPivotAngle.put(4.0, 0.104);
+        distToPivotAngle.put(4.3, 0.112);
+        distToPivotAngle.put(4.5, 0.116);
         distToPivotAngle.put(5.0, 0.122);
-        distToPivotAngle.put(5.5, 0.125);
+        distToPivotAngle.put(5.5, 0.13);
         distToPivotAngle.put(5.501, 0.0);
         distToPivotAngle.put(20.0, 0.0);
         
