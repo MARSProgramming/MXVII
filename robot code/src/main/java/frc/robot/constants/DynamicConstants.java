@@ -25,19 +25,19 @@ public final class DynamicConstants {
         public static double intakeVoltage = 8;
         public static double outtakeVoltage = -9;
         public static double trapOuttakeVoltage = -9;
-        public static double intakeAmpPivotVoltage = 1.2;
+        public static double intakeAmpPivotVoltage = 1;
         public static double intakeAmpOuttakeVoltage = -5;
 
         //voltage threshold for note detection
-        public static double irSensorThresholdIntake = 1.75;
-        public static double irSensorThresholdShoot = 1.75;
+        public static double irSensorThresholdIntake = 1.5;
+        public static double irSensorThresholdShoot = 1.5;
 
         //Setpoints in rotations from zero
         public static double pivotIntakePosition = 0.3;
         public static double pivotAmpPosition = 0.3;
         public static double pivotUprightPosition = 0.09;
         public static double pivotStowPosition = 0;
-        public static double pivotTrapPosition = 0.37;
+        public static double pivotTrapPosition = 0.38;
         public static double pivotIntakeAmpPosition = 0.065;
     }
 
@@ -53,7 +53,7 @@ public final class DynamicConstants {
         public static double testPosition = 0.1;
         public static double climbPosition = 0.251; 
 
-        public static double shootOffset = 0.0235;
+        public static double shootOffset = 0.018;
 
         // setpoints for trap
         public static double trapPosition = 0.251;
@@ -62,7 +62,7 @@ public final class DynamicConstants {
         public static double secondSegmentFeedforwardConstant = 0.5;
 
         //velocity threshold
-        public static double shootVelocityThreshold = 0.001;
+        public static double shootVelocityThreshold = 0.005;
     }
     public static class Climber{
         public static double uprightPosition = 4.8;
