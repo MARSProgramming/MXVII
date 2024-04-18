@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.DriveAtPath;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.IntegratedShooterCommand;
+import frc.robot.commands.ResetHeadingOnTag;
 import frc.robot.commands.ResetPose;
 import frc.robot.constants.DynamicConstants;
 import frc.robot.subsystems.DrivetrainSubsystem;
@@ -28,7 +29,7 @@ public class BD087 extends SequentialCommandGroup{
         PathPlannerTrajectory B7F = AutoChooser.openTrajectoryFile("B7F", drivetrainSubsystem, drivetrainSubsystem.getPigeonAngle());
         addCommands(
             new ResetPose(drivetrainSubsystem, ll, BD8.getInitialTargetHolonomicPose()),
-            drivetrainSubsystem.zeroGyroscope(123),
+            new ResetHeadingOnTag(drivetrainSubsystem, pv, 123.0),
             new IntegratedShooterCommand(intakeWheels, shooterFlywheel, thePivot, drivetrainSubsystem).withTimeout(3),
             new DriveAtPath(drivetrainSubsystem, BD8, ll, true, pv).deadlineWith(new WaitCommand(1).andThen(new IntakeCommand(intakePivot, intakeWheels, thePivot))).andThen(new DriveAtPath(drivetrainSubsystem, B8F, ll, false, pv).deadlineWith(shooterFlywheel.runVelocity(() -> DynamicConstants.ShooterFlywheel.idleVelocity), intakePivot.setPositionCommand(() -> 0, true))),
             new IntegratedShooterCommand(intakeWheels, shooterFlywheel, thePivot, drivetrainSubsystem).withTimeout(3),
