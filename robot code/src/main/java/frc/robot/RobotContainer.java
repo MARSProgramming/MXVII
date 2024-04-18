@@ -101,12 +101,12 @@ public class RobotContainer {
     }
     private void configureBindings() {
         mPilot.y().whileTrue(mDrivetrainSubsystem.zeroGyroscope(0));
-        // mPilot.leftTrigger().whileTrue(new AlignToPiece(mDrivetrainSubsystem, mLimelight,
-        //     () -> -modifyAxis(mPilot.getLeftY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-        //     () -> -modifyAxis(mPilot.getLeftX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-        //     () -> -modifyAxis(mPilot.getRightX()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND, mPhotonVisionCamera));
-        //mPilot.rightTrigger().whileTrue(mShooterFlywheel.runVelocity(() -> 6000.0));
-        //mPilot.leftTrigger().whileTrue(mIntakePivot.setPositionCommand(() -> DynamicConstants.Intake.pivotIntakePosition, false));
+        new Trigger(() -> mPilot.getRightY() > 0.7).whileTrue(new AlignToPiece(mDrivetrainSubsystem, mLimelight,
+            () -> -modifyAxis(mPilot.getLeftY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+            () -> -modifyAxis(mPilot.getLeftX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+            () -> -modifyAxis(mPilot.getRightX()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND, mPhotonVisionCamera));
+        // mPilot.rightTrigger().whileTrue(mShooterFlywheel.runVelocity(() -> 6000.0));
+        // mPilot.leftTrigger().whileTrue(mIntakePivot.setPositionCommand(() -> DynamicConstants.Intake.pivotIntakePosition, false));
         
         mPilot.leftTrigger().whileTrue(new IntakeCommand(mIntakePivot, mIntakeWheels, mThePivot));
         mPilot.leftTrigger().toggleOnFalse(mIntakePivot.zeroIntake());
