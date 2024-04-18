@@ -16,7 +16,7 @@ public class InitializeTrapSetpoint extends ParallelCommandGroup{
         mThePivot = thePivot;
         //addRequirements(thePivot, intakePivot);
         addCommands(
-            //thePivot.setPositionCommand(() -> DynamicConstants.ThePivot.trapPosition, true),
+            thePivot.setPositionCommand(() -> DynamicConstants.ThePivot.climbPosition, true),
             intakePivot.setPositionCommand(() -> DynamicConstants.Intake.pivotTrapPosition, true)
         );
     }
