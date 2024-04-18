@@ -142,7 +142,7 @@ public class RobotContainer {
         mCopilot.rightBumper().whileTrue(mIntakeWheels.runVoltage(DynamicConstants.Intake.trapOuttakeVoltage));
         mCopilot.rightTrigger().whileTrue(mShooterFlywheel.runVelocity(() -> 4000).alongWith(new WaitCommand(1).andThen(mIntakeWheels.outtake())));
         mCopilot.b().whileTrue(mClimber.climbToLimit().deadlineWith(mThePivot.setPositionCommand(() -> DynamicConstants.ThePivot.climbPosition, true)).andThen(new InitializeTrapSetpoint(mIntakePivot, mThePivot).alongWith(new WaitCommand(1).andThen(mIntakeWheels.runVoltage(DynamicConstants.Intake.trapOuttakeVoltage)))));
-        mCopilot.x().whileTrue(mClimber.setPositionCommand(() -> DynamicConstants.Climber.uprightPosition).alongWith(mIntakeWheels.runVoltage(2.5)));
+        mCopilot.x().whileTrue(mClimber.setPositionCommand(() -> DynamicConstants.Climber.uprightPosition).alongWith(mIntakeWheels.runVoltageUntilIRReading(2.5, 1.6)));
         mCopilot.a().toggleOnTrue(new InitializeClimbSetpoint(mIntakePivot, mThePivot));
         mCopilot.y().toggleOnTrue(new InitializeTrapSetpoint(mIntakePivot, mThePivot));
 

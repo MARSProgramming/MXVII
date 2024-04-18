@@ -73,6 +73,19 @@ public class IntakeWheels extends SubsystemBase {
             intakeMotor.setVoltage(0);
         });
     }
+    public Command runVoltageUntilIRReading(double voltage, double IR) {
+        return runEnd(() -> {
+            if(getIrReading() > IR){
+                intakeMotor.setVoltage(voltage);
+            }
+            else{
+                intakeMotor.setVoltage(0);
+            }
+        },
+        () -> {
+            intakeMotor.setVoltage(0);
+        });
+    }
     public void intake(){
         intakeMotor.setVoltage(DynamicConstants.Intake.intakeVoltage);
     }
