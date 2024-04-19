@@ -149,9 +149,9 @@ public class IntegratedShooterCommand extends Command {
         distToRPM.put(4.5, 4500.0);
         distToRPM.put(5.0, 5500.0);
         distToRPM.put(5.5, 5500.0);
-        distToRPM.put(5.501, 3300.0);
+        distToRPM.put(5.501, 3400.0);
         
-        distToRPM.put(10.0, 3800.0);
+        distToRPM.put(10.0, 4000.0);
 
         InterpolatingDoubleTreeMap distToPivotAngle = new InterpolatingDoubleTreeMap();
         distToPivotAngle.put(1.5, 0.0);
