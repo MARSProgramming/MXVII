@@ -74,7 +74,7 @@ public class DriveAtPath extends Command {
         }
 
         ChassisSpeeds speeds = mController.calculate(mDrivetrainSubsystem.getPose(), state.getTargetHolonomicPose(), state.velocityMps, state.targetHolonomicRotation);
-        if(alignToPiece && mPhotonVision.getPieceYaw() != 0.0 && mTimer.get() > mTrajectory.getTotalTimeSeconds()/2.5 && !mHasPiece.getAsBoolean()){
+        if(alignToPiece && mPhotonVision.getPieceYaw() != 0.0 && mTimer.get() > mTrajectory.getTotalTimeSeconds()/3 && !mHasPiece.getAsBoolean()){
             speeds.omegaRadiansPerSecond = piecePID.calculate(mPhotonVision.getPieceYaw()/180*Math.PI, 0);  
         }
         mDrivetrainSubsystem.drive(speeds);
