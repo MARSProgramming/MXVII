@@ -113,8 +113,8 @@ public class RobotContainer {
         mPilot.start().whileTrue(mIntakeWheels.runVoltage(-4)); 
         mPilot.start().whileTrue(mShooterFlywheel.runVoltage(4));
         mPilot.leftBumper().whileTrue(mShooterFlywheel.runVoltage(-7).alongWith(mIntakeWheels.runVoltage(6)));
-        mPilot.povLeft().whileTrue(mIntakePivot.runVoltage(-1));
-        mPilot.povRight().whileTrue(mIntakePivot.runVoltage(1));
+        mPilot.povLeft().whileTrue(mIntakePivot.runVoltage(-4));
+        mPilot.povRight().whileTrue(mIntakePivot.runVoltage(4));
         mPilot.povUp().whileTrue(mThePivot.runVoltage(-1));
         mPilot.povDown().whileTrue(mThePivot.runVoltage(1));
         mPilot.b().whileTrue(new RobotCentricDrive(mDrivetrainSubsystem, () -> modifyAxis(mPilot.getLeftY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND));
@@ -145,7 +145,7 @@ public class RobotContainer {
         mCopilot.leftBumper().whileTrue(new GoToZero(mIntakePivot, mThePivot));
         mCopilot.rightBumper().whileTrue(mIntakeWheels.runVoltage(DynamicConstants.Intake.trapOuttakeVoltage));
         mCopilot.rightTrigger().whileTrue(mShooterFlywheel.runVelocity(() -> 4000).alongWith(new WaitCommand(1).andThen(mIntakeWheels.outtake())));
-        mCopilot.b().whileTrue(mClimber.climbToLimit().deadlineWith(mThePivot.setPositionCommand(() -> DynamicConstants.ThePivot.climbPosition, true)).andThen(new InitializeTrapSetpoint(mIntakePivot, mThePivot).alongWith(new WaitCommand(1).andThen(mIntakeWheels.runVoltage(DynamicConstants.Intake.trapOuttakeVoltage)))));
+        mCopilot.b().whileTrue(mClimber.climbToLimit().andThen(new InitializeTrapSetpoint(mIntakePivot, mThePivot).alongWith(new WaitCommand(1).andThen(mIntakeWheels.runVoltage(DynamicConstants.Intake.trapOuttakeVoltage)))));
         mCopilot.x().whileTrue(mClimber.setPositionCommand(() -> DynamicConstants.Climber.uprightPosition).alongWith(mIntakeWheels.runVoltageUntilIRReading(2.5, 1.6)));
         mCopilot.a().toggleOnTrue(new InitializeClimbSetpoint(mIntakePivot, mThePivot));
         mCopilot.y().toggleOnTrue(new InitializeTrapSetpoint(mIntakePivot, mThePivot));

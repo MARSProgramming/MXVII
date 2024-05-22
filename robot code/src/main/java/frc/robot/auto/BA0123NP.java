@@ -26,7 +26,7 @@ public class BA0123NP extends SequentialCommandGroup{
         PathPlannerTrajectory BB3R = AutoChooser.openTrajectoryFile("BB3R", drivetrainSubsystem, drivetrainSubsystem.getPigeonAngle());
         addCommands(
             new ResetPose(drivetrainSubsystem, ll, BA1R.getInitialTargetHolonomicPose()),
-            new ResetHeadingOnTag(drivetrainSubsystem, pv, -121.5),
+            drivetrainSubsystem.zeroGyroscope(-121.5),
             new IntegratedShooterCommand(intakeWheels, shooterFlywheel, thePivot, drivetrainSubsystem).withTimeout(4),
             new DriveAtPath(drivetrainSubsystem, BA1R, ll, false, pv).deadlineWith(new IntakeCommand(intakePivot, intakeWheels, thePivot).withTimeout(2).andThen(intakePivot.setPositionCommand(() -> 0, false).alongWith(shooterFlywheel.runVelocity(() -> 3000), intakeWheels.runVoltage(3).unless(() -> intakeWheels.hasPiece())))),
             new IntegratedShooterCommand(intakeWheels, shooterFlywheel, thePivot, drivetrainSubsystem).withTimeout(4).unless(() -> !intakeWheels.hasPiece()),
