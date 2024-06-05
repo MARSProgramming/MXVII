@@ -41,7 +41,7 @@ public class SubsystemIO extends SubsystemBase{
         pilotControls.put("Left Trigger", "Intake");
         pilotControls.put("Right Bumper", "Score Amp");
         pilotControls.put("Left Bumper", "Intake From Source");
-        pilotControls.put("X", "Allign To Tag");
+        pilotControls.put("X", "Align To Tag");
         pilotControls.put("Y", "Zero Yaw");
         pilotControls.put("A", "Far Shuttle");
         pilotControls.put("B", "Drive Robot Centric");
